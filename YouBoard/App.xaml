@@ -2,6 +2,12 @@
     x:Class="YouBoard.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:prism="http://prismlibrary.com/">
-    <Application.Resources />
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+    <Application.Resources>
+        <system:Double x:Key="GlobalFontSize">18</system:Double>
+        <SolidColorBrush x:Key="DarkBgBrush" Color="DarkSlateBlue" />
+        <SolidColorBrush x:Key="MediumBgBrush" Color="DodgerBlue" />
+        <SolidColorBrush x:Key="LightBgBrush" Color="SteelBlue" />
+    </Application.Resources>
 </prism:PrismApplication>

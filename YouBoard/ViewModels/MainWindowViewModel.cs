@@ -8,6 +8,8 @@ namespace YouBoard.ViewModels
     {
         private readonly AppVersionInfo appVersionInfo = new ();
 
+        public ProjectListViewModel ProjectListViewModel { get; private set; } = new ();
+
         public string Title => appVersionInfo.Title;
     }
 }

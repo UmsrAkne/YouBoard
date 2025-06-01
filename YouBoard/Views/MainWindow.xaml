@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:YouBoard.ViewModels"
+    xmlns:views="clr-namespace:YouBoard.Views"
     Title="{Binding Title}"
     Width="525"
     Height="350"
@@ -13,6 +14,10 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Grid>
-        <ContentControl prism:RegionManager.RegionName="ContentRegion" />
+        <TabControl>
+            <TabItem Header="Projects">
+                <views:ProjectListView DataContext="{Binding ProjectListViewModel}" />
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
