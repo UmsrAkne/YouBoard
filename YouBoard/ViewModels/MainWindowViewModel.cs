@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using System.Collections.ObjectModel;
+using Prism.Mvvm;
 using YouBoard.Utils;
 
 namespace YouBoard.ViewModels
@@ -7,6 +8,8 @@ namespace YouBoard.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private readonly AppVersionInfo appVersionInfo = new ();
+
+        public ObservableCollection<ITabViewModel> DynamicTabs { get; set; } = new ();
 
         public ProjectListViewModel ProjectListViewModel { get; private set; } = new ();
 

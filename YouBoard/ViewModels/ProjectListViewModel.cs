@@ -9,6 +9,8 @@ namespace YouBoard.ViewModels
     {
         public ObservableCollection<ProjectWrapper> ProjectWrappers { get; set; } = new ();
 
+        public string TabType { get; set; } = "ProjectList";
+
         public string Header { get; set; } = "Projects";
     }
 }
