@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:selectors="clr-namespace:YouBoard.ViewModels.Selectors"
     xmlns:viewModels="clr-namespace:YouBoard.ViewModels"
     xmlns:views="clr-namespace:YouBoard.Views"
     Title="{Binding Title}"
@@ -13,11 +14,34 @@
     d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
+
+    <Window.Resources>
+        <DataTemplate x:Key="ProjectListTemplate">
+            <views:ProjectListView />
+        </DataTemplate>
+
+        <DataTemplate x:Key="IssueListTemplate">
+            <views:IssueListView />
+        </DataTemplate>
+
+        <selectors:TabTemplateSelector
+            x:Key="TabSelector"
+            IssueListTemplate="{StaticResource IssueListTemplate}"
+            ProjectListTemplate="{StaticResource ProjectListTemplate}" />
+    </Window.Resources>
+
     <Grid>
-        <TabControl>
-            <TabItem Header="Projects">
-                <views:ProjectListView DataContext="{Binding ProjectListViewModel}" />
-            </TabItem>
+        <TabControl ItemsSource="{Binding DynamicTabs}">
+            <TabControl.ContentTemplateSelector>
+                <StaticResource ResourceKey="TabSelector" />
+            </TabControl.ContentTemplateSelector>
+
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Header}" />
+                </DataTemplate>
+
+            </TabControl.ItemTemplate>
         </TabControl>
     </Grid>
 </Window>
