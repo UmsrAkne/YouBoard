@@ -28,7 +28,7 @@
         <ListBox
             Grid.Row="1"
             AlternationCount="2"
-            ItemsSource="{Binding Projects}">
+            ItemsSource="{Binding ProjectWrappers}">
 
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:ProjectWrapper}">
