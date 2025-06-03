@@ -17,6 +17,7 @@ namespace YouBoard.ViewModels
         public MainWindowViewModel(IYouTrackProjectClient youtrackProjectClient)
         {
             ProjectListViewModel.YouTrackProjectClient = youtrackProjectClient;
+            DynamicTabs.Add(ProjectListViewModel);
         }
 
         public ObservableCollection<ITabViewModel> DynamicTabs { get; set; } = new ();
