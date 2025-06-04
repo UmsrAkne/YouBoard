@@ -22,12 +22,15 @@ namespace YouBoard
         {
             var userDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             Env.Load(Path.Combine(userDir, @"youtrackInfo\youtrack.env"));
+
+            #if DEBUG
+            containerRegistry.RegisterSingleton<IYouTrackProjectClient, FakeYouTrackProjectClient>();
+            #else
             var uri = Env.GetString("YOUTRACK_URI");
             var token = Env.GetString("YOUTRACK_TOKEN");
-
-            // クライアントのインスタンスを生成して登録（Singletonで）
             var client = new YoutrackProjectClient(uri, token);
             containerRegistry.RegisterInstance<IYouTrackProjectClient>(client);
+            #endif
         }
     }
 }
