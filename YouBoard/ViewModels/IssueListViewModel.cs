@@ -23,6 +23,8 @@ namespace YouBoard.ViewModels
             projectName = project.Name;
             projectShortName = project.ShortName;
             this.client = client;
+
+            Header = projectName;
         }
 
         public event EventHandler ItemChosen;
