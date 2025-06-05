@@ -11,14 +11,42 @@
     d:DesignWidth="300"
     mc:Ignorable="d">
     <Grid Background="{StaticResource DarkBgBrush}">
-        <ListBox ItemsSource="{Binding IssueWrappers}">
+        <ListBox
+            HorizontalContentAlignment="Stretch"
+            AlternationCount="2"
+            ItemsSource="{Binding IssueWrappers}">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:IssueWrapper}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Title}" />
-                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox
+                            Grid.Column="0"
+                            Width="25"
+                            IsChecked="{Binding IsComplete}" />
+                        <TextBlock Grid.Column="1" Text="{Binding Title}" />
+
+                        <TextBlock
+                            Grid.Column="2"
+                            MinWidth="40"
+                            Text="{Binding Id}" />
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Style.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="LightGray" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
         </ListBox>
     </Grid>
 </UserControl>
