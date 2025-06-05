@@ -25,6 +25,7 @@ namespace YouBoard
 
             #if DEBUG
             containerRegistry.RegisterSingleton<IYouTrackProjectClient, FakeYouTrackProjectClient>();
+            containerRegistry.RegisterSingleton<IYouTrackIssueClient, FakeYouTrackIssueClient>();
             #else
             var uri = Env.GetString("YOUTRACK_URI");
             var token = Env.GetString("YOUTRACK_TOKEN");
