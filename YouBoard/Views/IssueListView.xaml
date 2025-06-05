@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:YouBoard.Models"
     xmlns:viewModels="clr-namespace:YouBoard.ViewModels"
-    d:DataContext="{d:DesignInstance viewModels:IssueListViewModel}"
+    d:DataContext="{d:DesignInstance viewModels:DesignIssueListViewModel}"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
