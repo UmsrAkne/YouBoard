@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
+using CommunityToolkit.Mvvm.Input;
 using Prism.Mvvm;
 using YouBoard.Models;
 using YouBoard.Services;
@@ -14,6 +15,7 @@ namespace YouBoard.ViewModels
         private readonly IYouTrackIssueClient client;
         private readonly string projectName = string.Empty;
         private readonly string projectShortName = string.Empty;
+        private IssueWrapper pendingIssue = new ();
 
         public IssueListViewModel()
         {
@@ -37,6 +39,14 @@ namespace YouBoard.ViewModels
         public object SelectedItem { get; set; }
 
         public ObservableCollection<IssueWrapper> IssueWrappers { get; set; } = new ();
+
+        public IssueWrapper PendingIssue { get => pendingIssue; set => SetProperty(ref pendingIssue, value); }
+
+        public AsyncRelayCommand CreateIssueCommand => new (async () =>
+        {
+            // TODO: Implement issue creation
+            await Task.CompletedTask;
+        });
 
         /// <summary>
         /// Loads a specified number of issues from the server and adds them to IssueWrappers.

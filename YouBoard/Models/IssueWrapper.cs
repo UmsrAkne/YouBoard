@@ -8,6 +8,7 @@ namespace YouBoard.Models
         private string title;
         private string status;
         private bool isComplete;
+        private string description;
 
         public string Id { get => id; set => SetProperty(ref id, value); }
 
@@ -16,5 +17,7 @@ namespace YouBoard.Models
         public string Status { get => status; set => SetProperty(ref status, value); }
 
         public bool IsComplete { get => isComplete; set => SetProperty(ref isComplete, value); }
+
+        public string Description { get => description; set => SetProperty(ref description, value); }
     }
 }
