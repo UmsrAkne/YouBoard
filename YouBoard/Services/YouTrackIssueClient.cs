@@ -32,9 +32,20 @@ namespace YouBoard.Services
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", t);
         }
 
-        public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName)
+        public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0, int skip = 0)
         {
-            var endpoint = $"issues?query=project:{projectShortName}&fields=id,idReadable,summary";
+            var query = $"project:{projectShortName} sort by: created desc";
+            var endpoint = $"issues?query={Uri.EscapeDataString(query)}&fields=id,idReadable,summary";
+
+            if (skip != 0)
+            {
+                endpoint += $"&$skip={skip}";
+            }
+
+            if (count != 0)
+            {
+                endpoint += $"&$top={count}";
+            }
 
             using var response = await httpClient.GetAsync(endpoint);
             response.EnsureSuccessStatusCode();
