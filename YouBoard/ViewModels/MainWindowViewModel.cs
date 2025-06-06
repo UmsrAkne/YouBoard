@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Prism.Mvvm;
 using YouBoard.Models;
 using YouBoard.Services;
@@ -39,6 +40,13 @@ namespace YouBoard.ViewModels
         {
             if (ProjectListViewModel.SelectedItem is not ProjectWrapper selectedProject)
             {
+                return;
+            }
+
+            var exists = DynamicTabs.FirstOrDefault(t => t.Header == selectedProject.Name);
+            if (exists != null)
+            {
+                SelectedTab = exists;
                 return;
             }
 
