@@ -37,9 +37,12 @@ namespace YouBoard.ViewModels
 
         public ObservableCollection<IssueWrapper> IssueWrappers { get; set; } = new ();
 
-        public async Task LoadAsync()
+        public async Task LoadIssuesAsync(int count = 0)
         {
-            var issues = await client.GetIssuesByProjectAsync(projectShortName);
+            var issues = count == 0
+                ? await client.GetIssuesByProjectAsync(projectShortName)
+                : await client.GetIssuesByProjectAsync(projectShortName, count);
+
             IssueWrappers.Clear();
             foreach (var issue in issues)
             {
