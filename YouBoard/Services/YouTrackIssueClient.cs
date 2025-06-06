@@ -63,6 +63,7 @@ namespace YouBoard.Services
             {
                 Id = dto.IdReadable,
                 Title = dto.Summary,
+                IsComplete = dto.IsDone(),
             }).ToList();
         }
 
@@ -140,32 +141,6 @@ namespace YouBoard.Services
         protected virtual void Dispose(bool disposing)
         {
             httpClient?.Dispose();
-        }
-
-        // ReSharper disable once ClassNeverInstantiated.Local
-        private class YouTrackIssueDto
-        {
-            public string IdReadable { get; set; } = string.Empty;
-
-            public string Summary { get; set; } = string.Empty;
-
-            public string Description { get; set; }
-
-            public List<CustomField> CustomFields { get; set; }
-        }
-
-        // ReSharper disable once ClassNeverInstantiated.Local
-        private class CustomField
-        {
-            public string Name { get; set; }
-
-            public FieldValue Value { get; set; }
-        }
-
-        // ReSharper disable once ClassNeverInstantiated.Local
-        private class FieldValue
-        {
-            public string Name { get; set; }
         }
 
         // ReSharper disable once ClassNeverInstantiated.Local
