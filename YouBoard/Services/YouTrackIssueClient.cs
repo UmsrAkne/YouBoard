@@ -36,7 +36,7 @@ namespace YouBoard.Services
         public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0, int skip = 0)
         {
             var query = $"project:{projectShortName} sort by: created desc";
-            var endpoint = $"issues?query={Uri.EscapeDataString(query)}&fields=id,idReadable,summary";
+            var endpoint = $"issues?query={Uri.EscapeDataString(query)}&fields=id,idReadable,summary,customFields(name,value(name))";
 
             if (skip != 0)
             {
@@ -98,6 +98,28 @@ namespace YouBoard.Services
             };
         }
 
+        public async Task MarkAsCompleteAsync(IssueWrapper issueWrapper)
+        {
+            var payload = new
+            {
+                customFields = new[]
+                {
+                    new Dictionary<string, object>
+                    {
+                        { "name", "State" },
+                        { "$type", "SingleEnumIssueCustomField" },
+                        { "value", new { name = "完了", } },
+                    },
+                },
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+            using var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync($"issues/{issueWrapper.Id}", content);
+
+            response.EnsureSuccessStatusCode();
+        }
+
         private async Task<string> GetProjectIdByShortName(string shortName)
         {
             var endpoint = $"admin/projects?query={shortName}&fields=id,shortName";
@@ -128,6 +150,22 @@ namespace YouBoard.Services
             public string Summary { get; set; } = string.Empty;
 
             public string Description { get; set; }
+
+            public List<CustomField> CustomFields { get; set; }
+        }
+
+        // ReSharper disable once ClassNeverInstantiated.Local
+        private class CustomField
+        {
+            public string Name { get; set; }
+
+            public FieldValue Value { get; set; }
+        }
+
+        // ReSharper disable once ClassNeverInstantiated.Local
+        private class FieldValue
+        {
+            public string Name { get; set; }
         }
 
         // ReSharper disable once ClassNeverInstantiated.Local
