@@ -46,7 +46,7 @@ namespace YouBoard.ViewModels
             DynamicTabs.Add(issueTab);
             SelectedTab = issueTab;
 
-            _ = issueTab.LoadIssuesAsync(5);
+            _ = issueTab.LoadIssuesAsync(5, 35);
         }
     }
 }
