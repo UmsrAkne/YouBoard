@@ -4,10 +4,49 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:YouBoard.Models"
     xmlns:viewModels="clr-namespace:YouBoard.ViewModels"
-    d:DataContext="{d:DesignInstance viewModels:IssueListViewModel}"
+    d:DataContext="{d:DesignInstance viewModels:DesignIssueListViewModel}"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
-    <Grid Background="{StaticResource DarkBgBrush}" />
+    <Grid Background="{StaticResource DarkBgBrush}">
+        <ListBox
+            HorizontalContentAlignment="Stretch"
+            AlternationCount="2"
+            ItemsSource="{Binding IssueWrappers}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:IssueWrapper}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox
+                            Grid.Column="0"
+                            Width="25"
+                            IsChecked="{Binding IsComplete}" />
+                        <TextBlock Grid.Column="1" Text="{Binding Title}" />
+
+                        <TextBlock
+                            Grid.Column="2"
+                            MinWidth="40"
+                            Text="{Binding Id}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Style.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="LightGray" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+    </Grid>
 </UserControl>

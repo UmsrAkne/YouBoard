@@ -38,7 +38,7 @@
     </Window.Resources>
 
     <Grid>
-        <TabControl ItemsSource="{Binding DynamicTabs}">
+        <TabControl ItemsSource="{Binding DynamicTabs}" SelectedItem="{Binding SelectedTab}">
             <TabControl.ContentTemplateSelector>
                 <StaticResource ResourceKey="TabSelector" />
             </TabControl.ContentTemplateSelector>

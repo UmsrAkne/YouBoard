@@ -1,12 +1,75 @@
+using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Windows;
 using Prism.Mvvm;
+using YouBoard.Models;
+using YouBoard.Services;
 
 namespace YouBoard.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class IssueListViewModel : BindableBase, ITabViewModel
     {
+        private readonly IYouTrackIssueClient client;
+        private readonly string projectName = string.Empty;
+        private readonly string projectShortName = string.Empty;
+
+        public IssueListViewModel()
+        {
+        }
+
+        public IssueListViewModel(IYouTrackIssueClient client, ProjectWrapper project)
+        {
+            projectName = project.Name;
+            projectShortName = project.ShortName;
+            this.client = client;
+
+            Header = projectName;
+        }
+
+        public event EventHandler ItemChosen;
+
         public string TabType { get; set; } = "IssueList";
 
         public string Header { get; set; }
+
+        public object SelectedItem { get; set; }
+
+        public ObservableCollection<IssueWrapper> IssueWrappers { get; set; } = new ();
+
+        /// <summary>
+        /// Loads a specified number of issues from the server and adds them to IssueWrappers.
+        /// </summary>
+        /// <param name="initialCount">The number of issues to load initially. Intended to be a small number.</param>
+        /// <param name="additionalCount">The number of additional issues to load asynchronously after the initial load completes.</param>
+        /// <returns>A task that represents the asynchronous operation of loading issues.</returns>
+        public async Task LoadIssuesAsync(int initialCount, int additionalCount)
+        {
+            // Step 1: 最新の initialCount 件を読み込み
+            var initialIssues = await client.GetIssuesByProjectAsync(projectShortName, initialCount);
+            IssueWrappers.Clear();
+            foreach (var issue in initialIssues)
+            {
+                IssueWrappers.Add(issue);
+            }
+
+            // Step 2: 残りの additionalCount 件を非同期で追加読み込み
+            _ = Task.Run(async () =>
+            {
+                var additionalIssues =
+                    await client.GetIssuesByProjectAsync(projectShortName, additionalCount, initialCount);
+
+                foreach (var issue in additionalIssues)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        IssueWrappers.Add(issue);
+                    });
+
+                    await Task.Delay(50); // 課題の追加演出。指定時間刻みで一件ずつアイテムが追加されていく。
+                }
+            });
+        }
     }
 }
