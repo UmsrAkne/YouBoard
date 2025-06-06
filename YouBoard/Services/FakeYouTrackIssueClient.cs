@@ -6,7 +6,7 @@ namespace YouBoard.Services
 {
     public class FakeYouTrackIssueClient : IYouTrackIssueClient
     {
-        public Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0)
+        public Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0, int skip = 0)
         {
             var dummy = new List<IssueWrapper>
             {
