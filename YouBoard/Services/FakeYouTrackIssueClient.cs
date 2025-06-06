@@ -16,5 +16,15 @@ namespace YouBoard.Services
 
             return Task.FromResult(dummy);
         }
+
+        public Task<IssueWrapper> CreateIssueAsync(string projectShortName, IssueWrapper issueWrapper)
+        {
+            var dummy = new IssueWrapper()
+            {
+                Title = "ダミーIssue 1", Id = "Issue-1",
+            };
+
+            return Task.FromResult(dummy);
+        }
     }
 }

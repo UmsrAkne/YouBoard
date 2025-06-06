@@ -8,9 +8,15 @@
     xmlns:viewModels="clr-namespace:YouBoard.ViewModels"
     d:DataContext="{d:DesignInstance viewModels:DesignIssueListViewModel}"
     d:DesignHeight="300"
-    d:DesignWidth="300"
+    d:DesignWidth="800"
     mc:Ignorable="d">
+
     <Grid Background="{StaticResource DarkBgBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
         <ListBox
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
@@ -48,5 +54,34 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
+
+        <StackPanel Grid.Row="1" Margin="5">
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="WhiteSmoke" />
+                </Style>
+            </StackPanel.Resources>
+            <DockPanel>
+                <TextBlock Width="80" Text="Title :" />
+                <TextBox Margin="3,0" Text="{Binding PendingIssue.Title}" />
+            </DockPanel>
+
+            <Border Margin="0,2" />
+
+            <DockPanel>
+                <TextBlock Width="80" Text="Description :" />
+                <TextBox Margin="3,0" Text="{Binding PendingIssue.Description}" />
+            </DockPanel>
+
+            <Border Margin="0,2" />
+
+            <Button
+                Width="120"
+                Margin="3,0"
+                HorizontalAlignment="Right"
+                Command="{Binding CreateIssueCommand}"
+                Content="Create Issue" />
+        </StackPanel>
+
     </Grid>
 </UserControl>
