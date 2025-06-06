@@ -49,6 +49,17 @@ namespace YouBoard.ViewModels
             pendingIssue = new IssueWrapper();
         });
 
+        public AsyncRelayCommand MarkAsCompleteIssueCommand => new (async () =>
+        {
+            if (SelectedItem == null)
+            {
+                return;
+            }
+
+            var issueWrapper = SelectedItem as IssueWrapper;
+            await client.MarkAsCompleteAsync(issueWrapper);
+        });
+
         /// <summary>
         /// Loads a specified number of issues from the server and adds them to IssueWrappers.
         /// </summary>
