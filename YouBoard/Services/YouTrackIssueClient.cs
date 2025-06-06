@@ -32,9 +32,13 @@ namespace YouBoard.Services
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", t);
         }
 
-        public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName)
+        public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0)
         {
             var endpoint = $"issues?query=project:{projectShortName}&fields=id,idReadable,summary";
+            if (count != 0)
+            {
+                endpoint += $"&$top={count}";
+            }
 
             using var response = await httpClient.GetAsync(endpoint);
             response.EnsureSuccessStatusCode();
