@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using YouBoard.Models;
@@ -65,6 +66,49 @@ namespace YouBoard.Services
             }).ToList();
         }
 
+        public async Task<IssueWrapper> CreateIssueAsync(string projectShortName, IssueWrapper issueWrapper)
+        {
+            var projectId = await GetProjectIdByShortName(projectShortName);
+            var payload = new
+            {
+                project = new { id = projectId, },
+                summary = issueWrapper.Title,
+                description = issueWrapper.Description,
+            };
+
+            var json = JsonSerializer.Serialize(payload, JsonOptions);
+
+            using var content = new StringContent(json, Encoding.UTF8, "application/json");
+            using var response = await httpClient.PostAsync("issues?fields=id,idReadable,summary,description", content);
+            response.EnsureSuccessStatusCode();
+
+            var responseJson = await response.Content.ReadAsStringAsync();
+            var created = JsonSerializer.Deserialize<YouTrackIssueDto>(responseJson, JsonOptions);
+
+            if (created == null)
+            {
+                return null;
+            }
+
+            return new IssueWrapper
+            {
+                Id = created.IdReadable,
+                Title = created.Summary,
+                Description = created.Description,
+            };
+        }
+
+        private async Task<string> GetProjectIdByShortName(string shortName)
+        {
+            var endpoint = $"admin/projects?query={shortName}&fields=id,shortName";
+            var response = await httpClient.GetAsync(endpoint);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var projects = JsonSerializer.Deserialize<List<ProjectDto>>(json, JsonOptions);
+            return projects?.FirstOrDefault(p => p.ShortName == shortName)?.Id;
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -82,6 +126,16 @@ namespace YouBoard.Services
             public string IdReadable { get; set; } = string.Empty;
 
             public string Summary { get; set; } = string.Empty;
+
+            public string Description { get; set; }
+        }
+
+        // ReSharper disable once ClassNeverInstantiated.Local
+        private class ProjectDto
+        {
+            public string ShortName { get; set; }
+
+            public string Id { get; set; }
         }
     }
 }
