@@ -26,5 +26,10 @@ namespace YouBoard.Services
 
             return Task.FromResult(dummy);
         }
+
+        public Task MarkAsCompleteAsync(IssueWrapper issueWrapper)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

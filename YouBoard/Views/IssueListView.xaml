@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:YouBoard.Models"
     xmlns:viewModels="clr-namespace:YouBoard.ViewModels"
@@ -20,7 +21,8 @@
         <ListBox
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
-            ItemsSource="{Binding IssueWrappers}">
+            ItemsSource="{Binding IssueWrappers}"
+            SelectedItem="{Binding SelectedItem}">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:IssueWrapper}">
                     <Grid>
@@ -33,7 +35,14 @@
                         <CheckBox
                             Grid.Column="0"
                             Width="25"
-                            IsChecked="{Binding IsComplete}" />
+                            IsChecked="{Binding IsComplete}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+
+                        </CheckBox>
                         <TextBlock Grid.Column="1" Text="{Binding Title}" />
 
                         <TextBlock

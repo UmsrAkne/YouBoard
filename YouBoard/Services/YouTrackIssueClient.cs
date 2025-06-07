@@ -36,7 +36,7 @@ namespace YouBoard.Services
         public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0, int skip = 0)
         {
             var query = $"project:{projectShortName} sort by: created desc";
-            var endpoint = $"issues?query={Uri.EscapeDataString(query)}&fields=id,idReadable,summary";
+            var endpoint = $"issues?query={Uri.EscapeDataString(query)}&fields=id,idReadable,summary,customFields(name,value(name))";
 
             if (skip != 0)
             {
@@ -63,6 +63,7 @@ namespace YouBoard.Services
             {
                 Id = dto.IdReadable,
                 Title = dto.Summary,
+                IsComplete = dto.IsDone(),
             }).ToList();
         }
 
@@ -98,6 +99,28 @@ namespace YouBoard.Services
             };
         }
 
+        public async Task MarkAsCompleteAsync(IssueWrapper issueWrapper)
+        {
+            var payload = new
+            {
+                customFields = new[]
+                {
+                    new Dictionary<string, object>
+                    {
+                        { "name", "State" },
+                        { "$type", "SingleEnumIssueCustomField" },
+                        { "value", new { name = "完了", } },
+                    },
+                },
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+            using var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync($"issues/{issueWrapper.Id}", content);
+
+            response.EnsureSuccessStatusCode();
+        }
+
         private async Task<string> GetProjectIdByShortName(string shortName)
         {
             var endpoint = $"admin/projects?query={shortName}&fields=id,shortName";
@@ -118,16 +141,6 @@ namespace YouBoard.Services
         protected virtual void Dispose(bool disposing)
         {
             httpClient?.Dispose();
-        }
-
-        // ReSharper disable once ClassNeverInstantiated.Local
-        private class YouTrackIssueDto
-        {
-            public string IdReadable { get; set; } = string.Empty;
-
-            public string Summary { get; set; } = string.Empty;
-
-            public string Description { get; set; }
         }
 
         // ReSharper disable once ClassNeverInstantiated.Local
