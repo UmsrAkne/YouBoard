@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using YouBoard.Models;
 using YouBoard.Models.Request;
+using YouBoard.Utils;
 
 namespace YouBoard.Services
 {
@@ -102,7 +103,7 @@ namespace YouBoard.Services
 
         public async Task MarkAsCompleteAsync(IssueWrapper issueWrapper)
         {
-            var payload = new IssueStateChangePayload("完了");
+            var payload = new IssueStateChangePayload(IssueState.Complete.ToIssueStateName());
             var json = JsonSerializer.Serialize(payload);
             using var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync($"issues/{issueWrapper.Id}", content);
