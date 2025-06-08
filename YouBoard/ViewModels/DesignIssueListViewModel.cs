@@ -4,6 +4,8 @@ namespace YouBoard.ViewModels
 {
     public class DesignIssueListViewModel : IssueListViewModel
     {
+        public bool IsDesignInstance => true;
+        
         public DesignIssueListViewModel()
         {
             for (var i = 0; i < 15; i++)
