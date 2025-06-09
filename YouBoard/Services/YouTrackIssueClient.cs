@@ -110,17 +110,6 @@ namespace YouBoard.Services
             response.EnsureSuccessStatusCode();
         }
 
-        private async Task<string> GetProjectIdByShortName(string shortName)
-        {
-            var endpoint = $"admin/projects?query={shortName}&fields=id,shortName";
-            var response = await httpClient.GetAsync(endpoint);
-            response.EnsureSuccessStatusCode();
-
-            var json = await response.Content.ReadAsStringAsync();
-            var projects = JsonSerializer.Deserialize<List<ProjectDto>>(json, JsonOptions);
-            return projects?.FirstOrDefault(p => p.ShortName == shortName)?.Id;
-        }
-
         public void Dispose()
         {
             Dispose(true);
@@ -130,6 +119,17 @@ namespace YouBoard.Services
         protected virtual void Dispose(bool disposing)
         {
             httpClient?.Dispose();
+        }
+
+        private async Task<string> GetProjectIdByShortName(string shortName)
+        {
+            var endpoint = $"admin/projects?query={shortName}&fields=id,shortName";
+            var response = await httpClient.GetAsync(endpoint);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var projects = JsonSerializer.Deserialize<List<ProjectDto>>(json, JsonOptions);
+            return projects?.FirstOrDefault(p => p.ShortName == shortName)?.Id;
         }
 
         // ReSharper disable once ClassNeverInstantiated.Local

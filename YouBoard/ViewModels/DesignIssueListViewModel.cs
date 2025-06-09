@@ -2,10 +2,9 @@ using YouBoard.Models;
 
 namespace YouBoard.ViewModels
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class DesignIssueListViewModel : IssueListViewModel
     {
-        public bool IsDesignInstance => true;
-        
         public DesignIssueListViewModel()
         {
             for (var i = 0; i < 15; i++)
@@ -13,5 +12,7 @@ namespace YouBoard.ViewModels
                 IssueWrappers.Add(new IssueWrapper() { Title = $"Dummy Issue {i}", Id = $"Id-{i}", });
             }
         }
+
+        public bool IsDesignInstance => true;
     }
 }
