@@ -1,8 +1,6 @@
-using System.Windows.Controls;
-
 namespace YouBoard.Views
 {
-    public partial class ProjectListView : UserControl
+    public partial class ProjectListView
     {
         public ProjectListView()
         {

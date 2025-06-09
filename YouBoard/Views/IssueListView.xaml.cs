@@ -1,8 +1,6 @@
-using System.Windows.Controls;
-
 namespace YouBoard.Views
 {
-    public partial class IssueListView : UserControl
+    public partial class IssueListView
     {
         public IssueListView()
         {
