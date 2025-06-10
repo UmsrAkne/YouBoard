@@ -35,7 +35,9 @@
                         <CheckBox
                             Grid.Column="0"
                             Width="25"
-                            IsChecked="{Binding IsComplete}">
+                            Foreground="Aqua"
+                            IsChecked="{Binding IsComplete}"
+                            Style="{StaticResource MaterialDesignLightCheckBox}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Checked">
                                     <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}" />
@@ -43,19 +45,25 @@
                             </i:Interaction.Triggers>
 
                         </CheckBox>
-                        <TextBlock Grid.Column="1" Text="{Binding Title}" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Foreground="{StaticResource LightFgBrush}"
+                            Text="{Binding Title}" />
 
                         <TextBlock
                             Grid.Column="2"
                             MinWidth="40"
+                            Foreground="{StaticResource LightFgBrush}"
                             Text="{Binding Id}" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
 
             <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
+                <Style BasedOn="{StaticResource MaterialDesignListBoxItem}" TargetType="ListBoxItem">
                     <Setter Property="Opacity" Value="0" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
                     <Style.Triggers>
 
                         <!--  デザイン時は Opacity = 1  -->
@@ -63,8 +71,16 @@
                             <Setter Property="Opacity" Value="1" />
                         </DataTrigger>
 
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter Property="Background" Value="{StaticResource DarkBgBrush}" />
+                        </Trigger>
+
                         <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                            <Setter Property="Background" Value="LightGray" />
+                            <Setter Property="Background" Value="{StaticResource MediumBgBrush}" />
+                        </Trigger>
+
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource LightFgBrush}" />
                         </Trigger>
 
                         <EventTrigger RoutedEvent="Loaded">
