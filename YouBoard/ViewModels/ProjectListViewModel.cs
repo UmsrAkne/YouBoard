@@ -12,6 +12,7 @@ namespace YouBoard.ViewModels
     public class ProjectListViewModel : BindableBase, ITabViewModel
     {
         private ObservableCollection<ProjectWrapper> projectWrappers = new ();
+        private object selectedItem;
 
         public event EventHandler ItemChosen;
 
@@ -27,7 +28,24 @@ namespace YouBoard.ViewModels
 
         public string Header { get; set; } = "Projects";
 
-        public object SelectedItem { get; set; }
+        public object SelectedItem
+        {
+            get => selectedItem;
+            set
+            {
+                if (selectedItem is ProjectWrapper wrapper)
+                {
+                    wrapper.IsSelected = false;
+                }
+
+                if (value is ProjectWrapper w)
+                {
+                    w.IsSelected = true;
+                }
+
+                SetProperty(ref selectedItem, value);
+            }
+        }
 
         public AsyncRelayCommand LoadProjectsCommand => new AsyncRelayCommand(async () =>
         {
