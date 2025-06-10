@@ -29,6 +29,7 @@
         <ListBox
             Grid.Row="1"
             AlternationCount="2"
+            Background="{StaticResource DarkBgBrush}"
             ItemsSource="{Binding ProjectWrappers}"
             SelectedItem="{Binding SelectedItem}">
 
@@ -67,11 +68,23 @@
             </ListBox.ItemTemplate>
 
             <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
+                <Style BasedOn="{StaticResource MaterialDesignListBoxItem}" TargetType="ListBoxItem">
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
                     <Style.Triggers>
                         <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                            <Setter Property="Background" Value="LightGray" />
+                            <Setter Property="Background" Value="{StaticResource DarkBgBrush}" />
+                            <Setter Property="Foreground" Value="{StaticResource LightFgBrush}" />
                         </Trigger>
+
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="{StaticResource MediumBgBrush}" />
+                            <Setter Property="Foreground" Value="{StaticResource LightFgBrush}" />
+                        </Trigger>
+
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource LightFgBrush}" />
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </ListBox.ItemContainerStyle>

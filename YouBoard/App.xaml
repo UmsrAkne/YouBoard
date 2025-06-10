@@ -18,8 +18,9 @@
 
             <system:Double x:Key="GlobalFontSize">18</system:Double>
             <SolidColorBrush x:Key="DarkBgBrush" Color="DarkSlateBlue" />
-            <SolidColorBrush x:Key="MediumBgBrush" Color="DodgerBlue" />
+            <SolidColorBrush x:Key="MediumBgBrush" Color="#584D9B" />
             <SolidColorBrush x:Key="LightBgBrush" Color="SteelBlue" />
+            <SolidColorBrush x:Key="LightFgBrush" Color="WhiteSmoke" />
 
         </ResourceDictionary>
     </Application.Resources>
