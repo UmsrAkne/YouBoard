@@ -8,11 +8,12 @@ namespace YouBoard.Services
     {
         public Task<List<ProjectWrapper>> GetProjectsAsync()
         {
-            var dummy = new List<ProjectWrapper>
+            var dummy = new List<ProjectWrapper>();
+
+            for (var i = 0; i < 15; i++)
             {
-                new () { Name = "ダミープロジェクト1", ShortName = "DM1", },
-                new () { Name = "ダミープロジェクト2", ShortName = "DM2", },
-            };
+                dummy.Add(new ProjectWrapper() { Name = $"ダミープロジェクト{i}", ShortName = $"DM{i}", });
+            }
 
             return Task.FromResult(dummy);
         }
