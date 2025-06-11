@@ -36,8 +36,8 @@
                             Grid.Column="0"
                             Width="25"
                             Foreground="Aqua"
-                            IsChecked="{Binding IsComplete}"
-                            Style="{StaticResource MaterialDesignLightCheckBox}">
+                            IsChecked="{Binding IsComplete}">
+
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Checked">
                                     <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}" />
