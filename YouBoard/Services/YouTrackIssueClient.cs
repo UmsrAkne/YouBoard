@@ -66,6 +66,7 @@ namespace YouBoard.Services
                 Id = dto.IdReadable,
                 Title = dto.Summary,
                 IsComplete = dto.IsDone(),
+                State = dto.GetState(),
             }).ToList();
         }
 

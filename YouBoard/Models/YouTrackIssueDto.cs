@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Prism.Mvvm;
+using YouBoard.Utils;
 
 namespace YouBoard.Models
 {
@@ -19,6 +20,14 @@ namespace YouBoard.Models
         {
             var stateField = CustomFields?.FirstOrDefault(f => f.Name == "State");
             return stateField?.Value?.Name == "完了";
+        }
+
+        public IssueState GetState()
+        {
+            var stateField = CustomFields?.FirstOrDefault(f => f.Name == "State");
+            return stateField == null ?
+                IssueState.Created :
+                IssueStateHelper.FromString(stateField.Value?.Name);
         }
     }
 }
