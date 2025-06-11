@@ -30,14 +30,15 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <CheckBox
                             Grid.Column="0"
                             Width="25"
                             Foreground="Aqua"
-                            IsChecked="{Binding IsComplete}"
-                            Style="{StaticResource MaterialDesignLightCheckBox}">
+                            IsChecked="{Binding IsComplete}">
+
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Checked">
                                     <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}" />
@@ -52,6 +53,12 @@
 
                         <TextBlock
                             Grid.Column="2"
+                            Width="70"
+                            Foreground="{StaticResource LightFgBrush}"
+                            Text="{Binding State}" />
+
+                        <TextBlock
+                            Grid.Column="3"
                             MinWidth="40"
                             Foreground="{StaticResource LightFgBrush}"
                             Text="{Binding Id}" />
@@ -102,6 +109,9 @@
         <StackPanel Grid.Row="1" Margin="5">
             <StackPanel.Resources>
                 <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="WhiteSmoke" />
+                </Style>
+                <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="TextBox">
                     <Setter Property="Foreground" Value="WhiteSmoke" />
                 </Style>
             </StackPanel.Resources>
