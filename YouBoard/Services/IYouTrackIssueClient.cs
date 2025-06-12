@@ -11,5 +11,7 @@ namespace YouBoard.Services
         Task<IssueWrapper> CreateIssueAsync(string projectShortName, IssueWrapper issueWrapper);
 
         Task MarkAsCompleteAsync(IssueWrapper issueWrapper);
+
+        Task ToggleIssueWorkStateAsync(IssueWrapper issueWrapper);
     }
 }

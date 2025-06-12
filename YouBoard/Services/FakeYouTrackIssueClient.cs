@@ -31,5 +31,10 @@ namespace YouBoard.Services
         {
             return Task.CompletedTask;
         }
+
+        public Task ToggleIssueWorkStateAsync(IssueWrapper issueWrapper)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
