@@ -33,29 +33,42 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <CheckBox
-                            Grid.Column="0"
-                            Width="25"
-                            Foreground="Aqua"
-                            IsChecked="{Binding IsComplete}">
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
 
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Checked">
-                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
+                            <CheckBox
+                                Width="20"
+                                Foreground="Aqua"
+                                IsChecked="{Binding IsComplete}">
 
-                        </CheckBox>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                            </CheckBox>
+                            <Button
+                                Height="18"
+                                Margin="8,0"
+                                Padding="5,0"
+                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ToggleIssueStateCommandAsync}"
+                                CommandParameter="{Binding}">
+
+                                <Button.Content>
+                                    <TextBlock FontSize="12" Text="▶️" />
+                                </Button.Content>
+                            </Button>
+                            <TextBlock
+                                Width="75"
+                                Foreground="{StaticResource LightFgBrush}"
+                                Text="{Binding State}" />
+
+                        </StackPanel>
+
                         <TextBlock
                             Grid.Column="1"
                             Foreground="{StaticResource LightFgBrush}"
                             Text="{Binding Title}" />
-
-                        <TextBlock
-                            Grid.Column="2"
-                            Width="70"
-                            Foreground="{StaticResource LightFgBrush}"
-                            Text="{Binding State}" />
 
                         <TextBlock
                             Grid.Column="3"
