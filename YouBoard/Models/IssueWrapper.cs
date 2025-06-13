@@ -1,4 +1,5 @@
 using Prism.Mvvm;
+using YouBoard.Utils;
 
 namespace YouBoard.Models
 {
@@ -19,5 +20,7 @@ namespace YouBoard.Models
         public bool IsComplete { get => isComplete; set => SetProperty(ref isComplete, value); }
 
         public string Description { get => description; set => SetProperty(ref description, value); }
+
+        public WorkTimer WorkTimer { get; } = new ();
     }
 }
