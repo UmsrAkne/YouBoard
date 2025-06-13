@@ -1,13 +1,14 @@
 using System;
 using System.Windows.Threading;
+using Prism.Mvvm;
 
 namespace YouBoard.Utils
 {
-    public class WorkTimer
+    public class WorkTimer : BindableBase
     {
         private readonly DispatcherTimer timer;
         private DateTime startTime;
-        private TimeSpan accumulatedTime;
+        private TimeSpan accumulatedTime = TimeSpan.Zero;
         private bool isRunning;
 
         public WorkTimer()
@@ -17,7 +18,11 @@ namespace YouBoard.Utils
                 Interval = TimeSpan.FromSeconds(1),
             };
 
-            timer.Tick += (_, _) => Tick?.Invoke(this, EventArgs.Empty);
+            timer.Tick += (_, _) =>
+            {
+                Tick?.Invoke(this, EventArgs.Empty);
+                RaisePropertyChanged(nameof(Elapsed));
+            };
         }
 
         /// <summary>
@@ -35,7 +40,7 @@ namespace YouBoard.Utils
         /// <summary>
         /// 現在の状態を取得します。
         /// </summary>
-        public bool IsRunning => isRunning;
+        public bool IsRunning { get => isRunning; set => SetProperty(ref isRunning, value); }
 
         /// <summary>
         /// タイマーを開始します。
@@ -49,7 +54,7 @@ namespace YouBoard.Utils
 
             startTime = DateTime.Now;
             timer.Start();
-            isRunning = true;
+            IsRunning = true;
         }
 
         /// <summary>
@@ -57,14 +62,14 @@ namespace YouBoard.Utils
         /// </summary>
         public void Pause()
         {
-            if (!isRunning)
+            if (!IsRunning)
             {
                 return;
             }
 
             accumulatedTime += DateTime.Now - startTime;
             timer.Stop();
-            isRunning = false;
+            IsRunning = false;
         }
 
         /// <summary>
@@ -74,7 +79,7 @@ namespace YouBoard.Utils
         {
             timer.Stop();
             accumulatedTime = TimeSpan.Zero;
-            isRunning = false;
+            IsRunning = false;
         }
     }
 }
