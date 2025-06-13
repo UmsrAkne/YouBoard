@@ -68,6 +68,14 @@ namespace YouBoard.ViewModels
             }
 
             await client.ToggleIssueWorkStateAsync(param);
+            if (param.State == IssueState.Working)
+            {
+                param.WorkTimer.Start();
+            }
+            else
+            {
+                param.WorkTimer.Pause();
+            }
         });
 
         /// <summary>

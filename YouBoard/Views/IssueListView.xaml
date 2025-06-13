@@ -48,20 +48,61 @@
 
                             </CheckBox>
                             <Button
+                                Width="25"
                                 Height="18"
                                 Margin="8,0"
                                 Padding="5,0"
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ToggleIssueStateCommandAsync}"
                                 CommandParameter="{Binding}">
 
+                                <Button.Style>
+                                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
+                                                <Setter Property="Background" Value="Orange" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+
                                 <Button.Content>
-                                    <TextBlock FontSize="12" Text="▶️" />
+                                    <TextBlock FontSize="12">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
+                                                        <Setter Property="Text" Value="❚❚" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="False">
+                                                        <Setter Property="Text" Value="▶" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                 </Button.Content>
                             </Button>
                             <TextBlock
-                                Width="75"
+                                Width="70"
                                 Foreground="{StaticResource LightFgBrush}"
                                 Text="{Binding State}" />
+
+                            <TextBlock Width="65" Foreground="{StaticResource LightFgBrush}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
+                                                <Setter Property="Text" Value="{Binding WorkTimer.Elapsed, Converter={StaticResource TimeSpanToStringConverter}}" />
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="False">
+                                                <Setter Property="Text" Value="" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
 
                         </StackPanel>
 
