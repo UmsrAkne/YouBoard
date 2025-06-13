@@ -34,7 +34,16 @@ namespace YouBoard.Services
 
         public Task ToggleIssueWorkStateAsync(IssueWrapper issueWrapper)
         {
-            throw new System.NotImplementedException();
+            if (issueWrapper.State == IssueState.Created)
+            {
+                issueWrapper.State = IssueState.Working;
+            }
+            else if (issueWrapper.State == IssueState.Working)
+            {
+                issueWrapper.State = IssueState.Created;
+            }
+
+            return Task.CompletedTask;
         }
     }
 }

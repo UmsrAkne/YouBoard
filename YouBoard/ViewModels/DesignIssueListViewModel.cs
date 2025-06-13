@@ -11,6 +11,8 @@ namespace YouBoard.ViewModels
             {
                 IssueWrappers.Add(new IssueWrapper() { Title = $"Dummy Issue {i}", Id = $"Id-{i}", });
             }
+
+            IssueWrappers[1].WorkTimer.IsRunning = true;
         }
 
         public bool IsDesignInstance => true;
