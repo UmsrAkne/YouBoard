@@ -26,6 +26,13 @@
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:IssueWrapper}">
                     <Grid>
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource LightFgBrush}" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </Grid.Resources>
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
@@ -83,14 +90,12 @@
                                     </TextBlock>
                                 </Button.Content>
                             </Button>
-                            <TextBlock
-                                Width="70"
-                                Foreground="{StaticResource LightFgBrush}"
-                                Text="{Binding State}" />
 
-                            <TextBlock Width="65" Foreground="{StaticResource LightFgBrush}">
+                            <TextBlock Width="70" Text="{Binding State}" />
+
+                            <TextBlock Width="65">
                                 <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
+                                    <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
                                                 <Setter Property="Text" Value="{Binding WorkTimer.Elapsed, Converter={StaticResource TimeSpanToStringConverter}}" />
@@ -106,15 +111,11 @@
 
                         </StackPanel>
 
-                        <TextBlock
-                            Grid.Column="1"
-                            Foreground="{StaticResource LightFgBrush}"
-                            Text="{Binding Title}" />
+                        <TextBlock Grid.Column="1" Text="{Binding Title}" />
 
                         <TextBlock
                             Grid.Column="3"
                             MinWidth="40"
-                            Foreground="{StaticResource LightFgBrush}"
                             Text="{Binding Id}" />
                     </Grid>
                 </DataTemplate>
