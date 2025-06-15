@@ -49,15 +49,14 @@ namespace YouBoard.ViewModels
             pendingIssue = new IssueWrapper();
         });
 
-        public AsyncRelayCommand MarkAsCompleteIssueCommand => new (async () =>
+        public AsyncRelayCommand<IssueWrapper> MarkAsCompleteIssueCommand => new (async (param) =>
         {
-            if (SelectedItem == null)
+            if (param == null)
             {
                 return;
             }
 
-            var issueWrapper = SelectedItem as IssueWrapper;
-            await client.MarkAsCompleteAsync(issueWrapper);
+            await client.MarkAsCompleteAsync(param);
         });
 
         public AsyncRelayCommand<IssueWrapper> ToggleIssueStateCommandAsync => new (async (param) =>
