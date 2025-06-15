@@ -49,7 +49,7 @@
 
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
-                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}" />
+                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}" CommandParameter="{Binding}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
 
