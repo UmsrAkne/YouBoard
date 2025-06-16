@@ -28,6 +28,7 @@
 
         <ListBox
             Grid.Row="1"
+            HorizontalContentAlignment="Stretch"
             AlternationCount="2"
             Background="{StaticResource DarkBgBrush}"
             ItemsSource="{Binding ProjectWrappers}"
@@ -42,26 +43,29 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
 
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="5,0" Text="★">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsFavorite}" Value="True">
-                                                <Setter Property="Foreground" Value="Coral" />
-                                            </DataTrigger>
+                        <Border Padding="4" Background="Transparent">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5,0" Text="★">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                                    <Setter Property="Foreground" Value="Coral" />
+                                                </DataTrigger>
 
-                                            <DataTrigger Binding="{Binding IsFavorite}" Value="False">
-                                                <Setter Property="Foreground" Value="DarkGray" />
-                                                <Setter Property="Opacity" Value="0.2" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                            <TextBlock Margin="5,0" Text="{Binding Name}" />
-                            <TextBlock Text="{Binding ShortName, StringFormat=({0})}" />
-                        </StackPanel>
+                                                <DataTrigger Binding="{Binding IsFavorite}" Value="False">
+                                                    <Setter Property="Foreground" Value="DarkGray" />
+                                                    <Setter Property="Opacity" Value="0.2" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock Margin="5,0" Text="{Binding Name}" />
+                                <TextBlock Text="{Binding ShortName, StringFormat=({0})}" />
+                            </StackPanel>
+
+                        </Border>
 
                     </ContentControl>
                 </DataTemplate>
@@ -71,6 +75,8 @@
                 <Style BasedOn="{StaticResource MaterialDesignListBoxItem}" TargetType="ListBoxItem">
                     <Setter Property="BorderThickness" Value="1" />
                     <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="Padding" Value="0" />
                     <Style.Triggers>
                         <Trigger Property="ItemsControl.AlternationIndex" Value="0">
                             <Setter Property="Background" Value="{StaticResource DarkBgBrush}" />
