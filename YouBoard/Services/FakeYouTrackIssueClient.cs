@@ -12,6 +12,7 @@ namespace YouBoard.Services
             {
                 new () { Title = "ダミーIssue 1", Id = "Issue-1", },
                 new () { Title = "ダミーIssue 2", Id = "Issue-2", },
+                new () { Title = "ダミーIssue 3", Id = "Issue-3", IsExpanded = true, },
             };
 
             return Task.FromResult(dummy);
