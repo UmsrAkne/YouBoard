@@ -46,5 +46,10 @@ namespace YouBoard.Services
 
             return Task.CompletedTask;
         }
+
+        public Task<IssueCommentWrapper> AddCommentAsync(IssueWrapper issueWrapper, string comment)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

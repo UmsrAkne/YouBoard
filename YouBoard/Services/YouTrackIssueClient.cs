@@ -130,6 +130,39 @@ namespace YouBoard.Services
             response.EnsureSuccessStatusCode();
         }
 
+        public async Task<IssueCommentWrapper> AddCommentAsync(IssueWrapper issueWrapper, string commentText)
+        {
+            var payload = new
+            {
+                text = commentText,
+            };
+
+            var json = JsonSerializer.Serialize(payload, JsonOptions);
+            using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            using var response = await httpClient.PostAsync(
+                $"issues/{issueWrapper.Id}/comments?fields=id,text,author(login,name),created",
+                content);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseJson = await response.Content.ReadAsStringAsync();
+            var createdComment = JsonSerializer.Deserialize<YouTrackCommentDto>(responseJson, JsonOptions);
+
+            if (createdComment == null)
+            {
+                return null;
+            }
+
+            return new IssueCommentWrapper
+            {
+                Id = createdComment.Id,
+                Text = createdComment.Text,
+                AuthorName = createdComment.Author?.Name,
+                Created = createdComment.Created,
+            };
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -158,6 +191,24 @@ namespace YouBoard.Services
             public string ShortName { get; set; }
 
             public string Id { get; set; }
+        }
+
+        private class YouTrackCommentDto
+        {
+            public string Id { get; init; }
+
+            public string Text { get; init; }
+
+            public AuthorDto Author { get; init; }
+
+            public long Created { get; init; }
+
+            public class AuthorDto
+            {
+                public string Login { get; set; }
+
+                public string Name { get; set; }
+            }
         }
     }
 }
