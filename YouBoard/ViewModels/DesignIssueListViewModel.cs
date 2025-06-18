@@ -13,6 +13,7 @@ namespace YouBoard.ViewModels
             }
 
             IssueWrappers[1].WorkTimer.IsRunning = true;
+            IssueWrappers[2].IsExpanded = true;
         }
 
         public bool IsDesignInstance => true;

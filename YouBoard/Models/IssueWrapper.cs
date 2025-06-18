@@ -10,6 +10,8 @@ namespace YouBoard.Models
         private IssueState state;
         private bool isComplete;
         private string description;
+        private bool isExpanded;
+        private string pendingComment;
 
         public string Id { get => id; set => SetProperty(ref id, value); }
 
@@ -22,5 +24,9 @@ namespace YouBoard.Models
         public string Description { get => description; set => SetProperty(ref description, value); }
 
         public WorkTimer WorkTimer { get; } = new ();
+
+        public bool IsExpanded { get => isExpanded; set => SetProperty(ref isExpanded, value); }
+
+        public string PendingComment { get => pendingComment; set => SetProperty(ref pendingComment, value); }
     }
 }

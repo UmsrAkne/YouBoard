@@ -77,6 +77,17 @@ namespace YouBoard.ViewModels
             }
         });
 
+        public AsyncRelayCommand<IssueWrapper> AddCommentCommandAsync => new (async (param) =>
+        {
+            if (param == null || string.IsNullOrWhiteSpace(param.PendingComment))
+            {
+                return;
+            }
+
+            await client.AddCommentAsync(param, param.PendingComment);
+            param.PendingComment = string.Empty;
+        });
+
         /// <summary>
         /// Loads a specified number of issues from the server and adds them to IssueWrappers.
         /// </summary>
