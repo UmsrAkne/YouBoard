@@ -97,7 +97,6 @@ namespace YouBoard.Services
             {
                 if (remotesDic.TryGetValue(projectWrapper.ShortName, out var value))
                 {
-                    projectWrapper.IsFavorite = value.IsFavorite;
                     remotesDic.Remove(projectWrapper.ShortName);
                 }
                 else
