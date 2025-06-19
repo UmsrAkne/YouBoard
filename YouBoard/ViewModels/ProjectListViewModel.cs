@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using CommunityToolkit.Mvvm.Input;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -54,9 +56,42 @@ namespace YouBoard.ViewModels
                 return;
             }
 
-            var p = await YouTrackProjectClient.GetProjectsAsync();
-            ProjectWrappers = new ObservableCollection<ProjectWrapper>(p);
-            YoutrackProjectClient.SaveProjectsToJsonFile(p, "projects.json");
+            var jsonFileName = "projects.json";
+            var localProjectList = YoutrackProjectClient.LoadProjectsFromJsonFile(jsonFileName);
+            ProjectWrappers = new ObservableCollection<ProjectWrapper>(localProjectList);
+
+            var remotes = await YouTrackProjectClient.GetProjectsAsync();
+            var dic = remotes.ToDictionary(p => p.ShortName);
+
+            var toRemove = new List<ProjectWrapper>();
+
+            foreach (var projectWrapper in ProjectWrappers)
+            {
+                if (dic.TryGetValue(projectWrapper.ShortName, out var value))
+                {
+                    projectWrapper.IsFavorite = value.IsFavorite;
+                    dic.Remove(projectWrapper.ShortName);
+                }
+                else
+                {
+                    toRemove.Add(projectWrapper);
+                }
+            }
+
+            foreach (var projectWrapper in toRemove)
+            {
+                ProjectWrappers.Remove(projectWrapper);
+            }
+
+            if (dic.Count > 0)
+            {
+                foreach (var projectWrapper in dic)
+                {
+                    ProjectWrappers.Add(projectWrapper.Value);
+                }
+            }
+
+            YoutrackProjectClient.SaveProjectsToJsonFile(ProjectWrappers.ToList(), jsonFileName);
         });
 
         public DelegateCommand ProjectChosenCommand => new DelegateCommand(() =>

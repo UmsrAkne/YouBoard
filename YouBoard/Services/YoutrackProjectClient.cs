@@ -42,6 +42,15 @@ namespace YouBoard.Services
             File.WriteAllText(Path.Combine(d.FullName, fileName), json);
         }
 
+        public static List<ProjectWrapper> LoadProjectsFromJsonFile(string fileName)
+        {
+            var d = Directory.CreateDirectory("local_data");
+            var json = File.ReadAllText(Path.Combine(d.FullName, fileName));
+            var projects = JsonSerializer.Deserialize<List<ProjectWrapper>>(json);
+
+            return projects ?? new List<ProjectWrapper>();
+        }
+
         public async Task<List<ProjectWrapper>> GetProjectsAsync()
         {
             var endpoint = "admin/projects?fields=id,name,shortName";
