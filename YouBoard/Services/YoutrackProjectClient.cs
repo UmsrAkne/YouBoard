@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -31,6 +32,14 @@ namespace YouBoard.Services
             };
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+
+        public static void SaveProjectsToJsonFile(List<ProjectWrapper> projects, string fileName)
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true, };
+            var json = JsonSerializer.Serialize(projects, options);
+            var d = Directory.CreateDirectory("local_data");
+            File.WriteAllText(Path.Combine(d.FullName, fileName), json);
         }
 
         public async Task<List<ProjectWrapper>> GetProjectsAsync()

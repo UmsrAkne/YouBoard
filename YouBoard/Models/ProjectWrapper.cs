@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Prism.Mvvm;
 using YouTrackSharp.Projects;
 
@@ -26,6 +27,7 @@ namespace YouBoard.Models
 
         public bool IsFavorite { get => isFavorite; set => SetProperty(ref isFavorite, value); }
 
+        [JsonIgnore]
         public bool IsSelected { get => isSelected; set => SetProperty(ref isSelected, value); }
     }
 }

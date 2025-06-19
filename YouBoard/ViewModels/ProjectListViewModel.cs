@@ -56,6 +56,7 @@ namespace YouBoard.ViewModels
 
             var p = await YouTrackProjectClient.GetProjectsAsync();
             ProjectWrappers = new ObservableCollection<ProjectWrapper>(p);
+            YoutrackProjectClient.SaveProjectsToJsonFile(p, "projects.json");
         });
 
         public DelegateCommand ProjectChosenCommand => new DelegateCommand(() =>
