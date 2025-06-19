@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -45,7 +46,13 @@ namespace YouBoard.Services
         public static List<ProjectWrapper> LoadProjectsFromJsonFile(string fileName)
         {
             var d = Directory.CreateDirectory("local_data");
-            var json = File.ReadAllText(Path.Combine(d.FullName, fileName));
+            var path = Path.Combine(d.FullName, fileName);
+            if (!File.Exists(path))
+            {
+                SaveProjectsToJsonFile(new List<ProjectWrapper>(), fileName);
+            }
+
+            var json = File.ReadAllText(path);
             var projects = JsonSerializer.Deserialize<List<ProjectWrapper>>(json);
 
             return projects ?? new List<ProjectWrapper>();
@@ -77,6 +84,39 @@ namespace YouBoard.Services
             }
 
             return result;
+        }
+
+        public async Task<List<ProjectWrapper>> MergeProjectsWithRemoteData(List<ProjectWrapper> localProjects)
+        {
+            var remotes = await GetProjectsAsync();
+            var remotesDic = remotes.ToDictionary(p => p.ShortName);
+
+            var toRemove = new List<ProjectWrapper>();
+
+            foreach (var projectWrapper in localProjects)
+            {
+                if (remotesDic.TryGetValue(projectWrapper.ShortName, out var value))
+                {
+                    projectWrapper.IsFavorite = value.IsFavorite;
+                    remotesDic.Remove(projectWrapper.ShortName);
+                }
+                else
+                {
+                    toRemove.Add(projectWrapper);
+                }
+            }
+
+            foreach (var projectWrapper in toRemove)
+            {
+                localProjects.Remove(projectWrapper);
+            }
+
+            if (remotesDic.Count > 0)
+            {
+                localProjects.AddRange(remotesDic.Select(projectWrapper => projectWrapper.Value));
+            }
+
+            return localProjects.OrderBy(p => p.ShortName).ToList();
         }
 
         public void Dispose()

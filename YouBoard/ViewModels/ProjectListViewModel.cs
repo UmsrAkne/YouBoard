@@ -60,36 +60,8 @@ namespace YouBoard.ViewModels
             var localProjectList = YoutrackProjectClient.LoadProjectsFromJsonFile(jsonFileName);
             ProjectWrappers = new ObservableCollection<ProjectWrapper>(localProjectList);
 
-            var remotes = await YouTrackProjectClient.GetProjectsAsync();
-            var dic = remotes.ToDictionary(p => p.ShortName);
-
-            var toRemove = new List<ProjectWrapper>();
-
-            foreach (var projectWrapper in ProjectWrappers)
-            {
-                if (dic.TryGetValue(projectWrapper.ShortName, out var value))
-                {
-                    projectWrapper.IsFavorite = value.IsFavorite;
-                    dic.Remove(projectWrapper.ShortName);
-                }
-                else
-                {
-                    toRemove.Add(projectWrapper);
-                }
-            }
-
-            foreach (var projectWrapper in toRemove)
-            {
-                ProjectWrappers.Remove(projectWrapper);
-            }
-
-            if (dic.Count > 0)
-            {
-                foreach (var projectWrapper in dic)
-                {
-                    ProjectWrappers.Add(projectWrapper.Value);
-                }
-            }
+            var finallyList = await YouTrackProjectClient.MergeProjectsWithRemoteData(localProjectList);
+            ProjectWrappers = new ObservableCollection<ProjectWrapper>(finallyList);
 
             YoutrackProjectClient.SaveProjectsToJsonFile(ProjectWrappers.ToList(), jsonFileName);
         });
