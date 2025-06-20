@@ -57,11 +57,11 @@
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                                        <DataTrigger Binding="{Binding ProjectProfile.IsFavorite}" Value="True">
                                                             <Setter Property="Foreground" Value="Coral" />
                                                         </DataTrigger>
 
-                                                        <DataTrigger Binding="{Binding IsFavorite}" Value="False">
+                                                        <DataTrigger Binding="{Binding ProjectProfile.IsFavorite}" Value="False">
                                                             <Setter Property="Foreground" Value="DarkGray" />
                                                             <Setter Property="Opacity" Value="0.2" />
                                                         </DataTrigger>

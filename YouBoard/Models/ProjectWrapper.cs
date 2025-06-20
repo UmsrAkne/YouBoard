@@ -8,8 +8,8 @@ namespace YouBoard.Models
     {
         private string name = string.Empty;
         private string shortName = string.Empty;
-        private bool isFavorite;
         private bool isSelected;
+        private ProjectProfile projectProfile;
 
         public ProjectWrapper()
         {
@@ -25,7 +25,11 @@ namespace YouBoard.Models
 
         public string ShortName { get => shortName; set => SetProperty(ref shortName, value); }
 
-        public bool IsFavorite { get => isFavorite; set => SetProperty(ref isFavorite, value); }
+        public ProjectProfile ProjectProfile
+        {
+            get => projectProfile ??= new ProjectProfile();
+            set => projectProfile = value;
+        }
 
         [JsonIgnore]
         public bool IsSelected { get => isSelected; set => SetProperty(ref isSelected, value); }

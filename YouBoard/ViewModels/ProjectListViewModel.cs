@@ -68,7 +68,7 @@ namespace YouBoard.ViewModels
 
         public DelegateCommand<ProjectWrapper> SaveProjectsCommand => new ((param) =>
         {
-            param.IsFavorite = !param.IsFavorite;
+            param.ProjectProfile.IsFavorite = !param.ProjectProfile.IsFavorite;
             YoutrackProjectClient.SaveProjectsToJsonFile(ProjectWrappers.ToList(), "projects.json");
         });
 
