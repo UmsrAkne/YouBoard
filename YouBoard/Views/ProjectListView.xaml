@@ -36,44 +36,48 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:ProjectWrapper}">
-                    <ContentControl>
+                    <Expander Background="Transparent" Style="{StaticResource CustomExpander}">
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ProjectChosenCommand}" />
+                            <i:EventTrigger EventName="PreviewMouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ProjectChosenCommand}" CommandParameter="{Binding}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
 
-                        <Border Padding="4" Background="Transparent">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5,0" Text="★">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseDown">
-                                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.SaveProjectsCommand}" CommandParameter="{Binding}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
+                        <Expander.Header>
+                            <ContentControl Background="Transparent">
+                                <Border Padding="4" Background="Transparent">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5,0" Text="★">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="MouseDown">
+                                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.SaveProjectsCommand}" CommandParameter="{Binding}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
 
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsFavorite}" Value="True">
-                                                    <Setter Property="Foreground" Value="Coral" />
-                                                </DataTrigger>
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ProjectProfile.IsFavorite}" Value="True">
+                                                            <Setter Property="Foreground" Value="Coral" />
+                                                        </DataTrigger>
 
-                                                <DataTrigger Binding="{Binding IsFavorite}" Value="False">
-                                                    <Setter Property="Foreground" Value="DarkGray" />
-                                                    <Setter Property="Opacity" Value="0.2" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBlock Margin="5,0" Text="{Binding Name}" />
-                                <TextBlock Text="{Binding ShortName, StringFormat=({0})}" />
-                            </StackPanel>
+                                                        <DataTrigger Binding="{Binding ProjectProfile.IsFavorite}" Value="False">
+                                                            <Setter Property="Foreground" Value="DarkGray" />
+                                                            <Setter Property="Opacity" Value="0.2" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <TextBlock Margin="5,0" Text="{Binding Name}" />
+                                        <TextBlock Text="{Binding ShortName, StringFormat=({0})}" />
+                                    </StackPanel>
 
-                        </Border>
+                                </Border>
 
-                    </ContentControl>
+                            </ContentControl>
+                        </Expander.Header>
+                    </Expander>
                 </DataTemplate>
             </ListBox.ItemTemplate>
 

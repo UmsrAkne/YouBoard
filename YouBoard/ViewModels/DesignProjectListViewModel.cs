@@ -12,8 +12,8 @@ namespace YouBoard.ViewModels
                 ProjectWrappers.Add(new ProjectWrapper() { Name = $"Dummy Project {i}", ShortName = $"DP{i}", });
             }
 
-            ProjectWrappers[1].IsFavorite = true;
-            ProjectWrappers[2].IsFavorite = true;
+            ProjectWrappers[1].ProjectProfile.IsFavorite = true;
+            ProjectWrappers[2].ProjectProfile.IsFavorite = true;
         }
     }
 }
