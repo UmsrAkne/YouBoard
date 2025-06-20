@@ -72,8 +72,9 @@ namespace YouBoard.ViewModels
             YoutrackProjectClient.SaveProjectsToJsonFile(ProjectWrappers.ToList(), "projects.json");
         });
 
-        public DelegateCommand ProjectChosenCommand => new DelegateCommand(() =>
+        public DelegateCommand<ProjectWrapper> ProjectChosenCommand => new ((param) =>
         {
+            SelectedItem = param;
             ItemChosen?.Invoke(this, EventArgs.Empty);
         });
     }
