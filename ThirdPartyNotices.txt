@@ -1,0 +1,39 @@
+This software uses the following third-party libraries:
+
+---
+
+**CommunityToolkit.Mvvm**  
+License: MIT  
+https://github.com/CommunityToolkit/dotnet
+
+---
+
+**DotNetEnv**  
+License: MIT  
+https://github.com/tonerdo/dotnet-env
+
+---
+
+**MaterialDesignThemes**  
+License: MIT  
+https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit
+
+---
+
+**Prism.DryIoc**  
+License: MIT  
+https://github.com/PrismLibrary/Prism
+
+---
+
+**StyleCop.Analyzers**  
+License: MIT  
+https://github.com/DotNetAnalyzers/StyleCopAnalyzers
+
+---
+
+**YouTrackSharp**  
+License: Apache License 2.0  
+https://github.com/JetBrains/YouTrackSharp
+
+Please refer to each library's repository for full license text.
