@@ -47,7 +47,10 @@
                             <ContentControl Background="Transparent">
                                 <Border Padding="4" Background="Transparent">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Margin="5,0" Text="★">
+                                        <TextBlock
+                                            Margin="5,0"
+                                            FontSize="16"
+                                            Text="★">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseDown">
                                                     <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.SaveProjectsCommand}" CommandParameter="{Binding}" />
@@ -69,8 +72,11 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                        <TextBlock Margin="5,0" Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding ShortName, StringFormat=({0})}" />
+                                        <TextBlock
+                                            Margin="5,0"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding Name}" />
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding ShortName, StringFormat=({0})}" />
                                     </StackPanel>
 
                                 </Border>

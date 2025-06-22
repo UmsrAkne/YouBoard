@@ -87,6 +87,7 @@
 
                             <ToggleButton
                                 x:Name="ExpanderButton"
+                                Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Foreground="{TemplateBinding Foreground}"
                                 IsChecked="{Binding Path=IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
