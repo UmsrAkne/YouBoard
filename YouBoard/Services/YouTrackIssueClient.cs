@@ -67,6 +67,7 @@ namespace YouBoard.Services
                 Title = dto.Summary,
                 IsComplete = dto.IsDone(),
                 State = dto.GetState(),
+                Type = dto.GetIssueType(),
             }).ToList();
         }
 

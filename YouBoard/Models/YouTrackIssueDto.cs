@@ -22,6 +22,12 @@ namespace YouBoard.Models
             return stateField?.Value?.Name == "完了";
         }
 
+        public IssueType GetIssueType()
+        {
+            var stateField = CustomFields?.FirstOrDefault(f => f.Name == "Type");
+            return IssueTypeHelper.FromString(stateField?.Value?.Name);
+        }
+
         public IssueState GetState()
         {
             var stateField = CustomFields?.FirstOrDefault(f => f.Name == "State");

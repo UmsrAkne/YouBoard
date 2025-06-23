@@ -1,3 +1,4 @@
+using System;
 using Prism.Mvvm;
 using YouBoard.Utils;
 
@@ -12,6 +13,7 @@ namespace YouBoard.Models
         private string description;
         private bool isExpanded;
         private string pendingComment;
+        private IssueType type;
 
         public string Id { get => id; set => SetProperty(ref id, value); }
 
@@ -28,5 +30,7 @@ namespace YouBoard.Models
         public bool IsExpanded { get => isExpanded; set => SetProperty(ref isExpanded, value); }
 
         public string PendingComment { get => pendingComment; set => SetProperty(ref pendingComment, value); }
+
+        public IssueType Type { get => type; set => SetProperty(ref type, value); }
     }
 }
