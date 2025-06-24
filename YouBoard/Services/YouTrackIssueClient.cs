@@ -79,12 +79,21 @@ namespace YouBoard.Services
                 project = new { id = projectId, },
                 summary = issueWrapper.Title,
                 description = issueWrapper.Description,
+                customFields = new CustomField[]
+                {
+                    new ()
+                    {
+                        Name = "Type",
+                        Value = new FieldValue() { Name = IssueTypeHelper.ToIssueTypeName(issueWrapper.Type), },
+                        Type = "SingleEnumIssueCustomField",
+                    },
+                },
             };
 
             var json = JsonSerializer.Serialize(payload, JsonOptions);
 
             using var content = new StringContent(json, Encoding.UTF8, "application/json");
-            using var response = await httpClient.PostAsync("issues?fields=id,idReadable,summary,description", content);
+            using var response = await httpClient.PostAsync("issues?fields=id,idReadable,summary,description,customFields(name,value(name))", content);
             response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
@@ -100,6 +109,7 @@ namespace YouBoard.Services
                 Id = created.IdReadable,
                 Title = created.Summary,
                 Description = created.Description,
+                Type = created.GetIssueType(),
             };
         }
 
