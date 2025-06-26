@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.Input;
+using MaterialDesignThemes.Wpf.Converters;
 using Prism.Mvvm;
 using YouBoard.Models;
 using YouBoard.Services;
@@ -86,6 +87,19 @@ namespace YouBoard.ViewModels
 
             await client.AddCommentAsync(param, param.PendingComment);
             param.PendingComment = string.Empty;
+        });
+
+        public AsyncRelayCommand<IssueWrapper> AddWorkingDurationCommandAsync => new (async (param) =>
+        {
+            if (param is not { IsComplete: true, })
+            {
+                return;
+            }
+
+            var duration = param.WorkTimer.Elapsed;
+            param.WorkTimer.IsRunning = false;
+
+            await client.AddWorkingDurationAsync(param, duration, string.Empty);
         });
 
         /// <summary>

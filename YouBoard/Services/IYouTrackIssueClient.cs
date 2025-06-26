@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YouBoard.Models;
@@ -15,5 +16,7 @@ namespace YouBoard.Services
         Task ToggleIssueWorkStateAsync(IssueWrapper issueWrapper);
 
         Task<IssueCommentWrapper> AddCommentAsync(IssueWrapper issueWrapper, string comment);
+
+        Task AddWorkingDurationAsync(IssueWrapper issueWrapper, TimeSpan duration, string comment);
     }
 }
