@@ -174,6 +174,22 @@ namespace YouBoard.Services
             };
         }
 
+        public async Task AddWorkingDurationAsync(IssueWrapper issueWrapper, TimeSpan duration, string comment)
+        {
+            if (duration < TimeSpan.FromMinutes(1))
+            {
+                return;
+            }
+
+            var payload = new WorkItemAddPayload(duration, comment);
+            var json = JsonSerializer.Serialize(payload);
+            using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var url = $"issues/{issueWrapper.Id}/timeTracking/workItems?fields=id,text,duration(minutes)";
+            var response = await httpClient.PostAsync(url, content);
+            response.EnsureSuccessStatusCode();
+        }
+
         public void Dispose()
         {
             Dispose(true);

@@ -63,6 +63,8 @@
 
                                     <CheckBox
                                         Width="20"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.AddWorkingDurationCommandAsync}"
+                                        CommandParameter="{Binding}"
                                         Foreground="Aqua"
                                         IsChecked="{Binding IsComplete}">
 
