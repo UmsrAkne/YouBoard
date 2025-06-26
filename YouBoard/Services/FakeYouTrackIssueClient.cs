@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YouBoard.Models;
@@ -50,6 +51,12 @@ namespace YouBoard.Services
         public Task<IssueCommentWrapper> AddCommentAsync(IssueWrapper issueWrapper, string comment)
         {
             throw new System.NotImplementedException();
+        }
+
+        public Task AddWorkingDurationAsync(IssueWrapper issueWrapper, TimeSpan duration, string comment)
+        {
+            Console.WriteLine($"{issueWrapper.Title} += {duration}(FakeYouTrackIssueClient : 58)");
+            return Task.CompletedTask;
         }
     }
 }

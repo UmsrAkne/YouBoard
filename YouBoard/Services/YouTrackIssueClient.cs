@@ -174,6 +174,16 @@ namespace YouBoard.Services
             };
         }
 
+        public Task AddWorkingDurationAsync(IssueWrapper issueWrapper, TimeSpan duration, string comment)
+        {
+            if (duration < TimeSpan.FromMinutes(1))
+            {
+                return Task.CompletedTask;
+            }
+
+            throw new NotImplementedException();
+        }
+
         public void Dispose()
         {
             Dispose(true);
