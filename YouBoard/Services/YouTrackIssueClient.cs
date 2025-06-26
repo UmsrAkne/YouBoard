@@ -181,13 +181,7 @@ namespace YouBoard.Services
                 return;
             }
 
-            var payload = new
-            {
-                duration = new { minutes = (int)duration.TotalMinutes, },
-                text = comment,
-                date = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
-            };
-
+            var payload = new WorkItemAddPayload(duration, comment);
             var json = JsonSerializer.Serialize(payload);
             using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
