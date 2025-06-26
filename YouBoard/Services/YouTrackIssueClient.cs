@@ -174,14 +174,26 @@ namespace YouBoard.Services
             };
         }
 
-        public Task AddWorkingDurationAsync(IssueWrapper issueWrapper, TimeSpan duration, string comment)
+        public async Task AddWorkingDurationAsync(IssueWrapper issueWrapper, TimeSpan duration, string comment)
         {
             if (duration < TimeSpan.FromMinutes(1))
             {
-                return Task.CompletedTask;
+                return;
             }
 
-            throw new NotImplementedException();
+            var payload = new
+            {
+                duration = new { minutes = (int)duration.TotalMinutes, },
+                text = comment,
+                date = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+            using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var url = $"issues/{issueWrapper.Id}/timeTracking/workItems?fields=id,text,duration(minutes)";
+            var response = await httpClient.PostAsync(url, content);
+            response.EnsureSuccessStatusCode();
         }
 
         public void Dispose()
