@@ -14,6 +14,8 @@ namespace YouBoard.ViewModels
 
             IssueWrappers[1].WorkTimer.IsRunning = true;
             IssueWrappers[2].IsExpanded = true;
+            IssueWrappers[2].Comments.Add(new IssueCommentWrapper() { Text = "Comment1", });
+            IssueWrappers[2].Comments.Add(new IssueCommentWrapper() { Text = "Comment2", });
         }
 
         public bool IsDesignInstance => true;

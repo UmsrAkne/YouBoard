@@ -16,6 +16,9 @@ namespace YouBoard.Services
                 new () { Title = "ダミーIssue 3", Id = "Issue-3", IsExpanded = true, },
             };
 
+            dummy[2].Comments.Add(new IssueCommentWrapper() { Text = "Comment1", });
+            dummy[2].Comments.Add(new IssueCommentWrapper() { Text = "Comment2", });
+
             return Task.FromResult(dummy);
         }
 
@@ -56,6 +59,12 @@ namespace YouBoard.Services
         public Task AddWorkingDurationAsync(IssueWrapper issueWrapper, TimeSpan duration, string comment)
         {
             Console.WriteLine($"{issueWrapper.Title} += {duration}(FakeYouTrackIssueClient : 58)");
+            return Task.CompletedTask;
+        }
+
+        public Task LoadCommentsAsync(IssueWrapper issueWrapper)
+        {
+            issueWrapper.Comments.Add(new IssueCommentWrapper() { Text = "test Comment", });
             return Task.CompletedTask;
         }
     }
