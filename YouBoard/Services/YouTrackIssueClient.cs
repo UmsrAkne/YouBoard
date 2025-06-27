@@ -190,9 +190,33 @@ namespace YouBoard.Services
             response.EnsureSuccessStatusCode();
         }
 
-        public Task LoadCommentsAsync(IssueWrapper issueWrapper)
+        public async Task LoadCommentsAsync(IssueWrapper issueWrapper)
         {
-            throw new NotImplementedException();
+            var issueId = issueWrapper.Id;
+            var url = $"issues/{issueId}/comments?fields=id,text,created";
+
+            using var response = await httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, };
+            var dtoList = JsonSerializer.Deserialize<List<YouTrackCommentDto>>(json, options);
+            var comments = dtoList?.Select(d => new IssueCommentWrapper
+            {
+                Id = d.Id,
+                Text = d.Text,
+                Created = d.Created,
+            }).ToList();
+
+            if (comments == null)
+            {
+                return;
+            }
+
+            foreach (var issueCommentWrapper in comments)
+            {
+                issueWrapper.Comments.Add(issueCommentWrapper);
+            }
         }
 
         public void Dispose()

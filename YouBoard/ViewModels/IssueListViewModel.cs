@@ -109,7 +109,7 @@ namespace YouBoard.ViewModels
                 return;
             }
 
-            Console.WriteLine("Command executed");
+            await client.LoadCommentsAsync(param);
         });
 
         /// <summary>
