@@ -42,6 +42,12 @@
                         Foreground="{StaticResource LightFgBrush}"
                         IsExpanded="{Binding IsExpanded}"
                         Style="{StaticResource CustomExpander}">
+                        <i:Interaction.Triggers>
+
+                            <i:EventTrigger EventName="Expanded">
+                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.LoadCommentsCommandAsync}" CommandParameter="{Binding}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <Expander.Header>
                             <Grid>
                                 <Grid.Resources>
