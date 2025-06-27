@@ -190,6 +190,11 @@ namespace YouBoard.Services
             response.EnsureSuccessStatusCode();
         }
 
+        public Task LoadCommentsAsync(IssueWrapper issueWrapper)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Dispose()
         {
             Dispose(true);

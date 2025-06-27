@@ -58,5 +58,11 @@ namespace YouBoard.Services
             Console.WriteLine($"{issueWrapper.Title} += {duration}(FakeYouTrackIssueClient : 58)");
             return Task.CompletedTask;
         }
+
+        public Task LoadCommentsAsync(IssueWrapper issueWrapper)
+        {
+            issueWrapper.Comments.Add(new IssueCommentWrapper() { Text = "test Comment", });
+            return Task.CompletedTask;
+        }
     }
 }
