@@ -16,6 +16,9 @@ namespace YouBoard.Services
                 new () { Title = "ダミーIssue 3", Id = "Issue-3", IsExpanded = true, },
             };
 
+            dummy[2].Comments.Add(new IssueCommentWrapper() { Text = "Comment1", });
+            dummy[2].Comments.Add(new IssueCommentWrapper() { Text = "Comment2", });
+
             return Task.FromResult(dummy);
         }
 
