@@ -102,6 +102,16 @@ namespace YouBoard.ViewModels
             await client.AddWorkingDurationAsync(param, duration, string.Empty);
         });
 
+        public AsyncRelayCommand<IssueWrapper> LoadCommentsCommandAsync => new (async (param) =>
+        {
+            if (param == null)
+            {
+                return;
+            }
+
+            await client.LoadCommentsAsync(param);
+        });
+
         /// <summary>
         /// Loads a specified number of issues from the server and adds them to IssueWrappers.
         /// </summary>
