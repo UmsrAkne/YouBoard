@@ -53,7 +53,9 @@ namespace YouBoard.Services
 
         public Task<IssueCommentWrapper> AddCommentAsync(IssueWrapper issueWrapper, string comment)
         {
-            throw new NotImplementedException();
+            var commentWrapper = new IssueCommentWrapper() { Text = comment, };
+            issueWrapper.Comments.Add(commentWrapper);
+            return Task.FromResult(commentWrapper);
         }
 
         public Task AddWorkingDurationAsync(IssueWrapper issueWrapper, TimeSpan duration, string comment)
