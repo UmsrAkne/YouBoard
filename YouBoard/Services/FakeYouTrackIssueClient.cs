@@ -53,7 +53,7 @@ namespace YouBoard.Services
 
         public Task<IssueCommentWrapper> AddCommentAsync(IssueWrapper issueWrapper, string comment)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task AddWorkingDurationAsync(IssueWrapper issueWrapper, TimeSpan duration, string comment)

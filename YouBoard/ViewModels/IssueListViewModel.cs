@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.Input;
-using MaterialDesignThemes.Wpf.Converters;
 using Prism.Mvvm;
 using YouBoard.Models;
 using YouBoard.Services;
