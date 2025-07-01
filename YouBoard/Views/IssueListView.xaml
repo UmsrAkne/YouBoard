@@ -166,12 +166,13 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
 
-                                <Border Grid.Column="0" Width="70" />
+                                <Border Grid.Column="0" Width="65" />
 
                                 <Button
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Height="20"
+                                    Margin="0,4"
                                     Padding="15,1"
                                     VerticalAlignment="Center"
                                     Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.AddCommentCommandAsync}"
