@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using Prism.Commands;
 using Prism.Mvvm;
 using YouBoard.Models;
 using YouBoard.Services;
@@ -35,6 +37,19 @@ namespace YouBoard.ViewModels
         public ITabViewModel SelectedTab { get => selectedTab; set => SetProperty(ref selectedTab, value); }
 
         public string Title => appVersionInfo.Title;
+
+        public DelegateCommand CloseTabCommand => new (() =>
+        {
+            Debug.Assert(SelectedTab != null, "SelectedTab should never be null.");
+            if (SelectedTab is ProjectListViewModel)
+            {
+                // ProjectListViewModel は先頭に固定されているタブなので消さない。
+                return;
+            }
+
+            var currentTab = SelectedTab as IssueListViewModel;
+            DynamicTabs.Remove(currentTab);
+        });
 
         private void OpenProject(object sender, EventArgs e)
         {
