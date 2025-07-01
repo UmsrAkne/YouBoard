@@ -285,7 +285,9 @@
                 <TextBlock VerticalAlignment="Center" Text="Type :" />
                 <ComboBox
                     Width="120"
+                    Height="30"
                     Margin="8,0"
+                    Padding="4,0"
                     Background="{StaticResource MediumBgBrush}"
                     ItemsSource="{Binding Source={StaticResource IssueTypeEnum}}"
                     SelectedItem="{Binding PendingIssue.Type}">
@@ -294,6 +296,14 @@
                             <TextBlock Foreground="WhiteSmoke" Text="{Binding}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
+                    <ComboBox.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource MaterialDesignComboBoxItemStyle}" TargetType="ComboBoxItem">
+                            <Setter Property="Background" Value="{StaticResource MediumBgBrush}" />
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Padding" Value="4" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
                 </ComboBox>
                 <Button
                     Width="120"
