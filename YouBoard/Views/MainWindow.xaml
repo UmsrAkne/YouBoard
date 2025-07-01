@@ -17,6 +17,13 @@
     Style="{StaticResource MaterialDesignWindow}"
     mc:Ignorable="d">
 
+    <Window.InputBindings>
+        <KeyBinding
+            Key="W"
+            Command="{Binding CloseTabCommand}"
+            Modifiers="Control" />
+    </Window.InputBindings>
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding ProjectListViewModel.LoadProjectsCommand}" />
