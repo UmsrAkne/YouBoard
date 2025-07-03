@@ -46,7 +46,7 @@ namespace YouBoard.ViewModels
         {
             var newIssue = await client.CreateIssueAsync(projectShortName, PendingIssue);
             IssueWrappers.Insert(0, newIssue);
-            pendingIssue = new IssueWrapper();
+            PendingIssue = new IssueWrapper();
         });
 
         public AsyncRelayCommand<IssueWrapper> MarkAsCompleteIssueCommand => new (async (param) =>
