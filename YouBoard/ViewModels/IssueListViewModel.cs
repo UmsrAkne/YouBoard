@@ -13,7 +13,6 @@ namespace YouBoard.ViewModels
     public class IssueListViewModel : BindableBase, ITabViewModel
     {
         private readonly IYouTrackIssueClient client;
-        private readonly string projectName = string.Empty;
         private readonly string projectShortName = string.Empty;
         private IssueWrapper pendingIssue = new ();
 
@@ -23,7 +22,7 @@ namespace YouBoard.ViewModels
 
         public IssueListViewModel(IYouTrackIssueClient client, ProjectWrapper project)
         {
-            projectName = project.Name;
+            var projectName = project.Name;
             projectShortName = project.ShortName;
             this.client = client;
 
