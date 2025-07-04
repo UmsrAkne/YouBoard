@@ -20,6 +20,7 @@ namespace YouBoard.ViewModels
         private readonly string projectShortName = string.Empty;
         private readonly DispatcherTimer timer = new ();
         private IssueWrapper pendingIssue = new ();
+        private string title = string.Empty;
 
         public IssueListViewModel()
         {
@@ -43,6 +44,8 @@ namespace YouBoard.ViewModels
         public string Header { get; set; }
 
         public object SelectedItem { get; set; }
+
+        public string Title { get => title; set => SetProperty(ref title, value); }
 
         public ObservableCollection<IssueWrapper> IssueWrappers { get; set; } = new ();
 
@@ -159,6 +162,14 @@ namespace YouBoard.ViewModels
 
         private void OnTick(object sender, EventArgs e)
         {
+            var workingIssue = IssueWrappers.FirstOrDefault(i => i.State == IssueState.Working);
+            if (workingIssue == null)
+            {
+                return;
+            }
+
+            var totalMin = (int)workingIssue.WorkTimer.Elapsed.TotalMinutes;
+            Title = $"[{totalMin}m] {workingIssue.Title}";
         }
 
         private void CheckWorkingIssues()
@@ -174,6 +185,7 @@ namespace YouBoard.ViewModels
             else
             {
                 timer.Stop();
+                Title = Header;
             }
         }
     }

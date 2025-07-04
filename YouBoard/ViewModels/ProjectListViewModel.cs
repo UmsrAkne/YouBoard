@@ -14,6 +14,7 @@ namespace YouBoard.ViewModels
     {
         private ObservableCollection<ProjectWrapper> projectWrappers = new ();
         private object selectedItem;
+        private string title = "Projects";
 
         public event EventHandler ItemChosen;
 
@@ -47,6 +48,8 @@ namespace YouBoard.ViewModels
                 SetProperty(ref selectedItem, value);
             }
         }
+
+        public string Title { get => title; set => SetProperty(ref title, value); }
 
         public AsyncRelayCommand LoadProjectsCommand => new AsyncRelayCommand(async () =>
         {

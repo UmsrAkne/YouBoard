@@ -11,5 +11,7 @@ namespace YouBoard.ViewModels
         public string Header { get; set; }
 
         public object SelectedItem { get; set; }
+
+        public string Title { get; set; }
     }
 }
