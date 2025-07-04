@@ -9,7 +9,7 @@
     xmlns:selectors="clr-namespace:YouBoard.ViewModels.Selectors"
     xmlns:viewModels="clr-namespace:YouBoard.ViewModels"
     xmlns:views="clr-namespace:YouBoard.Views"
-    Title="{Binding Title}"
+    Title="{Binding SelectedTab.Title}"
     Width="1080"
     Height="600"
     d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"

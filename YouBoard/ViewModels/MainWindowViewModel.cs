@@ -34,7 +34,11 @@ namespace YouBoard.ViewModels
 
         public ProjectListViewModel ProjectListViewModel { get; private set; } = new ();
 
-        public ITabViewModel SelectedTab { get => selectedTab; set => SetProperty(ref selectedTab, value); }
+        public ITabViewModel SelectedTab
+        {
+            get => selectedTab;
+            set => SetProperty(ref selectedTab, value);
+        }
 
         public string Title => appVersionInfo.Title;
 
