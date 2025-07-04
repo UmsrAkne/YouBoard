@@ -19,8 +19,11 @@ namespace YouBoard.ViewModels
         private readonly List<IssueWrapper> timingItems = new ();
         private readonly string projectShortName = string.Empty;
         private readonly DispatcherTimer timer = new ();
+        private readonly string[] spinnerFrames = new[] { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏", };
+
         private IssueWrapper pendingIssue = new ();
         private string title = string.Empty;
+        private int spinnerIndex = 0;
 
         public IssueListViewModel()
         {
@@ -169,7 +172,8 @@ namespace YouBoard.ViewModels
             }
 
             var totalMin = (int)workingIssue.WorkTimer.Elapsed.TotalMinutes;
-            Title = $"[{totalMin}m] {workingIssue.Title}";
+            var frame = spinnerFrames[spinnerIndex++ % spinnerFrames.Length];
+            Title = $"[{totalMin}m {frame}] {workingIssue.Title}";
         }
 
         private void UpdateTimingStatus()
