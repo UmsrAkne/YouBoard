@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.Input;
 using Prism.Mvvm;
 using YouBoard.Models;
@@ -13,7 +16,9 @@ namespace YouBoard.ViewModels
     public class IssueListViewModel : BindableBase, ITabViewModel
     {
         private readonly IYouTrackIssueClient client;
+        private readonly List<IssueWrapper> timingItems = new ();
         private readonly string projectShortName = string.Empty;
+        private readonly DispatcherTimer timer = new ();
         private IssueWrapper pendingIssue = new ();
 
         public IssueListViewModel()
@@ -27,6 +32,8 @@ namespace YouBoard.ViewModels
             this.client = client;
 
             Header = projectName;
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += OnTick;
         }
 
         public event EventHandler ItemChosen;
@@ -46,6 +53,7 @@ namespace YouBoard.ViewModels
             var newIssue = await client.CreateIssueAsync(projectShortName, PendingIssue);
             IssueWrappers.Insert(0, newIssue);
             PendingIssue = new IssueWrapper();
+            CheckWorkingIssues();
         });
 
         public AsyncRelayCommand<IssueWrapper> MarkAsCompleteIssueCommand => new (async (param) =>
@@ -56,6 +64,7 @@ namespace YouBoard.ViewModels
             }
 
             await client.MarkAsCompleteAsync(param);
+            CheckWorkingIssues();
         });
 
         public AsyncRelayCommand<IssueWrapper> ToggleIssueStateCommandAsync => new (async (param) =>
@@ -74,6 +83,8 @@ namespace YouBoard.ViewModels
             {
                 param.WorkTimer.Pause();
             }
+
+            CheckWorkingIssues();
         });
 
         public AsyncRelayCommand<IssueWrapper> AddCommentCommandAsync => new (async (param) =>
@@ -142,6 +153,28 @@ namespace YouBoard.ViewModels
                     await Task.Delay(50); // 課題の追加演出。指定時間刻みで一件ずつアイテムが追加されていく。
                 }
             });
+
+            CheckWorkingIssues();
+        }
+
+        private void OnTick(object sender, EventArgs e)
+        {
+        }
+
+        private void CheckWorkingIssues()
+        {
+            var targets = IssueWrappers.Where(i => i.State == IssueState.Working);
+            timingItems.Clear();
+            timingItems.AddRange(targets);
+
+            if (timingItems.Count != 0)
+            {
+                timer.Start();
+            }
+            else
+            {
+                timer.Stop();
+            }
         }
     }
 }
