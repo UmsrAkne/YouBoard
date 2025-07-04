@@ -34,7 +34,7 @@ namespace YouBoard.ViewModels
 
             Header = projectName;
             timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += OnTick;
+            timer.Tick += RefreshWindowTitle;
         }
 
         public event EventHandler ItemChosen;
@@ -56,7 +56,7 @@ namespace YouBoard.ViewModels
             var newIssue = await client.CreateIssueAsync(projectShortName, PendingIssue);
             IssueWrappers.Insert(0, newIssue);
             PendingIssue = new IssueWrapper();
-            CheckWorkingIssues();
+            UpdateTimingStatus();
         });
 
         public AsyncRelayCommand<IssueWrapper> MarkAsCompleteIssueCommand => new (async (param) =>
@@ -67,7 +67,7 @@ namespace YouBoard.ViewModels
             }
 
             await client.MarkAsCompleteAsync(param);
-            CheckWorkingIssues();
+            UpdateTimingStatus();
         });
 
         public AsyncRelayCommand<IssueWrapper> ToggleIssueStateCommandAsync => new (async (param) =>
@@ -87,7 +87,7 @@ namespace YouBoard.ViewModels
                 param.WorkTimer.Pause();
             }
 
-            CheckWorkingIssues();
+            UpdateTimingStatus();
         });
 
         public AsyncRelayCommand<IssueWrapper> AddCommentCommandAsync => new (async (param) =>
@@ -157,10 +157,10 @@ namespace YouBoard.ViewModels
                 }
             });
 
-            CheckWorkingIssues();
+            UpdateTimingStatus();
         }
 
-        private void OnTick(object sender, EventArgs e)
+        private void RefreshWindowTitle(object sender, EventArgs e)
         {
             var workingIssue = IssueWrappers.FirstOrDefault(i => i.State == IssueState.Working);
             if (workingIssue == null)
@@ -172,7 +172,7 @@ namespace YouBoard.ViewModels
             Title = $"[{totalMin}m] {workingIssue.Title}";
         }
 
-        private void CheckWorkingIssues()
+        private void UpdateTimingStatus()
         {
             var targets = IssueWrappers.Where(i => i.State == IssueState.Working);
             timingItems.Clear();
