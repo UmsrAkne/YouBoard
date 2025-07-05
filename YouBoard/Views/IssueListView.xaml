@@ -38,6 +38,11 @@
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:IssueWrapper}">
                     <Grid>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseDown">
+                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ApplySelectionCommand}" CommandParameter="{Binding}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="5" />
                             <ColumnDefinition />

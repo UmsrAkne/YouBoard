@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.Input;
+using Prism.Commands;
 using Prism.Mvvm;
 using YouBoard.Models;
 using YouBoard.Services;
@@ -24,6 +25,7 @@ namespace YouBoard.ViewModels
         private IssueWrapper pendingIssue = new ();
         private string title = string.Empty;
         private int spinnerIndex = 0;
+        private object selectedItem;
 
         public IssueListViewModel()
         {
@@ -46,7 +48,7 @@ namespace YouBoard.ViewModels
 
         public string Header { get; set; }
 
-        public object SelectedItem { get; set; }
+        public object SelectedItem { get => selectedItem; set => SetProperty(ref selectedItem, value); }
 
         public string Title { get => title; set => SetProperty(ref title, value); }
 
@@ -125,6 +127,11 @@ namespace YouBoard.ViewModels
             }
 
             await client.LoadCommentsAsync(param);
+        });
+
+        public DelegateCommand<IssueWrapper> ApplySelectionCommand => new ((param) =>
+        {
+            SelectedItem = param;
         });
 
         /// <summary>
