@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using Prism.Mvvm;
 using YouBoard.Utils;
@@ -34,5 +35,7 @@ namespace YouBoard.Models
         public IssueType Type { get => type; set => SetProperty(ref type, value); }
 
         public ObservableCollection<IssueCommentWrapper> Comments { get; set; } = new ();
+
+        public DateTime Created { get; set; }
     }
 }

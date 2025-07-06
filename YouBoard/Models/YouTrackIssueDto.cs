@@ -14,6 +14,8 @@ namespace YouBoard.Models
 
         public string Description { get; set; } = string.Empty;
 
+        public long Created { get; set; }
+
         public List<CustomField> CustomFields { get; set; }
 
         public bool IsDone()

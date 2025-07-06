@@ -38,7 +38,7 @@ namespace YouBoard.Services
         public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0, int skip = 0)
         {
             var query = $"project:{projectShortName} sort by: created desc";
-            var endpoint = $"issues?query={Uri.EscapeDataString(query)}&fields=id,idReadable,summary,customFields(name,value(name))";
+            var endpoint = $"issues?query={Uri.EscapeDataString(query)}&fields=id,idReadable,summary,created,customFields(name,value(name))";
 
             if (skip != 0)
             {
@@ -65,6 +65,7 @@ namespace YouBoard.Services
             {
                 Id = dto.IdReadable,
                 Title = dto.Summary,
+                Created = DateTimeOffset.FromUnixTimeMilliseconds(dto.Created).LocalDateTime,
                 IsComplete = dto.IsDone(),
                 State = dto.GetState(),
                 Type = dto.GetIssueType(),
@@ -93,7 +94,7 @@ namespace YouBoard.Services
             var json = JsonSerializer.Serialize(payload, JsonOptions);
 
             using var content = new StringContent(json, Encoding.UTF8, "application/json");
-            using var response = await httpClient.PostAsync("issues?fields=id,idReadable,summary,description,customFields(name,value(name))", content);
+            using var response = await httpClient.PostAsync("issues?fields=id,idReadable,summary,created,description,customFields(name,value(name))", content);
             response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
@@ -108,6 +109,7 @@ namespace YouBoard.Services
             {
                 Id = created.IdReadable,
                 Title = created.Summary,
+                Created = DateTimeOffset.FromUnixTimeMilliseconds(created.Created).LocalDateTime,
                 Description = created.Description,
                 Type = created.GetIssueType(),
             };
