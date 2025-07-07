@@ -14,6 +14,8 @@ namespace YouBoard.Services
 {
     public class YouTrackIssueClient : IYouTrackIssueClient, IDisposable
     {
+        private const string IssueFieldsQuery = "fields=id,idReadable,summary,created,description,customFields(name,value(name))";
+
         // ReSharper disable once ArrangeModifiersOrder
         private static readonly JsonSerializerOptions JsonOptions = new ()
         {
@@ -38,7 +40,7 @@ namespace YouBoard.Services
         public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0, int skip = 0)
         {
             var query = $"project:{projectShortName} sort by: created desc";
-            var endpoint = $"issues?query={Uri.EscapeDataString(query)}&fields=id,idReadable,summary,created,customFields(name,value(name))";
+            var endpoint = $"issues?query={Uri.EscapeDataString(query)}&{IssueFieldsQuery}";
 
             if (skip != 0)
             {
@@ -94,7 +96,7 @@ namespace YouBoard.Services
             var json = JsonSerializer.Serialize(payload, JsonOptions);
 
             using var content = new StringContent(json, Encoding.UTF8, "application/json");
-            using var response = await httpClient.PostAsync("issues?fields=id,idReadable,summary,created,description,customFields(name,value(name))", content);
+            using var response = await httpClient.PostAsync($"issues?{IssueFieldsQuery}", content);
             response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
