@@ -129,6 +129,22 @@ namespace YouBoard.ViewModels
             await client.LoadCommentsAsync(param);
         });
 
+        public DelegateCommand CopyIssueCommand => new DelegateCommand(() =>
+        {
+            if (SelectedItem is not IssueWrapper item)
+            {
+                return;
+            }
+
+            PendingIssue = new IssueWrapper
+            {
+                Title = item.Title,
+                State = item.State,
+                Description = item.Description,
+                Type = item.Type,
+            };
+        });
+
         public DelegateCommand<IssueWrapper> ApplySelectionCommand => new ((param) =>
         {
             SelectedItem = param;
