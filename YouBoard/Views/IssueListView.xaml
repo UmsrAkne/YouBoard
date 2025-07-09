@@ -24,6 +24,13 @@
         </ObjectDataProvider>
     </UserControl.Resources>
 
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="Enter"
+            Command="{Binding CreateIssueCommand}"
+            Modifiers="Control+Shift" />
+    </UserControl.InputBindings>
+
     <Grid Background="{StaticResource DarkBgBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

@@ -58,6 +58,11 @@ namespace YouBoard.ViewModels
 
         public AsyncRelayCommand CreateIssueCommand => new (async () =>
         {
+            if (string.IsNullOrWhiteSpace(PendingIssue.Title))
+            {
+                return;
+            }
+
             var newIssue = await client.CreateIssueAsync(projectShortName, PendingIssue);
             IssueWrappers.Insert(0, newIssue);
             PendingIssue = new IssueWrapper();
