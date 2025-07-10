@@ -24,6 +24,13 @@
         </ObjectDataProvider>
     </UserControl.Resources>
 
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="Enter"
+            Command="{Binding CreateIssueCommand}"
+            Modifiers="Control+Shift" />
+    </UserControl.InputBindings>
+
     <Grid Background="{StaticResource DarkBgBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -323,14 +330,14 @@
             </StackPanel.Resources>
             <DockPanel>
                 <TextBlock Width="80" Text="Title :" />
-                <TextBox Margin="3,0" Text="{Binding PendingIssue.Title}" />
+                <TextBox Margin="3,0" Text="{Binding PendingIssue.Title, UpdateSourceTrigger=PropertyChanged}" />
             </DockPanel>
 
             <Border Margin="0,2" />
 
             <DockPanel>
                 <TextBlock Width="80" Text="Description :" />
-                <TextBox Margin="3,0" Text="{Binding PendingIssue.Description}" />
+                <TextBox Margin="3,0" Text="{Binding PendingIssue.Description, UpdateSourceTrigger=PropertyChanged}" />
             </DockPanel>
 
             <Border Margin="0,2" />
