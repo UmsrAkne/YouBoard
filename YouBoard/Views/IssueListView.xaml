@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:YouBoard.Models"
     xmlns:sys="clr-namespace:System;assembly=System.Runtime"
@@ -42,9 +43,15 @@
             <StackPanel Margin="4" Orientation="Horizontal">
                 <Button
                     Height="auto"
-                    Padding="10,3"
-                    Command="{Binding CopyIssueCommand}"
-                    Content="Copy issue" />
+                    Padding="20,3"
+                    Command="{Binding CopyIssueCommand}">
+                    <Button.Content>
+                        <materialDesign:PackIcon
+                            Width="30"
+                            Height="15"
+                            Kind="ContentCopy" />
+                    </Button.Content>
+                </Button>
             </StackPanel>
         </Border>
 
@@ -149,27 +156,34 @@
                                                         <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
                                                             <Setter Property="Background" Value="Orange" />
                                                         </DataTrigger>
+                                                        <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
+                                                            <Setter Property="Content">
+                                                                <Setter.Value>
+                                                                    <materialDesign:PackIcon
+                                                                        Width="15"
+                                                                        Height="20"
+                                                                        HorizontalAlignment="Center"
+                                                                        VerticalAlignment="Center"
+                                                                        Kind="PlayArrow" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="False">
+                                                            <Setter Property="Content">
+                                                                <Setter.Value>
+                                                                    <materialDesign:PackIcon
+                                                                        Width="15"
+                                                                        Height="20"
+                                                                        HorizontalAlignment="Center"
+                                                                        VerticalAlignment="Center"
+                                                                        Kind="Pause" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Button.Style>
-
-                                            <Button.Content>
-                                                <TextBlock FontSize="12">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
-                                                                    <Setter Property="Text" Value="❚❚" />
-                                                                </DataTrigger>
-
-                                                                <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="False">
-                                                                    <Setter Property="Text" Value="▶" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-                                            </Button.Content>
                                         </Button>
 
                                         <TextBlock Width="70" Text="{Binding State}" />
@@ -241,8 +255,11 @@
                                         Padding="15,1"
                                         VerticalAlignment="Center"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.AddCommentCommandAsync}"
-                                        CommandParameter="{Binding}"
-                                        Content="💬" />
+                                        CommandParameter="{Binding}">
+                                        <Button.Content>
+                                            <materialDesign:PackIcon Kind="CommentPlus" />
+                                        </Button.Content>
+                                    </Button>
                                     <TextBox
                                         Grid.Row="1"
                                         Grid.Column="2"
