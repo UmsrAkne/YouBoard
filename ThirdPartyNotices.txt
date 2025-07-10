@@ -20,6 +20,12 @@ https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit
 
 ---
 
+**MaterialDesignThemes.MahApps**
+License: MIT
+https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit
+
+---
+
 **Prism.DryIoc**  
 License: MIT  
 https://github.com/PrismLibrary/Prism
