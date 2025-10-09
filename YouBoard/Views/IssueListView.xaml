@@ -239,7 +239,7 @@
                                     <TextBlock
                                         Grid.Row="0"
                                         Grid.Column="2"
-                                        Margin="10,0"
+                                        Margin="10,4"
                                         HorizontalAlignment="Right"
                                         FontSize="{StaticResource GlobalFontSize}"
                                         Text="{Binding Created, StringFormat=作成日時 : yyyy/MM/dd HH:mm}" />
