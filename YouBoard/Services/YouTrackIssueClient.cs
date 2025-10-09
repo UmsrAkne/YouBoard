@@ -217,6 +217,8 @@ namespace YouBoard.Services
                 return;
             }
 
+            issueWrapper.Comments.Clear();
+
             foreach (var issueCommentWrapper in comments)
             {
                 issueWrapper.Comments.Add(issueCommentWrapper);

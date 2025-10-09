@@ -67,6 +67,7 @@ namespace YouBoard.Services
 
         public Task LoadCommentsAsync(IssueWrapper issueWrapper)
         {
+            issueWrapper.Comments.Clear();
             issueWrapper.Comments.Add(new IssueCommentWrapper() { Text = "test Comment", });
             return Task.CompletedTask;
         }
