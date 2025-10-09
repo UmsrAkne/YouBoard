@@ -60,27 +60,39 @@ namespace YouBoard.Services
 
         public async Task<List<ProjectWrapper>> GetProjectsAsync()
         {
-            var endpoint = "admin/projects?fields=id,name,shortName";
-
-            using var response = await httpClient.GetAsync(endpoint);
-            response.EnsureSuccessStatusCode();
-
-            var json = await response.Content.ReadAsStringAsync();
-
-            var rawProjects = JsonSerializer.Deserialize<List<YouTrackProjectDto>>(json, JsonOptions);
-            if (rawProjects == null)
-            {
-                return new List<ProjectWrapper>();
-            }
-
             var result = new List<ProjectWrapper>();
-            foreach (var dto in rawProjects)
+            const int pageSize = 200;
+            var skip = 0;
+
+            while (true)
             {
-                result.Add(new ProjectWrapper()
+                var endpoint = $"admin/projects?fields=id,name,shortName&$skip={skip}&$top={pageSize}";
+
+                using var response = await httpClient.GetAsync(endpoint);
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                var batch = JsonSerializer.Deserialize<List<YouTrackProjectDto>>(json, JsonOptions) 
+                            ?? new List<YouTrackProjectDto>();
+
+                if (batch.Count == 0)
+                {
+                    break;
+                }
+
+                result.AddRange(batch.Select(dto => new ProjectWrapper
                 {
                     Name = dto.Name,
                     ShortName = dto.ShortName,
-                });
+                }));
+
+                if (batch.Count < pageSize)
+                {
+                    // 最終ページ
+                    break;
+                }
+
+                skip += batch.Count;
             }
 
             return result;
@@ -89,13 +101,23 @@ namespace YouBoard.Services
         public async Task<List<ProjectWrapper>> MergeProjectsWithRemoteData(List<ProjectWrapper> localProjects)
         {
             var remotes = await GetProjectsAsync();
-            var remotesDic = remotes.ToDictionary(p => p.ShortName);
+
+            // 取得失敗や認可不足等で 0 件だった場合はローカルを保持（安全策）
+            if (remotes.Count == 0)
+            {
+                return localProjects.OrderBy(p => p.ShortName).ToList();
+            }
+
+            // 万一の重複 shortName を許容して先勝ちにする
+            var remotesDic = remotes
+                .GroupBy(p => p.ShortName)
+                .ToDictionary(g => g.Key, g => g.First());
 
             var toRemove = new List<ProjectWrapper>();
 
             foreach (var projectWrapper in localProjects)
             {
-                if (remotesDic.TryGetValue(projectWrapper.ShortName, out var value))
+                if (remotesDic.TryGetValue(projectWrapper.ShortName, out var _))
                 {
                     remotesDic.Remove(projectWrapper.ShortName);
                 }
@@ -112,7 +134,7 @@ namespace YouBoard.Services
 
             if (remotesDic.Count > 0)
             {
-                localProjects.AddRange(remotesDic.Select(projectWrapper => projectWrapper.Value));
+                localProjects.AddRange(remotesDic.Select(kv => kv.Value));
             }
 
             return localProjects.OrderBy(p => p.ShortName).ToList();

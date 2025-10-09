@@ -45,6 +45,11 @@
 
                         <Expander.Header>
                             <ContentControl Background="Transparent">
+                                <ContentControl.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="{StaticResource GlobalFontSize}" />
+                                    </Style>
+                                </ContentControl.Resources>
                                 <Border Padding="4" Background="Transparent">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock

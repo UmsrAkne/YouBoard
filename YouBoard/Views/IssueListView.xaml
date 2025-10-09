@@ -115,6 +115,7 @@
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Foreground" Value="{StaticResource LightFgBrush}" />
                                             <Setter Property="VerticalAlignment" Value="Center" />
+                                            <Setter Property="FontSize" Value="{StaticResource GlobalFontSize}" />
                                         </Style>
                                     </Grid.Resources>
 
@@ -238,8 +239,9 @@
                                     <TextBlock
                                         Grid.Row="0"
                                         Grid.Column="2"
-                                        Margin="10,0"
+                                        Margin="10,4"
                                         HorizontalAlignment="Right"
+                                        FontSize="{StaticResource GlobalFontSize}"
                                         Text="{Binding Created, StringFormat=作成日時 : yyyy/MM/dd HH:mm}" />
 
                                     <Border
@@ -275,6 +277,12 @@
                                         ItemsSource="{Binding Comments}">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate DataType="{x:Type models:IssueCommentWrapper}">
+                                                <DataTemplate.Resources>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="FontSize" Value="{StaticResource GlobalFontSize}" />
+                                                    </Style>
+                                                </DataTemplate.Resources>
+
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition />
