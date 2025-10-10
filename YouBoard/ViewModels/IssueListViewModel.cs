@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -144,6 +145,51 @@ namespace YouBoard.ViewModels
             PendingIssue = new IssueWrapper
             {
                 Title = item.Title,
+                State = item.State,
+                Description = item.Description,
+                Type = item.Type,
+            };
+        });
+
+        public AsyncRelayCommand GenerateNextIssueCopyCommand => new (async () =>
+        {
+            if (SelectedItem is not IssueWrapper item)
+            {
+                return;
+            }
+
+            // 正規表現で "title[001]" 形式をパース
+            var match = Regex.Match(item.Title, @"^(.*)\[(\d+)\]$");
+            string baseTitle;
+
+            if (match.Success)
+            {
+                baseTitle = match.Groups[1].Value;
+            }
+            else
+            {
+                // フォーマットに沿っていない場合は title[1] を初期化
+                baseTitle = item.Title;
+                item.Title = $"{baseTitle}[1]";
+            }
+
+            // 同じ baseTitle を含むチケットを取得
+            var issues = await client.GetIssuesByProjectAsync(projectShortName, baseTitle);
+
+            // 既存の中から最大の番号を探す
+            var maxNumber = issues
+                .Select(i => Regex.Match(i.Title, @$"^{Regex.Escape(baseTitle)}\[(\d+)\]$"))
+                .Where(m => m.Success)
+                .Select(m => int.Parse(m.Groups[1].Value))
+                .DefaultIfEmpty(0)
+                .Max();
+
+            var nextNumber = maxNumber + 1;
+
+            // PendingIssue を生成
+            PendingIssue = new IssueWrapper
+            {
+                Title = $"{baseTitle}[{nextNumber}]",
                 State = item.State,
                 Description = item.Description,
                 Type = item.Type,

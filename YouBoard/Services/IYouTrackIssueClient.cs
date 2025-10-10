@@ -9,6 +9,8 @@ namespace YouBoard.Services
     {
         Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0, int skip = 0);
 
+        Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, string titleKeyword, int count = 0, int skip = 0);
+
         Task<IssueWrapper> CreateIssueAsync(string projectShortName, IssueWrapper issueWrapper);
 
         Task MarkAsCompleteAsync(IssueWrapper issueWrapper);
