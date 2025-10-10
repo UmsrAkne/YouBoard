@@ -60,7 +60,9 @@
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
             ItemsSource="{Binding IssueWrappers}"
-            SelectedItem="{Binding SelectedItem}">
+            ScrollViewer.CanContentScroll="True"
+            SelectedItem="{Binding SelectedItem}"
+            VirtualizingPanel.ScrollUnit="Pixel">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:IssueWrapper}">
                     <Grid>
