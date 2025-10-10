@@ -23,6 +23,11 @@ namespace YouBoard.Services
             return Task.FromResult(dummy);
         }
 
+        public Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, string titleKeyword, int count = 0, int skip = 0)
+        {
+            return GetIssuesByProjectAsync(projectShortName, count, skip);
+        }
+
         public Task<IssueWrapper> CreateIssueAsync(string projectShortName, IssueWrapper issueWrapper)
         {
             var dummy = new IssueWrapper()

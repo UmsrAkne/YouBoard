@@ -37,6 +37,58 @@ namespace YouBoard.Services
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", t);
         }
 
+        public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, string titleKeyword, int count = 0, int skip = 0)
+        {
+            if (string.IsNullOrWhiteSpace(projectShortName))
+            {
+                throw new ArgumentNullException(nameof(projectShortName));
+            }
+
+            // キーワード未指定なら既存のオーバーロードへフォールバック
+            if (string.IsNullOrWhiteSpace(titleKeyword))
+            {
+                return await GetIssuesByProjectAsync(projectShortName, count, skip);
+            }
+
+            // YouTrackのsummaryフィルタ用に簡易サニタイズ（波括弧は除去）
+            var sanitized = titleKeyword.Replace("{", " ").Replace("}", " ").Trim();
+
+            // summary: {キーワード} は部分一致検索。スペースを含む場合にも対応
+            var query = $"project:{projectShortName} summary: {{{sanitized}}} sort by: created desc";
+            var endpoint = $"issues?query={Uri.EscapeDataString(query)}&{IssueFieldsQuery}";
+
+            if (skip != 0)
+            {
+                endpoint += $"&$skip={skip}";
+            }
+
+            if (count != 0)
+            {
+                endpoint += $"&$top={count}";
+            }
+
+            using var response = await httpClient.GetAsync(endpoint);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var rawIssues = JsonSerializer.Deserialize<List<YouTrackIssueDto>>(json, JsonOptions);
+
+            if (rawIssues == null)
+            {
+                return new List<IssueWrapper>();
+            }
+
+            return rawIssues.Select(dto => new IssueWrapper
+            {
+                Id = dto.IdReadable,
+                Title = dto.Summary,
+                Created = DateTimeOffset.FromUnixTimeMilliseconds(dto.Created).LocalDateTime,
+                IsComplete = dto.IsDone(),
+                State = dto.GetState(),
+                Type = dto.GetIssueType(),
+            }).ToList();
+        }
+
         public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0, int skip = 0)
         {
             var query = $"project:{projectShortName} sort by: created desc";

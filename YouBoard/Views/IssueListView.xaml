@@ -52,6 +52,26 @@
                             Kind="ContentCopy" />
                     </Button.Content>
                 </Button>
+
+                <Button
+                    Height="auto"
+                    Margin="10,0"
+                    Padding="20,3"
+                    Command="{Binding GenerateNextIssueCopyCommand}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Width="20"
+                                Height="20"
+                                Kind="Plus" />
+
+                            <materialDesign:PackIcon
+                                Width="30"
+                                Height="20"
+                                Kind="Numeric" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
             </StackPanel>
         </Border>
 
@@ -60,7 +80,9 @@
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
             ItemsSource="{Binding IssueWrappers}"
-            SelectedItem="{Binding SelectedItem}">
+            ScrollViewer.CanContentScroll="True"
+            SelectedItem="{Binding SelectedItem}"
+            VirtualizingPanel.ScrollUnit="Pixel">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:IssueWrapper}">
                     <Grid>
