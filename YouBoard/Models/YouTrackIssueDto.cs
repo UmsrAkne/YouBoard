@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Prism.Mvvm;
@@ -17,6 +18,23 @@ namespace YouBoard.Models
         public long Created { get; set; }
 
         public List<CustomField> CustomFields { get; set; }
+
+        public TimeSpan EstimatedDuration
+        {
+            get
+            {
+                var field = CustomFields.FirstOrDefault(f => f.Name == "予測");
+
+                if (field?.Value?.ExtensionData != null &&
+                    field.Value.ExtensionData.TryGetValue("minutes", out var minutesEl) &&
+                    minutesEl.TryGetInt32(out var minutes))
+                {
+                    return TimeSpan.FromMinutes(minutes);
+                }
+
+                return TimeSpan.Zero;
+            }
+        }
 
         public bool IsDone()
         {

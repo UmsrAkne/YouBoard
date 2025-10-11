@@ -14,7 +14,9 @@ namespace YouBoard.Services
 {
     public class YouTrackIssueClient : IYouTrackIssueClient, IDisposable
     {
-        private const string IssueFieldsQuery = "fields=id,idReadable,summary,created,description,customFields(name,value(name))";
+        private const string IssueFieldsQuery =
+            "fields=id,idReadable,summary,created,description," +
+            "customFields(name,value(name,minutes,presentation))";
 
         // ReSharper disable once ArrangeModifiersOrder
         private static readonly JsonSerializerOptions JsonOptions = new ()
@@ -117,6 +119,7 @@ namespace YouBoard.Services
 
             return rawIssues.Select(dto => new IssueWrapper
             {
+                EstimatedDuration = dto.EstimatedDuration,
                 Id = dto.IdReadable,
                 Title = dto.Summary,
                 Created = DateTimeOffset.FromUnixTimeMilliseconds(dto.Created).LocalDateTime,
