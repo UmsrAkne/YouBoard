@@ -15,6 +15,7 @@ namespace YouBoard.Models
         private bool isExpanded;
         private string pendingComment;
         private IssueType type;
+        private TimeSpan estimatedDuration = TimeSpan.Zero;
 
         public string Id { get => id; set => SetProperty(ref id, value); }
 
@@ -37,5 +38,11 @@ namespace YouBoard.Models
         public ObservableCollection<IssueCommentWrapper> Comments { get; set; } = new ();
 
         public DateTime Created { get; set; }
+
+        public TimeSpan EstimatedDuration
+        {
+            get => estimatedDuration;
+            set => SetProperty(ref estimatedDuration, value);
+        }
     }
 }
