@@ -40,39 +40,56 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0">
-            <StackPanel Margin="4" Orientation="Horizontal">
+            <DockPanel Margin="4">
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Height="auto"
+                        Padding="20,3"
+                        Command="{Binding CopyIssueCommand}">
+                        <Button.Content>
+                            <materialDesign:PackIcon
+                                Width="30"
+                                Height="15"
+                                Kind="ContentCopy" />
+                        </Button.Content>
+                    </Button>
+
+                    <Button
+                        Height="auto"
+                        Margin="10,0"
+                        Padding="20,3"
+                        Command="{Binding GenerateNextIssueCopyCommand}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Width="20"
+                                    Height="20"
+                                    Kind="Plus" />
+
+                                <materialDesign:PackIcon
+                                    Width="30"
+                                    Height="20"
+                                    Kind="Numeric" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+
+
                 <Button
-                    Height="auto"
-                    Padding="20,3"
-                    Command="{Binding CopyIssueCommand}">
+                    Width="80"
+                    Margin="10,0"
+                    HorizontalAlignment="Right"
+                    Command="{Binding ShowBulkCreateIssuePageCommand}">
+
                     <Button.Content>
                         <materialDesign:PackIcon
                             Width="30"
-                            Height="15"
-                            Kind="ContentCopy" />
+                            Height="25"
+                            Kind="PlaylistAdd" />
                     </Button.Content>
                 </Button>
-
-                <Button
-                    Height="auto"
-                    Margin="10,0"
-                    Padding="20,3"
-                    Command="{Binding GenerateNextIssueCopyCommand}">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon
-                                Width="20"
-                                Height="20"
-                                Kind="Plus" />
-
-                            <materialDesign:PackIcon
-                                Width="30"
-                                Height="20"
-                                Kind="Numeric" />
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
-            </StackPanel>
+            </DockPanel>
         </Border>
 
         <ListBox

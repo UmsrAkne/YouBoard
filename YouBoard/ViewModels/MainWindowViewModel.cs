@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Services.Dialogs;
 using YouBoard.Models;
 using YouBoard.Services;
 using YouBoard.Utils;
@@ -15,19 +16,21 @@ namespace YouBoard.ViewModels
     {
         private readonly AppVersionInfo appVersionInfo = new ();
         private readonly IYouTrackIssueClient issueClient;
+        private readonly IDialogService dialogService;
         private ITabViewModel selectedTab;
 
         public MainWindowViewModel()
         {
         }
 
-        public MainWindowViewModel(IYouTrackProjectClient youtrackProjectClient, IYouTrackIssueClient issueClient)
+        public MainWindowViewModel(IYouTrackProjectClient youtrackProjectClient, IYouTrackIssueClient issueClient, IDialogService dialogService)
         {
             ProjectListViewModel.YouTrackProjectClient = youtrackProjectClient;
             ProjectListViewModel.ItemChosen += OpenProject;
             DynamicTabs.Add(ProjectListViewModel);
 
             this.issueClient = issueClient;
+            this.dialogService = dialogService;
         }
 
         public ObservableCollection<ITabViewModel> DynamicTabs { get; set; } = new ();
@@ -69,7 +72,7 @@ namespace YouBoard.ViewModels
                 return;
             }
 
-            var issueTab = new IssueListViewModel(issueClient, selectedProject);
+            var issueTab = new IssueListViewModel(issueClient, selectedProject, dialogService);
             DynamicTabs.Add(issueTab);
             SelectedTab = issueTab;
 
