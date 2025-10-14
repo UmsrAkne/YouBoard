@@ -24,6 +24,7 @@
         <TextBox
             Grid.Row="1"
             AcceptsReturn="True"
+            Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap"
             VerticalScrollBarVisibility="Auto" />
 
@@ -32,9 +33,11 @@
             Margin="0,12,0,0"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
+
             <Button
                 Width="100"
                 Margin="0,0,8,0"
+                Command="{Binding CreateIssueListCommand}"
                 Content="OK" />
 
             <Button
