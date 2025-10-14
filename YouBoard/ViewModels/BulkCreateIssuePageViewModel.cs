@@ -1,7 +1,10 @@
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
+using YouBoard.Models;
 using YouBoard.Utils;
 
 namespace YouBoard.ViewModels
@@ -9,6 +12,7 @@ namespace YouBoard.ViewModels
     public class BulkCreateIssuePageViewModel : BindableBase, IDialogAware
     {
         private string inputText;
+        private ObservableCollection<IssueWrapper> parsedIssues = new ();
 
         public event Action<IDialogResult> RequestClose;
 
@@ -16,13 +20,14 @@ namespace YouBoard.ViewModels
 
         public DelegateCommand CreateIssueListCommand => new DelegateCommand(() =>
         {
-            if (string.IsNullOrEmpty(InputText))
+            if (string.IsNullOrWhiteSpace(InputText))
             {
+                ParsedIssues = new ObservableCollection<IssueWrapper>();
                 return;
             }
 
-            var list = IssueParser.ParseIssues(InputText);
-            Console.WriteLine("Create Issues");
+            var list = IssueParser.ParseIssues(InputText ?? string.Empty);
+            ParsedIssues = new ObservableCollection<IssueWrapper>(list);
         });
 
         public DelegateCommand CancelCommand => new DelegateCommand(() =>
@@ -31,6 +36,14 @@ namespace YouBoard.ViewModels
         });
 
         public string InputText { get => inputText; set => SetProperty(ref inputText, value); }
+
+        public ObservableCollection<IssueWrapper> ParsedIssues
+        {
+            get => parsedIssues;
+            set => SetProperty(ref parsedIssues, value);
+        }
+
+        public IssueType[] AvailableIssueTypes { get; } = Enum.GetValues(typeof(IssueType)).Cast<IssueType>().ToArray();
 
         public bool CanCloseDialog() => true;
 
