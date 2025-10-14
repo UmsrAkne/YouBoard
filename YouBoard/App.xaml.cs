@@ -3,7 +3,9 @@ using System.IO;
 using System.Windows;
 using DotNetEnv;
 using Prism.Ioc;
+using Prism.Services.Dialogs;
 using YouBoard.Services;
+using YouBoard.ViewModels;
 using YouBoard.Views;
 
 namespace YouBoard
@@ -36,6 +38,9 @@ namespace YouBoard
             var issueClient = new YouTrackIssueClient(uri, token);
             containerRegistry.RegisterInstance<IYouTrackIssueClient>(issueClient);
             #endif
+
+            // Register dialogs
+            containerRegistry.RegisterDialog<BulkCreateIssuePage, BulkCreateIssuePageViewModel>();
         }
     }
 }

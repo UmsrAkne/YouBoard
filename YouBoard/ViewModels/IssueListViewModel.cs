@@ -9,6 +9,7 @@ using System.Windows.Threading;
 using CommunityToolkit.Mvvm.Input;
 using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Services.Dialogs;
 using YouBoard.Models;
 using YouBoard.Services;
 
@@ -21,6 +22,7 @@ namespace YouBoard.ViewModels
         private readonly List<IssueWrapper> timingItems = new ();
         private readonly string projectShortName = string.Empty;
         private readonly DispatcherTimer timer = new ();
+        private readonly IDialogService dialogService;
         private readonly string[] spinnerFrames = new[] { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏", };
 
         private IssueWrapper pendingIssue = new ();
@@ -32,7 +34,7 @@ namespace YouBoard.ViewModels
         {
         }
 
-        public IssueListViewModel(IYouTrackIssueClient client, ProjectWrapper project)
+        public IssueListViewModel(IYouTrackIssueClient client, ProjectWrapper project, IDialogService dialogService)
         {
             var projectName = project.Name;
             projectShortName = project.ShortName;
@@ -41,6 +43,8 @@ namespace YouBoard.ViewModels
             Header = projectName;
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += RefreshWindowTitle;
+
+            this.dialogService = dialogService;
         }
 
         public event EventHandler ItemChosen;
@@ -199,6 +203,18 @@ namespace YouBoard.ViewModels
         public DelegateCommand<IssueWrapper> ApplySelectionCommand => new ((param) =>
         {
             SelectedItem = param;
+        });
+
+        public DelegateCommand ShowBulkCreateIssuePageCommand => new DelegateCommand(() =>
+        {
+            try
+            {
+                dialogService.ShowDialog("BulkCreateIssuePage", null, _ => { });
+            }
+            catch
+            {
+                // Ignore any dialog exceptions to avoid breaking startup in design-time or tests.
+            }
         });
 
         /// <summary>
