@@ -137,7 +137,7 @@ namespace YouBoard.Services
                 localProjects.AddRange(remotesDic.Select(kv => kv.Value));
             }
 
-            return localProjects.OrderBy(p => p.ShortName).ToList();
+            return localProjects.OrderByDescending(p => p.ProjectProfile.IsFavorite).ThenBy(p => p.ShortName).ToList();
         }
 
         public void Dispose()
