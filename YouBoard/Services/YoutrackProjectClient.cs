@@ -35,7 +35,7 @@ namespace YouBoard.Services
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
-        public static void SaveProjectsToJsonFile(List<ProjectWrapper> projects, string fileName)
+        public void SaveProjectsToJsonFile(List<ProjectWrapper> projects, string fileName)
         {
             var options = new JsonSerializerOptions { WriteIndented = true, };
             var json = JsonSerializer.Serialize(projects, options);
@@ -43,7 +43,7 @@ namespace YouBoard.Services
             File.WriteAllText(Path.Combine(d.FullName, fileName), json);
         }
 
-        public static List<ProjectWrapper> LoadProjectsFromJsonFile(string fileName)
+        public List<ProjectWrapper> LoadProjectsFromJsonFile(string fileName)
         {
             var d = Directory.CreateDirectory("local_data");
             var path = Path.Combine(d.FullName, fileName);
@@ -137,7 +137,7 @@ namespace YouBoard.Services
                 localProjects.AddRange(remotesDic.Select(kv => kv.Value));
             }
 
-            return localProjects.OrderBy(p => p.ShortName).ToList();
+            return localProjects.OrderByDescending(p => p.ProjectProfile.IsFavorite).ThenBy(p => p.ShortName).ToList();
         }
 
         public void Dispose()

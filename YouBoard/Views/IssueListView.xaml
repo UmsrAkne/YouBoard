@@ -195,8 +195,6 @@
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
                                                             <Setter Property="Background" Value="Orange" />
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
                                                             <Setter Property="Content">
                                                                 <Setter.Value>
                                                                     <materialDesign:PackIcon
@@ -204,7 +202,7 @@
                                                                         Height="20"
                                                                         HorizontalAlignment="Center"
                                                                         VerticalAlignment="Center"
-                                                                        Kind="PlayArrow" />
+                                                                        Kind="Pause" />
                                                                 </Setter.Value>
                                                             </Setter>
                                                         </DataTrigger>
@@ -217,7 +215,7 @@
                                                                         Height="20"
                                                                         HorizontalAlignment="Center"
                                                                         VerticalAlignment="Center"
-                                                                        Kind="Pause" />
+                                                                        Kind="PlayArrow" />
                                                                 </Setter.Value>
                                                             </Setter>
                                                         </DataTrigger>
@@ -370,7 +368,7 @@
                     <Setter Property="BorderBrush" Value="Transparent" />
                     <Style.Triggers>
 
-                        <!--  デザイン時は Opacity = 1  -->
+                        <!-- デザイン時は Opacity = 1 -->
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.IsDesignInstance}" Value="True">
                             <Setter Property="Opacity" Value="1" />
                         </DataTrigger>
