@@ -81,6 +81,9 @@ namespace YouBoard.ViewModels
                 return;
             }
 
+            param.IsComplete = true;
+            param.State = IssueState.Complete;
+
             await client.MarkAsCompleteAsync(param);
             UpdateTimingStatus();
         });
