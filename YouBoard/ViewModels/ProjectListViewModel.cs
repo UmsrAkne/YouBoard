@@ -59,19 +59,19 @@ namespace YouBoard.ViewModels
             }
 
             var jsonFileName = "projects.json";
-            var localProjectList = YoutrackProjectClient.LoadProjectsFromJsonFile(jsonFileName);
+            var localProjectList = YouTrackProjectClient.LoadProjectsFromJsonFile(jsonFileName);
             ProjectWrappers = new ObservableCollection<ProjectWrapper>(localProjectList);
 
             var finallyList = await YouTrackProjectClient.MergeProjectsWithRemoteData(localProjectList);
             ProjectWrappers = new ObservableCollection<ProjectWrapper>(finallyList);
 
-            YoutrackProjectClient.SaveProjectsToJsonFile(ProjectWrappers.ToList(), jsonFileName);
+            YouTrackProjectClient.SaveProjectsToJsonFile(ProjectWrappers.ToList(), jsonFileName);
         });
 
         public DelegateCommand<ProjectWrapper> SaveProjectsCommand => new ((param) =>
         {
             param.ProjectProfile.IsFavorite = !param.ProjectProfile.IsFavorite;
-            YoutrackProjectClient.SaveProjectsToJsonFile(ProjectWrappers.ToList(), "projects.json");
+            YouTrackProjectClient.SaveProjectsToJsonFile(ProjectWrappers.ToList(), "projects.json");
         });
 
         public DelegateCommand<ProjectWrapper> ProjectChosenCommand => new ((param) =>
