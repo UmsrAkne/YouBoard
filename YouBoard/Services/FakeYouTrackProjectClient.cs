@@ -18,9 +18,10 @@ namespace YouBoard.Services
             return Task.FromResult(dummy);
         }
 
-        public Task<List<ProjectWrapper>> MergeProjectsWithRemoteData(List<ProjectWrapper> localProjects)
+        public async Task<List<ProjectWrapper>> MergeProjectsWithRemoteData(List<ProjectWrapper> localProjects)
         {
-            return Task.FromResult(localProjects);
+            var r = await GetProjectsAsync();
+            return r;
         }
     }
 }
