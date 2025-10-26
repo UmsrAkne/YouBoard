@@ -28,14 +28,15 @@ namespace YouBoard.Services
             return GetIssuesByProjectAsync(projectShortName, count, skip);
         }
 
-        public Task<IssueWrapper> CreateIssueAsync(string projectShortName, IssueWrapper issueWrapper)
+        public async Task<IssueWrapper> CreateIssueAsync(string projectShortName, IssueWrapper issueWrapper)
         {
             var dummy = new IssueWrapper()
             {
                 Title = "ダミーIssue 1", Id = "Issue-1",
             };
 
-            return Task.FromResult(dummy);
+            await Task.Delay(1500);
+            return dummy;
         }
 
         public Task MarkAsCompleteAsync(IssueWrapper issueWrapper)

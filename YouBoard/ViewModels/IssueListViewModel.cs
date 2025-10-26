@@ -29,6 +29,7 @@ namespace YouBoard.ViewModels
         private string title = string.Empty;
         private int spinnerIndex = 0;
         private object selectedItem;
+        private bool isIssueCreating;
 
         public IssueListViewModel()
         {
@@ -61,6 +62,8 @@ namespace YouBoard.ViewModels
 
         public IssueWrapper PendingIssue { get => pendingIssue; set => SetProperty(ref pendingIssue, value); }
 
+        public bool IsIssueCreating { get => isIssueCreating; set => SetProperty(ref isIssueCreating, value); }
+
         public AsyncRelayCommand CreateIssueCommand => new (async () =>
         {
             if (string.IsNullOrWhiteSpace(PendingIssue.Title))
@@ -68,11 +71,19 @@ namespace YouBoard.ViewModels
                 return;
             }
 
-            var newIssue = await client.CreateIssueAsync(projectShortName, PendingIssue);
-            IssueWrappers.Insert(0, newIssue);
-            PendingIssue = new IssueWrapper();
-            UpdateTimingStatus();
-        });
+            IsIssueCreating = true;
+            try
+            {
+                var newIssue = await client.CreateIssueAsync(projectShortName, PendingIssue);
+                IssueWrappers.Insert(0, newIssue);
+                PendingIssue = new IssueWrapper();
+                UpdateTimingStatus();
+            }
+            finally
+            {
+                IsIssueCreating = false;
+            }
+        }, () => !IsIssueCreating);
 
         public AsyncRelayCommand<IssueWrapper> MarkAsCompleteIssueCommand => new (async (param) =>
         {
@@ -85,6 +96,7 @@ namespace YouBoard.ViewModels
             param.State = IssueState.Complete;
 
             await client.MarkAsCompleteAsync(param);
+            await client.AddCommentAsync(param, $"{DateTime.Now:yyyy/MM/dd HH:mm:ss} Complete");
             UpdateTimingStatus();
         });
 
