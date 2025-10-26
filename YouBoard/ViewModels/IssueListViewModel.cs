@@ -96,6 +96,7 @@ namespace YouBoard.ViewModels
             param.State = IssueState.Complete;
 
             await client.MarkAsCompleteAsync(param);
+            await client.AddCommentAsync(param, $"{DateTime.Now:yyyy/MM/dd HH:mm:ss} Complete");
             UpdateTimingStatus();
         });
 
