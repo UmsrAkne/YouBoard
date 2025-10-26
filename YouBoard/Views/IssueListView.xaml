@@ -448,8 +448,23 @@
                     Width="120"
                     Margin="3,0"
                     HorizontalAlignment="Right"
-                    Command="{Binding CreateIssueCommand}"
-                    Content="Create Issue" />
+                    Command="{Binding CreateIssueCommand}">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsIssueCreating}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                    <Setter Property="Content" Value="Creating..." />
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding IsIssueCreating}" Value="False">
+                                    <Setter Property="IsEnabled" Value="True" />
+                                    <Setter Property="Content" Value="Create Issue" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
 
             </StackPanel>
         </StackPanel>
