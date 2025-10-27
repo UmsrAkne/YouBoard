@@ -132,20 +132,46 @@ namespace YouBoard.Services
         public async Task<IssueWrapper> CreateIssueAsync(string projectShortName, IssueWrapper issueWrapper)
         {
             var projectId = await GetProjectIdByShortName(projectShortName);
+
+            // 予測時間を分単位で取得
+            var estimatedMinutes = (int)issueWrapper.EstimatedDuration.TotalMinutes;
+
+            var customFields = new List<CustomField>
+            {
+                new()
+                {
+                    Name = "Type",
+                    Value = new FieldValue
+                    {
+                        Name = IssueTypeHelper.ToIssueTypeName(issueWrapper.Type),
+                    },
+                    Type = "SingleEnumIssueCustomField",
+                },
+            };
+
+            // 予測時間が 0 以外ならフィールドを追加
+            if (estimatedMinutes > 0)
+            {
+                customFields.Add(new CustomField
+                {
+                    Name = "予測",
+                    Value = new FieldValue
+                    {
+                        ExtensionData = new Dictionary<string, JsonElement>
+                        {
+                            { "minutes", JsonSerializer.SerializeToElement(estimatedMinutes) },
+                        },
+                    },
+                    Type = "PeriodIssueCustomField",
+                });
+            }
+
             var payload = new
             {
                 project = new { id = projectId, },
                 summary = issueWrapper.Title,
                 description = issueWrapper.Description,
-                customFields = new CustomField[]
-                {
-                    new ()
-                    {
-                        Name = "Type",
-                        Value = new FieldValue() { Name = IssueTypeHelper.ToIssueTypeName(issueWrapper.Type), },
-                        Type = "SingleEnumIssueCustomField",
-                    },
-                },
+                customFields,
             };
 
             var json = JsonSerializer.Serialize(payload, JsonOptions);
@@ -169,6 +195,7 @@ namespace YouBoard.Services
                 Created = DateTimeOffset.FromUnixTimeMilliseconds(created.Created).LocalDateTime,
                 Description = created.Description,
                 Type = created.GetIssueType(),
+                EstimatedDuration = created.EstimatedDuration,
             };
         }
 
