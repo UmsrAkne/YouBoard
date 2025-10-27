@@ -133,9 +133,6 @@ namespace YouBoard.Services
         {
             var projectId = await GetProjectIdByShortName(projectShortName);
 
-            // 予測時間を分単位で取得
-            var estimatedMinutes = (int)issueWrapper.EstimatedDuration.TotalMinutes;
-
             var customFields = new List<CustomField>
             {
                 new()
@@ -149,8 +146,11 @@ namespace YouBoard.Services
                 },
             };
 
-            // 予測時間が 0 以外ならフィールドを追加
-            if (estimatedMinutes > 0)
+            // 予測時間を分単位で取得
+            var estimatedMinutes = (int)issueWrapper.EstimatedDuration.TotalMinutes;
+
+            var projectFields = await GetProjectFieldNamesAsync(projectId);
+            if (estimatedMinutes > 0 && projectFields.Contains("予測"))
             {
                 customFields.Add(new CustomField
                 {
@@ -327,6 +327,38 @@ namespace YouBoard.Services
             var json = await response.Content.ReadAsStringAsync();
             var projects = JsonSerializer.Deserialize<List<ProjectDto>>(json, JsonOptions);
             return projects?.FirstOrDefault(p => p.ShortName == shortName)?.Id;
+        }
+
+        private async Task<HashSet<string>> GetProjectFieldNamesAsync(string projectShortName)
+        {
+            var endpoint = $"admin/projects/{projectShortName}/customFields?fields=id,field(id,name),$type";
+            using var response = await httpClient.GetAsync(endpoint);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var fields = JsonSerializer.Deserialize<List<JsonElement>>(json, JsonOptions);
+
+            var result = new HashSet<string>();
+
+            if (fields == null)
+            {
+                return result;
+            }
+
+            foreach (var f in fields)
+            {
+                if (f.TryGetProperty("field", out var fieldObj) &&
+                    fieldObj.TryGetProperty("name", out var nameProp))
+                {
+                    var name = nameProp.GetString();
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        result.Add(name);
+                    }
+                }
+            }
+
+            return result;
         }
 
         // ReSharper disable once ClassNeverInstantiated.Local
