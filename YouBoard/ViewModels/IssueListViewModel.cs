@@ -45,6 +45,10 @@ namespace YouBoard.ViewModels
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += RefreshWindowTitle;
 
+            IssueSearchOption.ProjectShortName = projectShortName;
+            IssueSearchOption.Limit = 40;
+            IssueSearchOption.IsSortByCreatedDate = true;
+
             this.dialogService = dialogService;
         }
 
@@ -217,6 +221,11 @@ namespace YouBoard.ViewModels
             };
         });
 
+        public AsyncRelayCommand ReloadIssuesCommand => new (async () =>
+        {
+            await LoadIssuesAsync(5, IssueSearchOption.Limit);
+        });
+
         public DelegateCommand<IssueWrapper> ApplySelectionCommand => new ((param) =>
         {
             SelectedItem = param;
@@ -242,8 +251,14 @@ namespace YouBoard.ViewModels
         /// <returns>A task that represents the asynchronous operation of loading issues.</returns>
         public async Task LoadIssuesAsync(int initialCount, int additionalCount)
         {
+            var limitOrigin = IssueSearchOption.Limit;
+            var offsetOrigin = IssueSearchOption.Offset;
+
+            IssueSearchOption.Limit = initialCount;
+            IssueSearchOption.Offset = 0;
+
             // Step 1: 最新の initialCount 件を読み込み
-            var initialIssues = await client.GetIssuesByProjectAsync(projectShortName, initialCount);
+            var initialIssues = await client.GetIssuesByProjectAsync(IssueSearchOption);
             IssueWrappers.Clear();
             foreach (var issue in initialIssues)
             {
@@ -253,8 +268,10 @@ namespace YouBoard.ViewModels
             // Step 2: 残りの additionalCount 件を非同期で追加読み込み
             _ = Task.Run(async () =>
             {
+                IssueSearchOption.Limit = additionalCount;
+                IssueSearchOption.Offset = initialCount;
                 var additionalIssues =
-                    await client.GetIssuesByProjectAsync(projectShortName, additionalCount, initialCount);
+                    await client.GetIssuesByProjectAsync(IssueSearchOption);
 
                 foreach (var issue in additionalIssues)
                 {
@@ -268,6 +285,8 @@ namespace YouBoard.ViewModels
             });
 
             UpdateTimingStatus();
+            IssueSearchOption.Limit = limitOrigin;
+            IssueSearchOption.Offset = offsetOrigin;
         }
 
         private void RefreshWindowTitle(object sender, EventArgs e)

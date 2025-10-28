@@ -91,6 +91,80 @@ namespace YouBoard.Services
             }).ToList();
         }
 
+        // New overload: accept IssueSearchOption only and delegate to existing overloads
+        public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(IssueSearchOption option)
+        {
+            if (option == null || string.IsNullOrWhiteSpace(option.ProjectShortName))
+            {
+                throw new ArgumentNullException();
+            }
+
+            // --- ソート対象のフィールドを決定 ---
+            var sortField = "created";
+            if (option.IsSortByTitle)
+            {
+                sortField = "summary";
+            }
+            else if (option.IsSortByType)
+            {
+                sortField = "Type";
+            }
+            else if (option.IsSortByCreatedDate)
+            {
+                sortField = "created";
+            }
+
+            // --- ソート方向を決定 ---
+            var sortDirection = option.IsAscending ? "asc" : "desc";
+
+            // YouTrackのsummaryフィルタ用に簡易サニタイズ（波括弧は除去）
+            var sanitized = option.SearchPattern.Replace("{", " ").Replace("}", " ").Trim();
+
+            var queryBuilder = new StringBuilder();
+            queryBuilder.Append($"project:{option.ProjectShortName} ");
+
+            if (!string.IsNullOrWhiteSpace(sanitized))
+            {
+                queryBuilder.Append($"summary: {{{sanitized}}} ");
+            }
+
+            queryBuilder.Append($"sort by: {sortField} {sortDirection}");
+
+            var query = queryBuilder.ToString();
+            var endpoint = $"issues?query={Uri.EscapeDataString(query)}&{IssueFieldsQuery}";
+
+            if (option.Offset != 0)
+            {
+                endpoint += $"&$skip={option.Offset}";
+            }
+
+            if (option.Limit != 0)
+            {
+                endpoint += $"&$top={option.Limit}";
+            }
+
+            using var response = await httpClient.GetAsync(endpoint);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var rawIssues = JsonSerializer.Deserialize<List<YouTrackIssueDto>>(json, JsonOptions);
+
+            if (rawIssues == null)
+            {
+                return new List<IssueWrapper>();
+            }
+
+            return rawIssues.Select(dto => new IssueWrapper
+            {
+                Id = dto.IdReadable,
+                Title = dto.Summary,
+                Created = DateTimeOffset.FromUnixTimeMilliseconds(dto.Created).LocalDateTime,
+                IsComplete = dto.IsDone(),
+                State = dto.GetState(),
+                Type = dto.GetIssueType(),
+            }).ToList();
+        }
+
         public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0, int skip = 0)
         {
             var query = $"project:{projectShortName} sort by: created desc";

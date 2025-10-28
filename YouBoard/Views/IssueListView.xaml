@@ -118,14 +118,17 @@
                     <materialDesign:PopupBox.PopupContent>
                         <StackPanel Margin="10">
                             <RadioButton
+                                Command="{Binding ReloadIssuesCommand}"
                                 Content="作成日"
                                 GroupName="SortOrder"
                                 IsChecked="{Binding IssueSearchOption.IsSortByCreatedDate}" />
                             <RadioButton
+                                Command="{Binding ReloadIssuesCommand}"
                                 Content="課題タイトル"
                                 GroupName="SortOrder"
                                 IsChecked="{Binding IssueSearchOption.IsSortByTitle}" />
                             <RadioButton
+                                Command="{Binding ReloadIssuesCommand}"
                                 Content="課題タイプ"
                                 GroupName="SortOrder"
                                 IsChecked="{Binding IssueSearchOption.IsSortByType}" />
