@@ -28,6 +28,23 @@ namespace YouBoard.Services
             return GetIssuesByProjectAsync(projectShortName, count, skip);
         }
 
+        // New overload: accept IssueSearchOption only and delegate
+        public Task<List<IssueWrapper>> GetIssuesByProjectAsync(IssueSearchOption option)
+        {
+            if (option == null) throw new ArgumentNullException(nameof(option));
+            var project = option.ProjectShortName;
+            var limit = option.Limit;
+            var offset = option.Offset;
+            var keyword = option.SearchPattern;
+
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                return GetIssuesByProjectAsync(project, limit, offset);
+            }
+
+            return GetIssuesByProjectAsync(project, keyword, limit, offset);
+        }
+
         public async Task<IssueWrapper> CreateIssueAsync(string projectShortName, IssueWrapper issueWrapper)
         {
             var dummy = new IssueWrapper()

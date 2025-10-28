@@ -18,7 +18,7 @@ namespace YouBoard.Views.Converters
 
             return mode switch
             {
-                "TotalMinutes" => Math.Round(ts.TotalMinutes).ToString("0") + " 分",
+                "TotalMinutes" => Math.Round(ts.TotalMinutes).ToString("0"),
                 "TotalHours" => ts.TotalHours.ToString("0.0") + " 時間",
                 "HoursMinutes" => $"{(int)ts.TotalHours}時間 {ts.Minutes}分",
                 "Readable" => ToReadable(ts),
@@ -28,6 +28,26 @@ namespace YouBoard.Views.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null)
+            {
+                return Binding.DoNothing;
+            }
+
+            var s = value as string ?? value.ToString();
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                return Binding.DoNothing;
+            }
+
+            s = s.Trim();
+
+            // 数値としてパースできれば分として扱う
+            if (double.TryParse(s, NumberStyles.Float, culture, out var minutes) ||
+                double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out minutes))
+            {
+                return TimeSpan.FromMinutes(minutes);
+            }
+
             return Binding.DoNothing;
         }
 

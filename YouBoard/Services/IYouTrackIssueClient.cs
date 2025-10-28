@@ -11,6 +11,9 @@ namespace YouBoard.Services
 
         Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, string titleKeyword, int count = 0, int skip = 0);
 
+        // New overload: accept IssueSearchOption only
+        Task<List<IssueWrapper>> GetIssuesByProjectAsync(IssueSearchOption option);
+
         Task<IssueWrapper> CreateIssueAsync(string projectShortName, IssueWrapper issueWrapper);
 
         Task MarkAsCompleteAsync(IssueWrapper issueWrapper);
