@@ -80,7 +80,8 @@
                     Width="80"
                     Margin="10,0"
                     HorizontalAlignment="Right"
-                    Command="{Binding ShowBulkCreateIssuePageCommand}">
+                    Command="{Binding ShowBulkCreateIssuePageCommand}"
+                    DockPanel.Dock="Right">
 
                     <Button.Content>
                         <materialDesign:PackIcon
@@ -89,6 +90,48 @@
                             Kind="PlaylistAdd" />
                     </Button.Content>
                 </Button>
+
+                <materialDesign:PopupBox
+                    Margin="5"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    DockPanel.Dock="Right"
+                    PlacementMode="BottomAndAlignCentres"
+                    StaysOpen="False">
+
+                    <materialDesign:PopupBox.ToggleContent>
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Width="20"
+                                Height="20"
+                                VerticalAlignment="Center"
+                                Foreground="Aqua"
+                                Kind="SortVariant" />
+                            <TextBlock
+                                Margin="4,0,0,0"
+                                FontSize="18"
+                                Foreground="Aqua"
+                                Text=" Sort" />
+                        </StackPanel>
+                    </materialDesign:PopupBox.ToggleContent>
+
+                    <materialDesign:PopupBox.PopupContent>
+                        <StackPanel Margin="10">
+                            <RadioButton
+                                Content="作成日"
+                                GroupName="SortOrder"
+                                IsChecked="{Binding IssueSearchOption.IsSortByCreatedDate}" />
+                            <RadioButton
+                                Content="課題タイトル"
+                                GroupName="SortOrder"
+                                IsChecked="{Binding IssueSearchOption.IsSortByTitle}" />
+                            <RadioButton
+                                Content="課題タイプ"
+                                GroupName="SortOrder"
+                                IsChecked="{Binding IssueSearchOption.IsSortByType}" />
+                        </StackPanel>
+                    </materialDesign:PopupBox.PopupContent>
+                </materialDesign:PopupBox>
             </DockPanel>
         </Border>
 

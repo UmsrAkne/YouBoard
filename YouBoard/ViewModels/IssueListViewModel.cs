@@ -64,6 +64,8 @@ namespace YouBoard.ViewModels
 
         public bool IsIssueCreating { get => isIssueCreating; set => SetProperty(ref isIssueCreating, value); }
 
+        public IssueSearchOption IssueSearchOption { get; set; } = new IssueSearchOption();
+
         public AsyncRelayCommand CreateIssueCommand => new (async () =>
         {
             if (string.IsNullOrWhiteSpace(PendingIssue.Title))
