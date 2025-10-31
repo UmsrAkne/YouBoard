@@ -16,6 +16,7 @@ namespace YouBoard.Models
         private string pendingComment;
         private IssueType type;
         private TimeSpan estimatedDuration = TimeSpan.Zero;
+        private WorkTimer workTimer = new ();
 
         public string Id { get => id; set => SetProperty(ref id, value); }
 
@@ -27,7 +28,7 @@ namespace YouBoard.Models
 
         public string Description { get => description; set => SetProperty(ref description, value); }
 
-        public WorkTimer WorkTimer { get; } = new ();
+        public WorkTimer WorkTimer { get => workTimer; set => SetProperty(ref workTimer, value); }
 
         public bool IsExpanded { get => isExpanded; set => SetProperty(ref isExpanded, value); }
 

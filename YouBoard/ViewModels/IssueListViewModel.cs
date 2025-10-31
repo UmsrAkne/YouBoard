@@ -257,8 +257,11 @@ namespace YouBoard.ViewModels
             IssueSearchOption.Limit = initialCount;
             IssueSearchOption.Offset = 0;
 
+            var oldList = IssueWrappers.ToList();
+
             // Step 1: 最新の initialCount 件を読み込み
             var initialIssues = await client.GetIssuesByProjectAsync(IssueSearchOption);
+            SetRunningWorkTimer(oldList, initialIssues);
             IssueWrappers.Clear();
             foreach (var issue in initialIssues)
             {
@@ -273,6 +276,7 @@ namespace YouBoard.ViewModels
                 var additionalIssues =
                     await client.GetIssuesByProjectAsync(IssueSearchOption);
 
+                SetRunningWorkTimer(oldList, additionalIssues);
                 foreach (var issue in additionalIssues)
                 {
                     Application.Current.Dispatcher.Invoke(() =>
@@ -287,6 +291,24 @@ namespace YouBoard.ViewModels
             UpdateTimingStatus();
             IssueSearchOption.Limit = limitOrigin;
             IssueSearchOption.Offset = offsetOrigin;
+
+            void SetRunningWorkTimer(List<IssueWrapper> oldIssues, List<IssueWrapper> newIssues)
+            {
+                var watchingIssues = oldIssues.Where(i => i.WorkTimer.IsRunning).ToList();
+                if (!watchingIssues.Any())
+                {
+                    return;
+                }
+
+                foreach (var watchingIssue in watchingIssues)
+                {
+                    var ni = newIssues.FirstOrDefault(i => i.Id == watchingIssue.Id);
+                    if (ni != null)
+                    {
+                        ni.WorkTimer = watchingIssue.WorkTimer;
+                    }
+                }
+            }
         }
 
         private void RefreshWindowTitle(object sender, EventArgs e)
