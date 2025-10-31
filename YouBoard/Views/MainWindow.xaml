@@ -57,6 +57,12 @@
                 </DataTemplate>
 
             </TabControl.ItemTemplate>
+
+            <TabControl.ItemContainerStyle>
+                <Style BasedOn="{StaticResource {x:Type TabItem}}" TargetType="TabItem">
+                    <Setter Property="Background" Value="LimeGreen" />
+                </Style>
+            </TabControl.ItemContainerStyle>
         </TabControl>
     </Grid>
 </Window>
