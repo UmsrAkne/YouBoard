@@ -13,7 +13,7 @@ namespace YouBoard.Utils
                 "完了" => IssueState.Complete,
                 "中断" => IssueState.Paused,
                 "作業中" => IssueState.Working,
-                "廃止" => IssueState.Obsolete,
+                "廃止" or "Obsolete" => IssueState.Obsolete,
                 _ => throw new ArgumentException($"Invalid state name: {name}"),
             };
         }

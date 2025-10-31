@@ -91,50 +91,56 @@
                     </Button.Content>
                 </Button>
 
-                <materialDesign:PopupBox
-                    Margin="5"
+                <Border
+                    Padding="5,0"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    DockPanel.Dock="Right"
-                    PlacementMode="BottomAndAlignCentres"
-                    StaysOpen="False">
+                    BorderBrush="Aqua"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    DockPanel.Dock="Right">
 
-                    <materialDesign:PopupBox.ToggleContent>
-                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                            <materialDesign:PackIcon
-                                Width="20"
-                                Height="20"
-                                VerticalAlignment="Center"
-                                Foreground="Aqua"
-                                Kind="SortVariant" />
-                            <TextBlock
-                                Margin="4,0,0,0"
-                                FontSize="18"
-                                Foreground="Aqua"
-                                Text=" Sort" />
-                        </StackPanel>
-                    </materialDesign:PopupBox.ToggleContent>
+                    <materialDesign:PopupBox
+                        Margin="5"
+                        VerticalAlignment="Top"
+                        PlacementMode="BottomAndAlignCentres"
+                        StaysOpen="True">
 
-                    <materialDesign:PopupBox.PopupContent>
-                        <StackPanel Margin="10">
-                            <RadioButton
-                                Command="{Binding ReloadIssuesCommand}"
-                                Content="作成日"
-                                GroupName="SortOrder"
-                                IsChecked="{Binding IssueSearchOption.IsSortByCreatedDate}" />
-                            <RadioButton
-                                Command="{Binding ReloadIssuesCommand}"
-                                Content="課題タイトル"
-                                GroupName="SortOrder"
-                                IsChecked="{Binding IssueSearchOption.IsSortByTitle}" />
-                            <RadioButton
-                                Command="{Binding ReloadIssuesCommand}"
-                                Content="課題タイプ"
-                                GroupName="SortOrder"
-                                IsChecked="{Binding IssueSearchOption.IsSortByType}" />
-                        </StackPanel>
-                    </materialDesign:PopupBox.PopupContent>
-                </materialDesign:PopupBox>
+                        <materialDesign:PopupBox.ToggleContent>
+                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Width="20"
+                                    Height="20"
+                                    VerticalAlignment="Center"
+                                    Foreground="Aqua"
+                                    Kind="SortVariant" />
+                                <TextBlock
+                                    Margin="4,0,0,0"
+                                    FontSize="18"
+                                    Foreground="Aqua"
+                                    Text=" Sort" />
+                            </StackPanel>
+                        </materialDesign:PopupBox.ToggleContent>
+
+                        <materialDesign:PopupBox.PopupContent>
+                            <StackPanel Margin="5">
+                                <StackPanel.Resources>
+                                    <Style BasedOn="{StaticResource {x:Type RadioButton}}" TargetType="RadioButton">
+                                        <Setter Property="Command" Value="{Binding ReloadIssuesCommand}" />
+                                        <Setter Property="GroupName" Value="SortOrder" />
+                                        <Setter Property="Margin" Value="0,3" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <RadioButton Content="作成日" IsChecked="{Binding IssueSearchOption.IsSortByCreatedDate}" />
+                                <RadioButton Content="課題タイトル" IsChecked="{Binding IssueSearchOption.IsSortByTitle}" />
+                                <RadioButton Content="課題タイプ" IsChecked="{Binding IssueSearchOption.IsSortByType}" />
+                                <CheckBox
+                                    Margin="0,10,0,0"
+                                    Content="昇順"
+                                    IsChecked="{Binding IssueSearchOption.IsAscending}" />
+                            </StackPanel>
+                        </materialDesign:PopupBox.PopupContent>
+                    </materialDesign:PopupBox>
+                </Border>
             </DockPanel>
         </Border>
 
@@ -340,7 +346,7 @@
                                         <TextBlock
                                             HorizontalAlignment="Right"
                                             FontSize="{StaticResource GlobalFontSize}"
-                                            Text="{Binding EstimatedDuration, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=TotalMinutes, StringFormat=想定作業時間 : {0}}" />
+                                            Text="{Binding EstimatedDuration, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=TotalMinutes, StringFormat=想定作業時間 : {0} 分}" />
                                     </StackPanel>
 
                                     <Border
