@@ -78,7 +78,7 @@
                 <DataGridTextColumn
                     Width="Auto"
                     Binding="{Binding EstimatedDuration, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=TotalMinutes}"
-                    Header="Estimated" />
+                    Header="Estimated (min)" />
             </DataGrid.Columns>
         </DataGrid>
 

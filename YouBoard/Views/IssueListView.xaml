@@ -346,7 +346,7 @@
                                         <TextBlock
                                             HorizontalAlignment="Right"
                                             FontSize="{StaticResource GlobalFontSize}"
-                                            Text="{Binding EstimatedDuration, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=TotalMinutes, StringFormat=想定作業時間 : {0}}" />
+                                            Text="{Binding EstimatedDuration, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=TotalMinutes, StringFormat=想定作業時間 : {0} 分}" />
                                     </StackPanel>
 
                                     <Border
