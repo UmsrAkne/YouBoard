@@ -364,15 +364,28 @@
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.AddCommentCommandAsync}"
                                         CommandParameter="{Binding}">
                                         <Button.Content>
-                                            <materialDesign:PackIcon Kind="CommentPlus" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="CommentPlus" />
+                                                <Border Margin="4,0" />
+                                                <TextBlock VerticalAlignment="Center" Text="(ctr + Enter)" />
+                                            </StackPanel>
                                         </Button.Content>
                                     </Button>
+
                                     <TextBox
                                         Grid.Row="1"
                                         Grid.Column="2"
                                         Margin="10,0"
                                         VerticalAlignment="Center"
-                                        Text="{Binding PendingComment, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding PendingComment, UpdateSourceTrigger=PropertyChanged}">
+                                        <TextBox.InputBindings>
+                                            <KeyBinding
+                                                Key="Enter"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.AddCommentCommandAsync}"
+                                                CommandParameter="{Binding}"
+                                                Modifiers="Control" />
+                                        </TextBox.InputBindings>
+                                    </TextBox>
 
                                     <ListBox
                                         Grid.Row="2"
