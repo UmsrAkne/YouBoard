@@ -133,7 +133,9 @@ namespace YouBoard.ViewModels
                 return;
             }
 
-            await client.AddCommentAsync(param, param.PendingComment);
+            var posted = await client.AddCommentAsync(param, param.PendingComment);
+            param.Comments.Add(posted);
+
             param.PendingComment = string.Empty;
         });
 
