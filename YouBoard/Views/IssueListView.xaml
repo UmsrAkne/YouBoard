@@ -141,6 +141,40 @@
                         </materialDesign:PopupBox.PopupContent>
                     </materialDesign:PopupBox>
                 </Border>
+
+                <Button
+                    Margin="10,0"
+                    Padding="5,0"
+                    HorizontalAlignment="Right"
+                    BorderThickness="1"
+                    Command="{Binding ToggleResolvedFilterCommand}"
+                    DockPanel.Dock="Right">
+
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IssueSearchOption.IsOnlyUnresolved}" Value="True">
+                                    <Setter Property="Background" Value="LightSalmon" />
+                                    <Setter Property="BorderThickness" Value="1" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IssueSearchOption.IsOnlyUnresolved}" Value="False" />
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="20"
+                            Height="20"
+                            VerticalAlignment="Center"
+                            Kind="CheckboxBlankBadgeOutline" />
+                        <TextBlock
+                            Margin="4,0,0,0"
+                            FontSize="16"
+                            Text=" Unresolved" />
+                    </StackPanel>
+                </Button>
+
             </DockPanel>
         </Border>
 

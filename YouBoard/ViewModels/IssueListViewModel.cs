@@ -223,6 +223,12 @@ namespace YouBoard.ViewModels
             };
         });
 
+        public AsyncRelayCommand ToggleResolvedFilterCommand => new (async () =>
+        {
+            IssueSearchOption.IsOnlyUnresolved = !IssueSearchOption.IsOnlyUnresolved;
+            await ReloadIssuesCommand.ExecuteAsync(null);
+        });
+
         public AsyncRelayCommand ReloadIssuesCommand => new (async () =>
         {
             await LoadIssuesAsync(5, IssueSearchOption.Limit);

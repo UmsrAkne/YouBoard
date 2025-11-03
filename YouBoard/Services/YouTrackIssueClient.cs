@@ -99,6 +99,12 @@ namespace YouBoard.Services
                 throw new ArgumentNullException();
             }
 
+            var filter = string.Empty;
+            if (option.IsOnlyUnresolved)
+            {
+                filter = "state:Unresolved";
+            }
+
             // --- ソート対象のフィールドを決定 ---
             var sortField = "created";
             if (option.IsSortByTitle)
@@ -121,7 +127,7 @@ namespace YouBoard.Services
             var sanitized = option.SearchPattern.Replace("{", " ").Replace("}", " ").Trim();
 
             var queryBuilder = new StringBuilder();
-            queryBuilder.Append($"project:{option.ProjectShortName} ");
+            queryBuilder.Append($"project:{option.ProjectShortName} {filter} ");
 
             if (!string.IsNullOrWhiteSpace(sanitized))
             {
