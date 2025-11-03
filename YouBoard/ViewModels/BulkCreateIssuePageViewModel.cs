@@ -18,7 +18,7 @@ namespace YouBoard.ViewModels
 
         public string Title => "Bulk Create Issues";
 
-        public DelegateCommand CreateIssueListCommand => new DelegateCommand(() =>
+        public DelegateCommand ParseIssueListCommand => new DelegateCommand(() =>
         {
             if (string.IsNullOrWhiteSpace(InputText))
             {
