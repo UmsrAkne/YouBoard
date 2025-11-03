@@ -10,7 +10,7 @@
     xmlns:sys="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:YouBoard.ViewModels"
     d:DataContext="{d:DesignInstance viewModels:DesignIssueListViewModel}"
-    d:DesignHeight="300"
+    d:DesignHeight="500"
     d:DesignWidth="800"
     mc:Ignorable="d">
 
@@ -271,12 +271,40 @@
                                                                 </Setter.Value>
                                                             </Setter>
                                                         </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding IsComplete}" Value="True">
+                                                            <Setter Property="IsEnabled" Value="False" />
+                                                            <Setter Property="Content">
+                                                                <Setter.Value>
+                                                                    <materialDesign:PackIcon
+                                                                        Width="15"
+                                                                        Height="20"
+                                                                        HorizontalAlignment="Center"
+                                                                        VerticalAlignment="Center"
+                                                                        Kind="CheckBold" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Button.Style>
                                         </Button>
 
-                                        <TextBlock Width="70" Text="{Binding State}" />
+                                        <TextBlock Width="70" Text="{Binding State}">
+                                            <TextBlock.Style>
+                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsComplete}" Value="True">
+                                                            <Setter Property="Foreground" Value="LightSlateGray" />
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding IsComplete}" Value="False">
+                                                            <Setter Property="Foreground" Value="White" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
 
                                         <TextBlock Width="65">
                                             <TextBlock.Style>
@@ -296,7 +324,21 @@
 
                                     </StackPanel>
 
-                                    <TextBlock Grid.Column="1" Text="{Binding Title}" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Title}">
+                                        <TextBlock.Style>
+                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsComplete}" Value="True">
+                                                        <Setter Property="Foreground" Value="LightSlateGray" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding IsComplete}" Value="False">
+                                                        <Setter Property="Foreground" Value="White" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
 
                                     <TextBlock
                                         Grid.Column="3"
