@@ -95,6 +95,13 @@
                 Content="Parse &amp; Preview" />
 
             <Button
+                Width="120"
+                Margin="0,0,8,0"
+                Command="{Binding PostAllCommand}"
+                Content="{Binding PostButtonText}"
+                IsEnabled="{Binding CanPost}" />
+
+            <Button
                 Width="100"
                 Command="{Binding CancelCommand}"
                 Content="Close" />

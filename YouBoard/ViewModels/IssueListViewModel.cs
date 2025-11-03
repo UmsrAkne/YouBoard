@@ -237,7 +237,12 @@ namespace YouBoard.ViewModels
         {
             try
             {
-                dialogService.ShowDialog("BulkCreateIssuePage", null, _ => { });
+                var parameters = new DialogParameters
+                {
+                    { "client", client },
+                    { "projectShortName", projectShortName },
+                };
+                dialogService.ShowDialog("BulkCreateIssuePage", parameters, _ => { });
             }
             catch
             {
