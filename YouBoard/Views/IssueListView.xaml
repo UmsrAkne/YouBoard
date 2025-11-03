@@ -10,7 +10,7 @@
     xmlns:sys="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:YouBoard.ViewModels"
     d:DataContext="{d:DesignInstance viewModels:DesignIssueListViewModel}"
-    d:DesignHeight="300"
+    d:DesignHeight="500"
     d:DesignWidth="800"
     mc:Ignorable="d">
 
@@ -141,6 +141,40 @@
                         </materialDesign:PopupBox.PopupContent>
                     </materialDesign:PopupBox>
                 </Border>
+
+                <Button
+                    Margin="10,0"
+                    Padding="5,0"
+                    HorizontalAlignment="Right"
+                    BorderThickness="1"
+                    Command="{Binding ToggleResolvedFilterCommand}"
+                    DockPanel.Dock="Right">
+
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IssueSearchOption.IsOnlyUnresolved}" Value="True">
+                                    <Setter Property="Background" Value="LightSalmon" />
+                                    <Setter Property="BorderThickness" Value="1" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IssueSearchOption.IsOnlyUnresolved}" Value="False" />
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="20"
+                            Height="20"
+                            VerticalAlignment="Center"
+                            Kind="CheckboxBlankBadgeOutline" />
+                        <TextBlock
+                            Margin="4,0,0,0"
+                            FontSize="16"
+                            Text=" Unresolved" />
+                    </StackPanel>
+                </Button>
+
             </DockPanel>
         </Border>
 
@@ -271,12 +305,40 @@
                                                                 </Setter.Value>
                                                             </Setter>
                                                         </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding IsComplete}" Value="True">
+                                                            <Setter Property="IsEnabled" Value="False" />
+                                                            <Setter Property="Content">
+                                                                <Setter.Value>
+                                                                    <materialDesign:PackIcon
+                                                                        Width="15"
+                                                                        Height="20"
+                                                                        HorizontalAlignment="Center"
+                                                                        VerticalAlignment="Center"
+                                                                        Kind="CheckBold" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Button.Style>
                                         </Button>
 
-                                        <TextBlock Width="70" Text="{Binding State}" />
+                                        <TextBlock Width="70" Text="{Binding State}">
+                                            <TextBlock.Style>
+                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsComplete}" Value="True">
+                                                            <Setter Property="Foreground" Value="LightSlateGray" />
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding IsComplete}" Value="False">
+                                                            <Setter Property="Foreground" Value="White" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
 
                                         <TextBlock Width="65">
                                             <TextBlock.Style>
@@ -296,7 +358,21 @@
 
                                     </StackPanel>
 
-                                    <TextBlock Grid.Column="1" Text="{Binding Title}" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Title}">
+                                        <TextBlock.Style>
+                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsComplete}" Value="True">
+                                                        <Setter Property="Foreground" Value="LightSlateGray" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding IsComplete}" Value="False">
+                                                        <Setter Property="Foreground" Value="White" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
 
                                     <TextBlock
                                         Grid.Column="3"
@@ -364,15 +440,28 @@
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.AddCommentCommandAsync}"
                                         CommandParameter="{Binding}">
                                         <Button.Content>
-                                            <materialDesign:PackIcon Kind="CommentPlus" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="CommentPlus" />
+                                                <Border Margin="4,0" />
+                                                <TextBlock VerticalAlignment="Center" Text="(ctr + Enter)" />
+                                            </StackPanel>
                                         </Button.Content>
                                     </Button>
+
                                     <TextBox
                                         Grid.Row="1"
                                         Grid.Column="2"
                                         Margin="10,0"
                                         VerticalAlignment="Center"
-                                        Text="{Binding PendingComment, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding PendingComment, UpdateSourceTrigger=PropertyChanged}">
+                                        <TextBox.InputBindings>
+                                            <KeyBinding
+                                                Key="Enter"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.AddCommentCommandAsync}"
+                                                CommandParameter="{Binding}"
+                                                Modifiers="Control" />
+                                        </TextBox.InputBindings>
+                                    </TextBox>
 
                                     <ListBox
                                         Grid.Row="2"

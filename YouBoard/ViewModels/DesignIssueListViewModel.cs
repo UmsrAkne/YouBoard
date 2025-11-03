@@ -12,6 +12,7 @@ namespace YouBoard.ViewModels
                 IssueWrappers.Add(new IssueWrapper() { Title = $"Dummy Issue {i}", Id = $"Id-{i}", });
             }
 
+            IssueWrappers[0].IsComplete = true;
             IssueWrappers[1].WorkTimer.IsRunning = true;
             IssueWrappers[2].IsExpanded = true;
             IssueWrappers[2].Comments.Add(new IssueCommentWrapper() { Text = "Comment1", });

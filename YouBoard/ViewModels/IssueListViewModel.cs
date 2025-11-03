@@ -133,7 +133,9 @@ namespace YouBoard.ViewModels
                 return;
             }
 
-            await client.AddCommentAsync(param, param.PendingComment);
+            var posted = await client.AddCommentAsync(param, param.PendingComment);
+            param.Comments.Add(posted);
+
             param.PendingComment = string.Empty;
         });
 
@@ -221,6 +223,12 @@ namespace YouBoard.ViewModels
             };
         });
 
+        public AsyncRelayCommand ToggleResolvedFilterCommand => new (async () =>
+        {
+            IssueSearchOption.IsOnlyUnresolved = !IssueSearchOption.IsOnlyUnresolved;
+            await ReloadIssuesCommand.ExecuteAsync(null);
+        });
+
         public AsyncRelayCommand ReloadIssuesCommand => new (async () =>
         {
             await LoadIssuesAsync(5, IssueSearchOption.Limit);
@@ -235,7 +243,12 @@ namespace YouBoard.ViewModels
         {
             try
             {
-                dialogService.ShowDialog("BulkCreateIssuePage", null, _ => { });
+                var parameters = new DialogParameters
+                {
+                    { "client", client },
+                    { "projectShortName", projectShortName },
+                };
+                dialogService.ShowDialog("BulkCreateIssuePage", parameters, _ => { });
             }
             catch
             {
