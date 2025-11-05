@@ -179,6 +179,7 @@ namespace YouBoard.ViewModels
                 State = item.State,
                 Description = item.Description,
                 Type = item.Type,
+                EstimatedDuration = item.EstimatedDuration,
             };
         });
 
@@ -224,6 +225,7 @@ namespace YouBoard.ViewModels
                 State = item.State,
                 Description = item.Description,
                 Type = item.Type,
+                EstimatedDuration = item.EstimatedDuration,
             };
         });
 
