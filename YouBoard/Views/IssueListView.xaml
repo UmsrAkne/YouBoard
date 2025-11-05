@@ -422,7 +422,18 @@
                                         <TextBlock
                                             HorizontalAlignment="Right"
                                             FontSize="{StaticResource GlobalFontSize}"
+                                            Text="{Binding ElapsedDuration, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=TotalMinutes, StringFormat=実時間 : {0} 分}" />
+
+                                        <TextBlock
+                                            Margin="10,0"
+                                            FontSize="{StaticResource GlobalFontSize}"
+                                            Text="/" />
+
+                                        <TextBlock
+                                            HorizontalAlignment="Right"
+                                            FontSize="{StaticResource GlobalFontSize}"
                                             Text="{Binding EstimatedDuration, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=TotalMinutes, StringFormat=想定作業時間 : {0} 分}" />
+
                                     </StackPanel>
 
                                     <Border
