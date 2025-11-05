@@ -569,7 +569,7 @@
                     Text="Est. Duration" />
                 <TextBox
                     Width="60"
-                    Text="{Binding PendingIssue.EstimatedDuration, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=TotalMinutes}"
+                    Text="{Binding PendingIssue.EstimatedDuration, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=TotalMinutes}"
                     TextAlignment="Center" />
 
                 <TextBlock
