@@ -25,6 +25,7 @@
             <SolidColorBrush x:Key="LightFgBrush" Color="WhiteSmoke" />
             <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
             <converters:IssueTypeToStringConverter x:Key="IssueTypeToStringConverter" />
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
 
         </ResourceDictionary>
     </Application.Resources>
