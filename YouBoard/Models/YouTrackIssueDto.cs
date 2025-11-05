@@ -36,6 +36,23 @@ namespace YouBoard.Models
             }
         }
 
+        public TimeSpan ElapsedDuration
+        {
+            get
+            {
+                var field = CustomFields.FirstOrDefault(f => f.Name == "経過時間");
+
+                if (field?.Value?.ExtensionData != null &&
+                    field.Value.ExtensionData.TryGetValue("minutes", out var minutesEl) &&
+                    minutesEl.TryGetInt32(out var minutes))
+                {
+                    return TimeSpan.FromMinutes(minutes);
+                }
+
+                return TimeSpan.Zero;
+            }
+        }
+
         public bool IsDone()
         {
             var stateField = CustomFields?.FirstOrDefault(f => f.Name == "State");

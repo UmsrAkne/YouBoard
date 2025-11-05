@@ -17,6 +17,7 @@ namespace YouBoard.Models
         private IssueType type;
         private TimeSpan estimatedDuration = TimeSpan.Zero;
         private WorkTimer workTimer = new ();
+        private TimeSpan elapsedDuration;
 
         public string Id { get => id; set => SetProperty(ref id, value); }
 
@@ -44,6 +45,12 @@ namespace YouBoard.Models
         {
             get => estimatedDuration;
             set => SetProperty(ref estimatedDuration, value);
+        }
+
+        public TimeSpan ElapsedDuration
+        {
+            get => elapsedDuration;
+            set => SetProperty(ref elapsedDuration, value);
         }
     }
 }

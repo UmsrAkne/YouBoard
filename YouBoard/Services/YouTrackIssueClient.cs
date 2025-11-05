@@ -163,6 +163,7 @@ namespace YouBoard.Services
             return rawIssues.Select(dto => new IssueWrapper
             {
                 EstimatedDuration = dto.EstimatedDuration,
+                ElapsedDuration = dto.ElapsedDuration,
                 Id = dto.IdReadable,
                 Title = dto.Summary,
                 Created = DateTimeOffset.FromUnixTimeMilliseconds(dto.Created).LocalDateTime,

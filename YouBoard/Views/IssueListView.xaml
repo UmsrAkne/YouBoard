@@ -2,6 +2,7 @@
     x:Class="YouBoard.Views.IssueListView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:YouBoard.Views.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -23,6 +24,9 @@
                 <x:Type TypeName="models:IssueType" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
+        <!-- Converters -->
+        <converters:IssueDatesAndDurationsConverter x:Key="IssueDatesAndDurationsConverter" />
     </UserControl.Resources>
 
     <UserControl.InputBindings>
@@ -408,21 +412,11 @@
                                         HorizontalAlignment="Right"
                                         Orientation="Horizontal">
 
-
                                         <TextBlock
                                             HorizontalAlignment="Right"
                                             FontSize="{StaticResource GlobalFontSize}"
-                                            Text="{Binding Created, StringFormat=作成日時 : yyyy/MM/dd HH:mm}" />
+                                            Text="{Binding ., Converter={StaticResource IssueDatesAndDurationsConverter}}" />
 
-                                        <TextBlock
-                                            Margin="10,0"
-                                            FontSize="{StaticResource GlobalFontSize}"
-                                            Text="/" />
-
-                                        <TextBlock
-                                            HorizontalAlignment="Right"
-                                            FontSize="{StaticResource GlobalFontSize}"
-                                            Text="{Binding EstimatedDuration, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=TotalMinutes, StringFormat=想定作業時間 : {0} 分}" />
                                     </StackPanel>
 
                                     <Border
@@ -575,7 +569,7 @@
                     Text="Est. Duration" />
                 <TextBox
                     Width="60"
-                    Text="{Binding PendingIssue.EstimatedDuration, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=TotalMinutes}"
+                    Text="{Binding PendingIssue.EstimatedDuration, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=TotalMinutes}"
                     TextAlignment="Center" />
 
                 <TextBlock
