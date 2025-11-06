@@ -203,22 +203,35 @@
                 <ControlTemplate TargetType="{x:Type Expander}">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <DockPanel Background="{TemplateBinding Background}">
-                            <ToggleButton
-                                Name="HeaderSite"
-                                Background="{TemplateBinding materialDesign:ExpanderAssist.HeaderBackground}"
-                                BorderThickness="0"
-                                Content="{TemplateBinding Header}"
-                                ContentStringFormat="{TemplateBinding HeaderStringFormat}"
-                                ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
-                                Cursor="Hand"
-                                DockPanel.Dock="Top"
-                                Focusable="False"
-                                Foreground="{TemplateBinding Foreground}"
-                                IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                IsTabStop="False"
-                                Opacity="0.87"
-                                TextElement.FontSize="{TemplateBinding materialDesign:ExpanderAssist.HeaderFontSize}" />
+
+                            <!-- 実際のヘッダー表示部分（押しても何も起きない） -->
+                            <Grid Background="{TemplateBinding materialDesign:ExpanderAssist.HeaderBackground}" DockPanel.Dock="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- ヘッダー本文：クリックしても反応しない -->
+                                <ContentPresenter
+                                    Grid.Column="0"
+                                    Margin="4,0"
+                                    VerticalAlignment="Center"
+                                    Content="{TemplateBinding Header}"
+                                    ContentTemplate="{TemplateBinding HeaderTemplate}" />
+
+                                <!-- 矢印トグル：ここだけが開閉を制御 -->
+                                <ToggleButton
+                                    Name="HeaderSite"
+                                    Grid.Column="1"
+                                    Margin="4"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Focusable="False"
+                                    Foreground="WhiteSmoke"
+                                    IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                    IsTabStop="False"
+                                    Style="{StaticResource MaterialDesignExpanderToggleButton}" />
+                            </Grid>
 
                             <Border Name="ContentSite">
                                 <Border.LayoutTransform>

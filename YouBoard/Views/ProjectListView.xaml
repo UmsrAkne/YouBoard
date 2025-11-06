@@ -52,6 +52,7 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:ProjectWrapper}">
+
                     <Expander Background="Transparent" Style="{StaticResource CustomExpander}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseDoubleClick">
