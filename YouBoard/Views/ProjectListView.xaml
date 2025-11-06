@@ -6,6 +6,7 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:YouBoard.Models"
+    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:YouBoard.ViewModels"
     d:DataContext="{d:DesignInstance viewModels:DesignProjectListViewModel,
                                      IsDesignTimeCreatable=True}"
@@ -17,6 +18,21 @@
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="{StaticResource GlobalFontSize}" />
         </Style>
+
+        <!-- Enum values for IssueType -->
+        <ObjectDataProvider
+            x:Key="IssueTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:IssueType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <!-- Template to show a localized IssueType name -->
+        <DataTemplate x:Key="EnumToLocalizedTextTemplate">
+            <TextBlock Text="{Binding Converter={StaticResource IssueTypeToStringConverter}}" />
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -36,6 +52,7 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:ProjectWrapper}">
+
                     <Expander Background="Transparent" Style="{StaticResource CustomExpander}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseDoubleClick">
@@ -88,6 +105,120 @@
 
                             </ContentControl>
                         </Expander.Header>
+
+                        <Expander.Content>
+                            <Border
+                                Margin="0,0,0,8"
+                                Padding="8"
+                                Background="{StaticResource MediumBgBrush}">
+                                <StackPanel>
+                                    <TextBlock
+                                        Margin="0,0,0,4"
+                                        FontWeight="Bold"
+                                        Text="デフォルト設定" />
+
+                                    <Grid Margin="0,4,0,8">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="160" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="0,4"
+                                            VerticalAlignment="Center"
+                                            Text="Description" />
+                                        <TextBox
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="4"
+                                            Text="{Binding ProjectProfile.DefaultIssueDescription, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <TextBlock
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Margin="0,4"
+                                            VerticalAlignment="Center"
+                                            Text="見積もり" />
+                                        <StackPanel
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Orientation="Horizontal">
+
+                                            <TextBox
+                                                Width="60"
+                                                Margin="4"
+                                                HorizontalContentAlignment="Center"
+                                                Text="{Binding ProjectProfile.DefaultEstimatedDuration, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=TotalMinutes, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            <TextBlock
+                                                Width="100"
+                                                Margin="4"
+                                                Text="min" />
+                                        </StackPanel>
+
+                                        <TextBlock
+                                            Grid.Row="2"
+                                            Grid.Column="0"
+                                            Margin="0,4"
+                                            VerticalAlignment="Center"
+                                            Text="課題タイプ" />
+                                        <ComboBox
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Margin="4"
+                                            ItemTemplate="{StaticResource EnumToLocalizedTextTemplate}"
+                                            ItemsSource="{Binding Source={StaticResource IssueTypeEnum}}"
+                                            SelectedItem="{Binding ProjectProfile.DefaultIssueType, Mode=TwoWay}" />
+
+                                        <TextBlock
+                                            Grid.Row="3"
+                                            Grid.Column="0"
+                                            Margin="0,4"
+                                            VerticalAlignment="Top"
+                                            Text="ソート" />
+                                        <StackPanel
+                                            Grid.Row="3"
+                                            Grid.Column="1"
+                                            Margin="4"
+                                            Orientation="Vertical">
+                                            <StackPanel.Resources>
+                                                <Style TargetType="RadioButton">
+                                                    <Setter Property="GroupName" Value="SortField" />
+                                                </Style>
+                                            </StackPanel.Resources>
+                                            <StackPanel Orientation="Horizontal">
+                                                <RadioButton
+                                                    Content="作成日"
+                                                    Foreground="{StaticResource LightFgBrush}"
+                                                    IsChecked="{Binding ProjectProfile.SortByCreatedDate}" />
+                                                <RadioButton
+                                                    Margin="16,0,0,0"
+                                                    Content="課題タイトル"
+                                                    Foreground="{StaticResource LightFgBrush}"
+                                                    IsChecked="{Binding ProjectProfile.SortByTitle}" />
+                                                <RadioButton
+                                                    Margin="16,0,0,0"
+                                                    Content="課題タイプ"
+                                                    Foreground="{StaticResource LightFgBrush}"
+                                                    IsChecked="{Binding ProjectProfile.SortByType}" />
+                                            </StackPanel>
+                                            <CheckBox
+                                                Margin="0,4,0,0"
+                                                Content="昇順"
+                                                IsChecked="{Binding ProjectProfile.IsAscending}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </Expander.Content>
                     </Expander>
                 </DataTemplate>
             </ListBox.ItemTemplate>

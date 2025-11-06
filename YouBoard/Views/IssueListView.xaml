@@ -263,7 +263,11 @@
                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.AddWorkingDurationCommandAsync}"
                                             CommandParameter="{Binding}"
                                             Foreground="Aqua"
-                                            IsChecked="{Binding IsComplete}">
+                                            IsChecked="{Binding IsComplete}"
+                                            IsEnabled="{Binding IsComplete, Converter={StaticResource InverseBooleanConverter}}">
+                                            <CheckBox.LayoutTransform>
+                                                <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+                                            </CheckBox.LayoutTransform>
 
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="Checked">

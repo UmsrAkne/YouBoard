@@ -24,8 +24,9 @@ namespace YouBoard.ViewModels
         private readonly DispatcherTimer timer = new ();
         private readonly IDialogService dialogService;
         private readonly string[] spinnerFrames = new[] { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏", };
+        private readonly ProjectWrapper projectWrapper;
 
-        private IssueWrapper pendingIssue = new ();
+        private IssueWrapper pendingIssue;
         private string title = string.Empty;
         private int spinnerIndex = 0;
         private object selectedItem;
@@ -40,10 +41,13 @@ namespace YouBoard.ViewModels
             var projectName = project.Name;
             projectShortName = project.ShortName;
             this.client = client;
+            projectWrapper = project;
 
             Header = projectName;
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += RefreshWindowTitle;
+
+            ApplyProjectDefaultsToPendingIssue();
 
             IssueSearchOption.ProjectShortName = projectShortName;
             IssueSearchOption.Limit = 40;
@@ -82,7 +86,7 @@ namespace YouBoard.ViewModels
             {
                 var newIssue = await client.CreateIssueAsync(projectShortName, PendingIssue);
                 IssueWrappers.Insert(0, newIssue);
-                PendingIssue = new IssueWrapper();
+                ApplyProjectDefaultsToPendingIssue();
                 UpdateTimingStatus();
             }
             finally
@@ -175,6 +179,7 @@ namespace YouBoard.ViewModels
                 State = item.State,
                 Description = item.Description,
                 Type = item.Type,
+                EstimatedDuration = item.EstimatedDuration,
             };
         });
 
@@ -220,6 +225,7 @@ namespace YouBoard.ViewModels
                 State = item.State,
                 Description = item.Description,
                 Type = item.Type,
+                EstimatedDuration = item.EstimatedDuration,
             };
         });
 
@@ -352,6 +358,18 @@ namespace YouBoard.ViewModels
                 timer.Stop();
                 Title = Header;
             }
+        }
+
+        private void ApplyProjectDefaultsToPendingIssue()
+        {
+            var profile = projectWrapper.ProjectProfile;
+
+            PendingIssue = new IssueWrapper()
+            {
+                Description = profile.DefaultIssueDescription,
+                EstimatedDuration = profile.DefaultEstimatedDuration,
+                Type = profile.DefaultIssueType,
+            };
         }
     }
 }
