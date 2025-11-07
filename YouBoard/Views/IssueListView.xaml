@@ -416,10 +416,15 @@
                                         HorizontalAlignment="Right"
                                         Orientation="Horizontal">
 
-                                        <TextBlock
-                                            HorizontalAlignment="Right"
-                                            FontSize="{StaticResource GlobalFontSize}"
-                                            Text="{Binding ., Converter={StaticResource IssueDatesAndDurationsConverter}}" />
+                                        <TextBlock HorizontalAlignment="Right" FontSize="{StaticResource GlobalFontSize}">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource IssueDatesAndDurationsConverter}">
+                                                    <Binding Path="Created" />
+                                                    <Binding Path="ElapsedDuration" />
+                                                    <Binding Path="EstimatedDuration" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
 
                                     </StackPanel>
 
