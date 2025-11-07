@@ -471,7 +471,8 @@
                                         Grid.Column="2"
                                         Margin="3,5"
                                         HorizontalContentAlignment="Stretch"
-                                        ItemsSource="{Binding Comments}">
+                                        ItemsSource="{Binding Comments}"
+                                        PreviewMouseWheel="InnerListBox_PreviewMouseWheel">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate DataType="{x:Type models:IssueCommentWrapper}">
                                                 <DataTemplate.Resources>
