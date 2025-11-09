@@ -348,11 +348,22 @@
                                             </TextBlock.Style>
                                         </TextBlock>
 
-                                        <TextBlock Width="65">
+                                        <TextBlock Width="75">
                                             <TextBlock.Style>
                                                 <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
+                                                            <DataTrigger.EnterActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard AutoReverse="True" RepeatBehavior="Forever">
+                                                                        <ColorAnimation
+                                                                            Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
+                                                                            To="Orange"
+                                                                            Duration="0:0:1.5" />
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </DataTrigger.EnterActions>
+
                                                             <Setter Property="Text" Value="{Binding WorkTimer.Elapsed, Converter={StaticResource TimeSpanToStringConverter}}" />
                                                         </DataTrigger>
 
