@@ -61,7 +61,7 @@ namespace YouBoard.Services
             return Task.CompletedTask;
         }
 
-        public Task ToggleIssueWorkStateAsync(IssueWrapper issueWrapper)
+        public Task PostIssueStateAsync(IssueWrapper issueWrapper)
         {
             if (issueWrapper.State == IssueState.Created)
             {

@@ -18,7 +18,7 @@ namespace YouBoard.Services
 
         Task MarkAsCompleteAsync(IssueWrapper issueWrapper);
 
-        Task ToggleIssueWorkStateAsync(IssueWrapper issueWrapper);
+        Task PostIssueStateAsync(IssueWrapper issueWrapper);
 
         Task<IssueCommentWrapper> AddCommentAsync(IssueWrapper issueWrapper, string comment);
 
