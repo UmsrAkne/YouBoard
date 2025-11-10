@@ -104,9 +104,14 @@ namespace YouBoard.ViewModels
 
             param.IsComplete = true;
             param.State = IssueState.Complete;
+            if (param.WorkTimer.IsRunning)
+            {
+                param.ElapsedDuration = param.WorkTimer.Elapsed;
+            }
 
             await client.MarkAsCompleteAsync(param);
             await client.AddCommentAsync(param, $"{DateTime.Now:yyyy/MM/dd HH:mm:ss} Complete");
+
             UpdateTimingStatus();
         });
 

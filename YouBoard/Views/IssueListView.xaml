@@ -277,10 +277,11 @@
 
                                         </CheckBox>
                                         <Button
-                                            Width="25"
-                                            Height="18"
+                                            Width="120"
+                                            Height="25"
                                             Margin="8,0"
                                             Padding="5,0"
+                                            HorizontalContentAlignment="Left"
                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ToggleIssueStateCommandAsync}"
                                             CommandParameter="{Binding}">
 
@@ -288,28 +289,76 @@
                                                 <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
-                                                            <Setter Property="Background" Value="Orange" />
                                                             <Setter Property="Content">
                                                                 <Setter.Value>
-                                                                    <materialDesign:PackIcon
-                                                                        Width="15"
-                                                                        Height="20"
-                                                                        HorizontalAlignment="Center"
-                                                                        VerticalAlignment="Center"
-                                                                        Kind="Pause" />
+                                                                    <Grid>
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="30" />
+                                                                            <ColumnDefinition />
+                                                                        </Grid.ColumnDefinitions>
+
+                                                                        <materialDesign:PackIcon
+                                                                            Grid.Column="0"
+                                                                            HorizontalAlignment="Center"
+                                                                            VerticalAlignment="Center"
+                                                                            Kind="Pause" />
+
+                                                                        <TextBlock
+                                                                            Grid.Column="1"
+                                                                            HorizontalAlignment="Center"
+                                                                            VerticalAlignment="Center"
+                                                                            Foreground="Black"
+                                                                            Text="{Binding WorkTimer.Elapsed, Converter={StaticResource TimeSpanToStringConverter}}" />
+                                                                    </Grid>
                                                                 </Setter.Value>
                                                             </Setter>
+
+                                                            <Setter Property="Background">
+                                                                <Setter.Value>
+                                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                                        <GradientStop Offset="0" Color="DarkOrange" />
+                                                                        <GradientStop Offset="1" Color="Orange" />
+                                                                    </LinearGradientBrush>
+                                                                </Setter.Value>
+                                                            </Setter>
+
+                                                            <DataTrigger.EnterActions>
+                                                                <BeginStoryboard x:Name="BeginStoryboard">
+                                                                    <Storyboard AutoReverse="True" RepeatBehavior="Forever">
+                                                                        <ColorAnimation
+                                                                            Storyboard.TargetProperty="(Button.Background).(LinearGradientBrush.GradientStops)[0].(GradientStop.Color)"
+                                                                            To="Coral"
+                                                                            Duration="0:0:2" />
+                                                                        <ColorAnimation
+                                                                            Storyboard.TargetProperty="(Button.Background).(LinearGradientBrush.GradientStops)[1].(GradientStop.Color)"
+                                                                            To="LightCoral"
+                                                                            Duration="0:0:2" />
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </DataTrigger.EnterActions>
+
+                                                            <DataTrigger.ExitActions>
+                                                                <StopStoryboard BeginStoryboardName="BeginStoryboard" />
+                                                            </DataTrigger.ExitActions>
+
                                                         </DataTrigger>
 
                                                         <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="False">
                                                             <Setter Property="Content">
                                                                 <Setter.Value>
                                                                     <materialDesign:PackIcon
-                                                                        Width="15"
-                                                                        Height="20"
+                                                                        Width="30"
                                                                         HorizontalAlignment="Center"
                                                                         VerticalAlignment="Center"
                                                                         Kind="PlayArrow" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Setter Property="Background">
+                                                                <Setter.Value>
+                                                                    <LinearGradientBrush x:Name="MyGradient" StartPoint="0,0" EndPoint="1,0">
+                                                                        <GradientStop x:Name="StartStop" Offset="0" Color="DeepSkyBlue" />
+                                                                        <GradientStop x:Name="EndStop" Offset="1" Color="DodgerBlue" />
+                                                                    </LinearGradientBrush>
                                                                 </Setter.Value>
                                                             </Setter>
                                                         </DataTrigger>
@@ -319,8 +368,7 @@
                                                             <Setter Property="Content">
                                                                 <Setter.Value>
                                                                     <materialDesign:PackIcon
-                                                                        Width="15"
-                                                                        Height="20"
+                                                                        Width="30"
                                                                         HorizontalAlignment="Center"
                                                                         VerticalAlignment="Center"
                                                                         Kind="CheckBold" />
@@ -332,41 +380,51 @@
                                             </Button.Style>
                                         </Button>
 
-                                        <TextBlock Width="70" Text="{Binding State}">
-                                            <TextBlock.Style>
-                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                        <Border
+                                            Width="80"
+                                            BorderBrush="DarkBlue"
+                                            BorderThickness="1"
+                                            CornerRadius="12,4,4,12">
+
+                                            <Border.Style>
+                                                <Style TargetType="Border">
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsComplete}" Value="True">
-                                                            <Setter Property="Foreground" Value="LightSlateGray" />
+                                                            <Setter Property="Background" Value="#3333aa" />
                                                         </DataTrigger>
 
                                                         <DataTrigger Binding="{Binding IsComplete}" Value="False">
-                                                            <Setter Property="Foreground" Value="White" />
+                                                            <Setter Property="Background" Value="#330099" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
+                                            </Border.Style>
 
-                                        <TextBlock Width="65">
-                                            <TextBlock.Style>
-                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
-                                                            <Setter Property="Text" Value="{Binding WorkTimer.Elapsed, Converter={StaticResource TimeSpanToStringConverter}}" />
-                                                        </DataTrigger>
+                                            <TextBlock HorizontalAlignment="Center" Text="{Binding State}">
 
-                                                        <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="False">
-                                                            <Setter Property="Text" Value="" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
+                                                <TextBlock.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsComplete}" Value="True">
+                                                                <Setter Property="Foreground" Value="LightSlateGray" />
+                                                            </DataTrigger>
+
+                                                            <DataTrigger Binding="{Binding IsComplete}" Value="False">
+                                                                <Setter Property="Foreground" Value="White" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border>
 
                                     </StackPanel>
 
-                                    <TextBlock Grid.Column="1" Text="{Binding Title}">
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="8,0"
+                                        Padding="0,0,0,2"
+                                        Text="{Binding Title}">
                                         <TextBlock.Style>
                                             <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
                                                 <Style.Triggers>
@@ -416,10 +474,15 @@
                                         HorizontalAlignment="Right"
                                         Orientation="Horizontal">
 
-                                        <TextBlock
-                                            HorizontalAlignment="Right"
-                                            FontSize="{StaticResource GlobalFontSize}"
-                                            Text="{Binding ., Converter={StaticResource IssueDatesAndDurationsConverter}}" />
+                                        <TextBlock HorizontalAlignment="Right" FontSize="{StaticResource GlobalFontSize}">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource IssueDatesAndDurationsConverter}">
+                                                    <Binding Path="Created" />
+                                                    <Binding Path="ElapsedDuration" />
+                                                    <Binding Path="EstimatedDuration" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
 
                                     </StackPanel>
 
@@ -466,7 +529,8 @@
                                         Grid.Column="2"
                                         Margin="3,5"
                                         HorizontalContentAlignment="Stretch"
-                                        ItemsSource="{Binding Comments}">
+                                        ItemsSource="{Binding Comments}"
+                                        PreviewMouseWheel="InnerListBox_PreviewMouseWheel">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate DataType="{x:Type models:IssueCommentWrapper}">
                                                 <DataTemplate.Resources>
