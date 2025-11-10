@@ -122,6 +122,13 @@ namespace YouBoard.ViewModels
                 return;
             }
 
+            if (param.State == IssueState.Working)
+            {
+                await client.AddWorkingDurationAsync(param, param.WorkTimer.Elapsed, string.Empty);
+                param.ElapsedDuration += param.WorkTimer.Elapsed;
+                param.WorkTimer.Reset();
+            }
+
             await client.ToggleIssueWorkStateAsync(param);
             if (param.State == IssueState.Working)
             {
