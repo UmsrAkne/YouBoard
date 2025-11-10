@@ -277,10 +277,11 @@
 
                                         </CheckBox>
                                         <Button
-                                            Width="150"
+                                            Width="120"
                                             Height="25"
                                             Margin="8,0"
                                             Padding="5,0"
+                                            HorizontalContentAlignment="Left"
                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ToggleIssueStateCommandAsync}"
                                             CommandParameter="{Binding}">
 
@@ -290,12 +291,25 @@
                                                         <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
                                                             <Setter Property="Content">
                                                                 <Setter.Value>
-                                                                    <materialDesign:PackIcon
-                                                                        Width="15"
-                                                                        Height="20"
-                                                                        HorizontalAlignment="Center"
-                                                                        VerticalAlignment="Center"
-                                                                        Kind="Pause" />
+                                                                    <Grid>
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="30" />
+                                                                            <ColumnDefinition />
+                                                                        </Grid.ColumnDefinitions>
+
+                                                                        <materialDesign:PackIcon
+                                                                            Grid.Column="0"
+                                                                            HorizontalAlignment="Center"
+                                                                            VerticalAlignment="Center"
+                                                                            Kind="Pause" />
+
+                                                                        <TextBlock
+                                                                            Grid.Column="1"
+                                                                            HorizontalAlignment="Center"
+                                                                            VerticalAlignment="Center"
+                                                                            Foreground="Black"
+                                                                            Text="{Binding WorkTimer.Elapsed, Converter={StaticResource TimeSpanToStringConverter}}" />
+                                                                    </Grid>
                                                                 </Setter.Value>
                                                             </Setter>
 
@@ -333,8 +347,7 @@
                                                             <Setter Property="Content">
                                                                 <Setter.Value>
                                                                     <materialDesign:PackIcon
-                                                                        Width="15"
-                                                                        Height="20"
+                                                                        Width="30"
                                                                         HorizontalAlignment="Center"
                                                                         VerticalAlignment="Center"
                                                                         Kind="PlayArrow" />
@@ -355,8 +368,7 @@
                                                             <Setter Property="Content">
                                                                 <Setter.Value>
                                                                     <materialDesign:PackIcon
-                                                                        Width="15"
-                                                                        Height="20"
+                                                                        Width="30"
                                                                         HorizontalAlignment="Center"
                                                                         VerticalAlignment="Center"
                                                                         Kind="CheckBold" />
@@ -368,7 +380,11 @@
                                             </Button.Style>
                                         </Button>
 
-                                        <Border Width="80" CornerRadius="5">
+                                        <Border
+                                            Width="80"
+                                            BorderBrush="DarkBlue"
+                                            BorderThickness="1"
+                                            CornerRadius="5">
 
                                             <Border.Style>
                                                 <Style TargetType="Border">
@@ -405,36 +421,13 @@
                                             </TextBlock>
                                         </Border>
 
-                                        <TextBlock Width="75">
-                                            <TextBlock.Style>
-                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
-                                                            <DataTrigger.EnterActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard AutoReverse="True" RepeatBehavior="Forever">
-                                                                        <ColorAnimation
-                                                                            Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
-                                                                            To="Orange"
-                                                                            Duration="0:0:1.5" />
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.EnterActions>
-
-                                                            <Setter Property="Text" Value="{Binding WorkTimer.Elapsed, Converter={StaticResource TimeSpanToStringConverter}}" />
-                                                        </DataTrigger>
-
-                                                        <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="False">
-                                                            <Setter Property="Text" Value="" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-
                                     </StackPanel>
 
-                                    <TextBlock Grid.Column="1" Text="{Binding Title}">
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="8,0"
+                                        Padding="0,0,0,2"
+                                        Text="{Binding Title}">
                                         <TextBlock.Style>
                                             <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
                                                 <Style.Triggers>
