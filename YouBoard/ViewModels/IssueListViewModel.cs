@@ -122,7 +122,27 @@ namespace YouBoard.ViewModels
                 return;
             }
 
-            await client.ToggleIssueWorkStateAsync(param);
+            if (param.State == IssueState.Working)
+            {
+                await client.AddWorkingDurationAsync(param, param.WorkTimer.Elapsed, string.Empty);
+                param.ElapsedDuration += param.WorkTimer.Elapsed;
+                param.WorkTimer.Reset();
+            }
+
+            // Complete, Obsolete の状態ではこのコマンドは実行不可のはずなので、万一それが来た場合は例外をスローする。
+            param.State = param.State switch
+            {
+                IssueState.Created => IssueState.Working,
+                IssueState.Paused => IssueState.Working,
+                IssueState.Working => IssueState.Created,
+                IssueState.Complete or IssueState.Obsolete => throw new InvalidOperationException($"Cannot toggle state from {param.State}."),
+                _ => throw new InvalidOperationException($"Unexpected state: {param.State}"),
+            };
+
+            // トグルした状態をサーバーに通知する。
+            await client.PostIssueStateAsync(param);
+
+            // 課題の状態に合わせて WorkTimer を On, Off
             if (param.State == IssueState.Working)
             {
                 param.WorkTimer.Start();

@@ -290,19 +290,9 @@ namespace YouBoard.Services
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task ToggleIssueWorkStateAsync(IssueWrapper issueWrapper)
+        public async Task PostIssueStateAsync(IssueWrapper issueWrapper)
         {
-            var destState = issueWrapper.State switch
-            {
-                IssueState.Created => IssueState.Working,
-                IssueState.Paused => IssueState.Working,
-                IssueState.Working => IssueState.Created,
-                _ => throw new ArgumentOutOfRangeException(),
-            };
-
-            var payload = new IssueStateChangePayload(destState.ToIssueStateName());
-            issueWrapper.State = destState;
-
+            var payload = new IssueStateChangePayload(issueWrapper.State.ToIssueStateName());
             var json = JsonSerializer.Serialize(payload);
             using var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync($"issues/{issueWrapper.Id}", content);
