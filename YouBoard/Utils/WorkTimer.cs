@@ -13,7 +13,8 @@ namespace YouBoard.Utils
 
         public WorkTimer()
         {
-            timer = new DispatcherTimer
+            var dispatcher = System.Windows.Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
+            timer = new DispatcherTimer(DispatcherPriority.Normal, dispatcher)
             {
                 Interval = TimeSpan.FromSeconds(1),
             };
