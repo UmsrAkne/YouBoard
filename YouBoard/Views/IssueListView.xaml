@@ -192,7 +192,19 @@
             VirtualizingPanel.ScrollUnit="Pixel">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:IssueWrapper}">
-                    <Grid>
+                    <Grid Tag="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}">
+                        <Grid.ContextMenu>
+                            <ContextMenu>
+
+                                <!-- ReSharper disable Xaml.BindingWithContextNotResolved -->
+                                <MenuItem
+                                    Command="{Binding PlacementTarget.(FrameworkElement.Tag).ToObsoleteCommandAsync, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                    CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                    Header="Obsolete" />
+                                <!-- ReSharper restore Xaml.BindingWithContextNotResolved -->
+
+                            </ContextMenu>
+                        </Grid.ContextMenu>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseDown">
                                 <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ApplySelectionCommand}" CommandParameter="{Binding}" />
@@ -372,6 +384,23 @@
                                                                         HorizontalAlignment="Center"
                                                                         VerticalAlignment="Center"
                                                                         Kind="CheckBold" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding State}">
+                                                            <DataTrigger.Value>
+                                                                <models:IssueState>Obsolete</models:IssueState>
+                                                            </DataTrigger.Value>
+
+                                                            <Setter Property="IsEnabled" Value="False" />
+                                                            <Setter Property="Content">
+                                                                <Setter.Value>
+                                                                    <materialDesign:PackIcon
+                                                                        Width="30"
+                                                                        HorizontalAlignment="Center"
+                                                                        VerticalAlignment="Center"
+                                                                        Kind="Cancel" />
                                                                 </Setter.Value>
                                                             </Setter>
                                                         </DataTrigger>
