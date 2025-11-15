@@ -186,6 +186,7 @@ namespace YouBoard.ViewModels
 
             var posted = await client.AddCommentAsync(param, param.PendingComment);
             param.Comments.Add(posted);
+            param.Comments = new ObservableCollection<IssueCommentWrapper>(param.Comments.OrderByDescending(c => c.CreatedAt));
 
             param.PendingComment = string.Empty;
         });
