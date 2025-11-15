@@ -18,6 +18,7 @@ namespace YouBoard.Models
         private TimeSpan estimatedDuration = TimeSpan.Zero;
         private WorkTimer workTimer = new ();
         private TimeSpan elapsedDuration;
+        private ObservableCollection<IssueCommentWrapper> comments = new ();
 
         public string Id { get => id; set => SetProperty(ref id, value); }
 
@@ -37,7 +38,11 @@ namespace YouBoard.Models
 
         public IssueType Type { get => type; set => SetProperty(ref type, value); }
 
-        public ObservableCollection<IssueCommentWrapper> Comments { get; set; } = new ();
+        public ObservableCollection<IssueCommentWrapper> Comments
+        {
+            get => comments;
+            set => SetProperty(ref comments, value);
+        }
 
         public DateTime Created { get; set; }
 

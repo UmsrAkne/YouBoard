@@ -115,6 +115,28 @@ namespace YouBoard.ViewModels
             UpdateTimingStatus();
         });
 
+        // ReSharper disable once UnusedMember.Global
+        public AsyncRelayCommand<IssueWrapper> ToObsoleteCommandAsync => new (async (param) =>
+        {
+            if (param == null || param.State == IssueState.Obsolete)
+            {
+                return;
+            }
+
+            if (param.State == IssueState.Working)
+            {
+                await client.AddWorkingDurationAsync(param, param.WorkTimer.Elapsed, "課題を廃止しました");
+                param.ElapsedDuration += param.WorkTimer.Elapsed;
+                param.WorkTimer.Reset();
+            }
+
+            param.State = IssueState.Obsolete;
+
+            // トグルした状態をサーバーに通知する。
+            await client.PostIssueStateAsync(param);
+            UpdateTimingStatus();
+        });
+
         public AsyncRelayCommand<IssueWrapper> ToggleIssueStateCommandAsync => new (async (param) =>
         {
             if (param == null)
@@ -164,6 +186,7 @@ namespace YouBoard.ViewModels
 
             var posted = await client.AddCommentAsync(param, param.PendingComment);
             param.Comments.Add(posted);
+            param.Comments = new ObservableCollection<IssueCommentWrapper>(param.Comments.OrderByDescending(c => c.CreatedAt));
 
             param.PendingComment = string.Empty;
         });
