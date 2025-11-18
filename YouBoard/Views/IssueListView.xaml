@@ -270,24 +270,40 @@
 
                                     <StackPanel Grid.Column="0" Orientation="Horizontal">
 
-                                        <CheckBox
-                                            Width="20"
-                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.AddWorkingDurationCommandAsync}"
-                                            CommandParameter="{Binding}"
-                                            Foreground="Aqua"
-                                            IsChecked="{Binding IsComplete}"
-                                            IsEnabled="{Binding IsComplete, Converter={StaticResource InverseBooleanConverter}}">
-                                            <CheckBox.LayoutTransform>
-                                                <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
-                                            </CheckBox.LayoutTransform>
+                                        <ContentControl>
+                                            <ContentControl.Style>
+                                                <Style TargetType="ContentControl">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding State}">
+                                                            <DataTrigger.Value>
+                                                                <models:IssueState>Obsolete</models:IssueState>
+                                                            </DataTrigger.Value>
+                                                            <Setter Property="IsEnabled" Value="False" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ContentControl.Style>
 
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="Checked">
-                                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}" CommandParameter="{Binding}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
+                                            <CheckBox
+                                                Width="20"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.AddWorkingDurationCommandAsync}"
+                                                CommandParameter="{Binding}"
+                                                Foreground="Aqua"
+                                                IsChecked="{Binding IsComplete}"
+                                                IsEnabled="{Binding IsComplete, Converter={StaticResource InverseBooleanConverter}}">
+                                                <CheckBox.LayoutTransform>
+                                                    <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+                                                </CheckBox.LayoutTransform>
 
-                                        </CheckBox>
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Checked">
+                                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}" CommandParameter="{Binding}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+
+                                            </CheckBox>
+                                        </ContentControl>
+
                                         <Button
                                             Width="120"
                                             Height="25"
@@ -394,6 +410,8 @@
                                                             </DataTrigger.Value>
 
                                                             <Setter Property="IsEnabled" Value="False" />
+                                                            <Setter Property="Background" Value="LightSlateGray" />
+
                                                             <Setter Property="Content">
                                                                 <Setter.Value>
                                                                     <materialDesign:PackIcon
@@ -425,6 +443,13 @@
                                                         <DataTrigger Binding="{Binding IsComplete}" Value="False">
                                                             <Setter Property="Background" Value="#330099" />
                                                         </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding State}">
+                                                            <DataTrigger.Value>
+                                                                <models:IssueState>Obsolete</models:IssueState>
+                                                            </DataTrigger.Value>
+                                                            <Setter Property="Background" Value="#3333aa" />
+                                                        </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Border.Style>
@@ -440,6 +465,13 @@
 
                                                             <DataTrigger Binding="{Binding IsComplete}" Value="False">
                                                                 <Setter Property="Foreground" Value="White" />
+                                                            </DataTrigger>
+
+                                                            <DataTrigger Binding="{Binding State}">
+                                                                <DataTrigger.Value>
+                                                                    <models:IssueState>Obsolete</models:IssueState>
+                                                                </DataTrigger.Value>
+                                                                <Setter Property="Foreground" Value="LightSlateGray" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -464,6 +496,14 @@
                                                     <DataTrigger Binding="{Binding IsComplete}" Value="False">
                                                         <Setter Property="Foreground" Value="White" />
                                                     </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding State}">
+                                                        <DataTrigger.Value>
+                                                            <models:IssueState>Obsolete</models:IssueState>
+                                                        </DataTrigger.Value>
+                                                        <Setter Property="Foreground" Value="LightSlateGray" />
+                                                    </DataTrigger>
+
                                                 </Style.Triggers>
                                             </Style>
                                         </TextBlock.Style>
