@@ -640,7 +640,10 @@
                     <Setter Property="BorderBrush" Value="Transparent" />
                     <Style.Triggers>
 
-                        <!-- デザイン時は Opacity = 1 -->
+                        <!--
+                            デザイン時にアニメーションが描画できずクラッシュする問題の暫定回避用のトリガー
+                            データコンテキストがプレビュー用だった場合は Opacity = 1 に設定
+                        -->
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.IsDesignInstance}" Value="True">
                             <Setter Property="Opacity" Value="1" />
                         </DataTrigger>

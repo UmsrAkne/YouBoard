@@ -74,6 +74,8 @@ namespace YouBoard.ViewModels
 
         public IssueSearchOption IssueSearchOption { get; set; } = new IssueSearchOption();
 
+        public bool IsDesignInstance => false;
+
         public AsyncRelayCommand CreateIssueCommand => new (async () =>
         {
             if (string.IsNullOrWhiteSpace(PendingIssue.Title))
