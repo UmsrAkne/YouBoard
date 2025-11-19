@@ -481,33 +481,46 @@
 
                                     </StackPanel>
 
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        Margin="8,0"
-                                        Padding="0,0,0,2"
-                                        Text="{Binding Title}">
-                                        <TextBlock.Style>
-                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsComplete}" Value="True">
-                                                        <Setter Property="Foreground" Value="LightSlateGray" />
-                                                    </DataTrigger>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="8,0"
+                                            Padding="0,0,0,2"
+                                            Text="{Binding Title}">
+                                            <TextBlock.Style>
+                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsComplete}" Value="True">
+                                                            <Setter Property="Foreground" Value="LightSlateGray" />
+                                                        </DataTrigger>
 
-                                                    <DataTrigger Binding="{Binding IsComplete}" Value="False">
-                                                        <Setter Property="Foreground" Value="White" />
-                                                    </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsComplete}" Value="False">
+                                                            <Setter Property="Foreground" Value="White" />
+                                                        </DataTrigger>
 
-                                                    <DataTrigger Binding="{Binding State}">
-                                                        <DataTrigger.Value>
-                                                            <models:IssueState>Obsolete</models:IssueState>
-                                                        </DataTrigger.Value>
-                                                        <Setter Property="Foreground" Value="LightSlateGray" />
-                                                    </DataTrigger>
+                                                        <DataTrigger Binding="{Binding State}">
+                                                            <DataTrigger.Value>
+                                                                <models:IssueState>Obsolete</models:IssueState>
+                                                            </DataTrigger.Value>
+                                                            <Setter Property="Foreground" Value="LightSlateGray" />
+                                                        </DataTrigger>
 
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <TextBlock Foreground="LightSkyBlue">
+                                            <TextBlock.Style>
+                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="{Binding EntryNo, StringFormat=[ {0:D3} ]}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding EntryNo}" Value="0">
+                                                            <Setter Property="Text" Value="" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
 
                                     <TextBlock
                                         Grid.Column="3"
