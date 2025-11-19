@@ -153,24 +153,7 @@ namespace YouBoard.Services
             response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadAsStringAsync();
-            var rawIssues = JsonSerializer.Deserialize<List<YouTrackIssueDto>>(json, JsonOptions);
-
-            if (rawIssues == null)
-            {
-                return new List<IssueWrapper>();
-            }
-
-            return rawIssues.Select(dto => new IssueWrapper
-            {
-                EstimatedDuration = dto.EstimatedDuration,
-                ElapsedDuration = dto.ElapsedDuration,
-                Id = dto.IdReadable,
-                Title = dto.Summary,
-                Created = DateTimeOffset.FromUnixTimeMilliseconds(dto.Created).LocalDateTime,
-                IsComplete = dto.IsDone(),
-                State = dto.GetState(),
-                Type = dto.GetIssueType(),
-            }).ToList();
+            return IssueWrapperParser.ParseIssueWrappersFromJson(json);
         }
 
         public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0, int skip = 0)
