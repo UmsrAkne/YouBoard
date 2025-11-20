@@ -198,9 +198,9 @@ namespace YouBoard.Services
         {
             var projectId = await GetProjectIdByShortName(projectShortName);
 
-            var customFields = new List<CustomField>
+            var customFields = new List<object>
             {
-                new()
+                new CustomField()
                 {
                     Name = "Type",
                     Value = new FieldValue
@@ -231,6 +231,16 @@ namespace YouBoard.Services
                 });
             }
 
+            if (issueWrapper.EntryNo != 0)
+            {
+                customFields.Add(new Dictionary<string, object>
+                {
+                    ["name"] = "EntryNo",
+                    ["value"] = issueWrapper.EntryNo,
+                    ["$type"] = "SimpleIssueCustomField",
+                });
+            }
+
             var payload = new
             {
                 project = new { id = projectId, },
@@ -246,22 +256,14 @@ namespace YouBoard.Services
             response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
-            var created = JsonSerializer.Deserialize<YouTrackIssueDto>(responseJson, JsonOptions);
+            var created = IssueWrapperParser.ParseIssueWrappersFromJson(responseJson).FirstOrDefault();
 
             if (created == null)
             {
                 return null;
             }
 
-            return new IssueWrapper
-            {
-                Id = created.IdReadable,
-                Title = created.Summary,
-                Created = DateTimeOffset.FromUnixTimeMilliseconds(created.Created).LocalDateTime,
-                Description = created.Description,
-                Type = created.GetIssueType(),
-                EstimatedDuration = created.EstimatedDuration,
-            };
+            return created;
         }
 
         public async Task MarkAsCompleteAsync(IssueWrapper issueWrapper)

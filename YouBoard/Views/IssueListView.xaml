@@ -724,7 +724,10 @@
                         Margin="5,0"
                         VerticalAlignment="Center"
                         Text="EntryNo" />
-                    <TextBox Width="50" TextAlignment="Center" />
+                    <TextBox
+                        Width="50"
+                        Text="{Binding PendingIssue.EntryNo, UpdateSourceTrigger=PropertyChanged}"
+                        TextAlignment="Center" />
                 </StackPanel>
 
                 <Border>
