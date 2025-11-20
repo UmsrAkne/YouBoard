@@ -214,6 +214,11 @@
                                                 Margin="0,4,0,0"
                                                 Content="昇順"
                                                 IsChecked="{Binding ProjectProfile.IsAscending}" />
+
+                                            <CheckBox
+                                                Margin="0,4,0,0"
+                                                Content="EntryNo 入力可否"
+                                                IsChecked="{Binding ProjectProfile.IsEntryNoInputEnabled}" />
                                         </StackPanel>
                                     </Grid>
                                 </StackPanel>

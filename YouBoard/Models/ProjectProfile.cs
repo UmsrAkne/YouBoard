@@ -18,6 +18,7 @@ namespace YouBoard.Models
         private bool sortByTitle;
         private bool sortByType;
         private bool isAscending;
+        private bool isEntryNoInputEnabled;
 
         public bool IsFavorite { get => isFavorite; set => SetProperty(ref isFavorite, value); }
 
@@ -86,6 +87,12 @@ namespace YouBoard.Models
         {
             get => isAscending;
             set => SetProperty(ref isAscending, value);
+        }
+
+        public bool IsEntryNoInputEnabled
+        {
+            get => isEntryNoInputEnabled;
+            set => SetProperty(ref isEntryNoInputEnabled, value);
         }
     }
 }

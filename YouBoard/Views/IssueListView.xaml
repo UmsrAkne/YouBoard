@@ -709,6 +709,24 @@
             <Border Margin="0,2" />
 
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <StackPanel Margin="15,0" Orientation="Horizontal">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ProjectWrapper.ProjectProfile.IsEntryNoInputEnabled}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <TextBlock
+                        Margin="5,0"
+                        VerticalAlignment="Center"
+                        Text="EntryNo" />
+                    <TextBox Width="50" TextAlignment="Center" />
+                </StackPanel>
+
                 <Border>
                     <materialDesign:PackIcon
                         Height="25"

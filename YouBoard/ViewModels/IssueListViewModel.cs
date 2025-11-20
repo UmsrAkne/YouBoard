@@ -31,6 +31,7 @@ namespace YouBoard.ViewModels
         private int spinnerIndex = 0;
         private object selectedItem;
         private bool isIssueCreating;
+        private ProjectWrapper projectWrapper1;
 
         public IssueListViewModel()
         {
@@ -41,7 +42,7 @@ namespace YouBoard.ViewModels
             var projectName = project.Name;
             projectShortName = project.ShortName;
             this.client = client;
-            projectWrapper = project;
+            ProjectWrapper = project;
 
             Header = projectName;
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -75,6 +76,12 @@ namespace YouBoard.ViewModels
         public IssueSearchOption IssueSearchOption { get; set; } = new IssueSearchOption();
 
         public bool IsDesignInstance => false;
+
+        public ProjectWrapper ProjectWrapper
+        {
+            get => projectWrapper1;
+            private set => SetProperty(ref projectWrapper1, value);
+        }
 
         public AsyncRelayCommand CreateIssueCommand => new (async () =>
         {
@@ -412,7 +419,7 @@ namespace YouBoard.ViewModels
 
         private void ApplyProjectDefaultsToPendingIssue()
         {
-            var profile = projectWrapper.ProjectProfile;
+            var profile = ProjectWrapper.ProjectProfile;
 
             PendingIssue = new IssueWrapper()
             {
