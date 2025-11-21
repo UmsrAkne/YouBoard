@@ -12,6 +12,7 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using YouBoard.Models;
 using YouBoard.Services;
+using YouBoard.Utils;
 
 namespace YouBoard.ViewModels
 {
@@ -247,42 +248,44 @@ namespace YouBoard.ViewModels
                 return;
             }
 
-            // 正規表現で "title[001]" 形式をパース
-            var match = Regex.Match(item.Title, @"^(.*)\[(\d+)\]$");
-            string baseTitle;
+            // 全ての Issue を分割して取得。
+            // 全取得は取得数制限に引っかかる懸念があるのでNG。
+            const int pageSize = 100;
+            var offset = 0;
+            var allIssues = new List<IssueWrapper>();
 
-            if (match.Success)
+            while (true)
             {
-                baseTitle = match.Groups[1].Value;
+                var opt = new IssueSearchOption
+                {
+                    ProjectShortName = projectShortName,
+                    Limit = pageSize,
+                    Offset = offset,
+                    IsSortByCreatedDate = true,
+                };
+
+                var page = await client.GetIssuesByProjectAsync(opt);
+
+                if (page == null || page.Count == 0)
+                {
+                    break; // もう取れるデータはない
+                }
+
+                allIssues.AddRange(page);
+                offset += pageSize;
             }
-            else
-            {
-                // フォーマットに沿っていない場合は title[1] を初期化
-                baseTitle = item.Title;
-                item.Title = $"{baseTitle}[1]";
-            }
 
-            // 同じ baseTitle を含むチケットを取得
-            var issues = await client.GetIssuesByProjectAsync(projectShortName, baseTitle);
-
-            // 既存の中から最大の番号を探す
-            var maxNumber = issues
-                .Select(i => Regex.Match(i.Title, @$"^{Regex.Escape(baseTitle)}\[(\d+)\]$"))
-                .Where(m => m.Success)
-                .Select(m => int.Parse(m.Groups[1].Value))
-                .DefaultIfEmpty(0)
-                .Max();
-
-            var nextNumber = maxNumber + 1;
+            var maxNumber = IssueSelector.GetMaxEntryNoForSameTitle(allIssues, item);
 
             // PendingIssue を生成
             PendingIssue = new IssueWrapper
             {
-                Title = $"{baseTitle}[{nextNumber}]",
+                Title = item.Title,
                 State = item.State,
                 Description = item.Description,
                 Type = item.Type,
                 EstimatedDuration = item.EstimatedDuration,
+                EntryNo = maxNumber + 1,
             };
         });
 
