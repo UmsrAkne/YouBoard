@@ -19,6 +19,7 @@ namespace YouBoard.Models
         private WorkTimer workTimer = new ();
         private TimeSpan elapsedDuration;
         private ObservableCollection<IssueCommentWrapper> comments = new ();
+        private int entryNo;
 
         public string Id { get => id; set => SetProperty(ref id, value); }
 
@@ -37,6 +38,8 @@ namespace YouBoard.Models
         public string PendingComment { get => pendingComment; set => SetProperty(ref pendingComment, value); }
 
         public IssueType Type { get => type; set => SetProperty(ref type, value); }
+
+        public int EntryNo { get => entryNo; set => SetProperty(ref entryNo, value); }
 
         public ObservableCollection<IssueCommentWrapper> Comments
         {

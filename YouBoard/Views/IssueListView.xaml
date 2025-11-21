@@ -481,33 +481,46 @@
 
                                     </StackPanel>
 
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        Margin="8,0"
-                                        Padding="0,0,0,2"
-                                        Text="{Binding Title}">
-                                        <TextBlock.Style>
-                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsComplete}" Value="True">
-                                                        <Setter Property="Foreground" Value="LightSlateGray" />
-                                                    </DataTrigger>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="8,0"
+                                            Padding="0,0,0,2"
+                                            Text="{Binding Title}">
+                                            <TextBlock.Style>
+                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsComplete}" Value="True">
+                                                            <Setter Property="Foreground" Value="LightSlateGray" />
+                                                        </DataTrigger>
 
-                                                    <DataTrigger Binding="{Binding IsComplete}" Value="False">
-                                                        <Setter Property="Foreground" Value="White" />
-                                                    </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsComplete}" Value="False">
+                                                            <Setter Property="Foreground" Value="White" />
+                                                        </DataTrigger>
 
-                                                    <DataTrigger Binding="{Binding State}">
-                                                        <DataTrigger.Value>
-                                                            <models:IssueState>Obsolete</models:IssueState>
-                                                        </DataTrigger.Value>
-                                                        <Setter Property="Foreground" Value="LightSlateGray" />
-                                                    </DataTrigger>
+                                                        <DataTrigger Binding="{Binding State}">
+                                                            <DataTrigger.Value>
+                                                                <models:IssueState>Obsolete</models:IssueState>
+                                                            </DataTrigger.Value>
+                                                            <Setter Property="Foreground" Value="LightSlateGray" />
+                                                        </DataTrigger>
 
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <TextBlock Foreground="LightSkyBlue">
+                                            <TextBlock.Style>
+                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="{Binding EntryNo, StringFormat=[ {0:D3} ]}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding EntryNo}" Value="0">
+                                                            <Setter Property="Text" Value="" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
 
                                     <TextBlock
                                         Grid.Column="3"
@@ -640,7 +653,10 @@
                     <Setter Property="BorderBrush" Value="Transparent" />
                     <Style.Triggers>
 
-                        <!-- デザイン時は Opacity = 1 -->
+                        <!--
+                            デザイン時にアニメーションが描画できずクラッシュする問題の暫定回避用のトリガー
+                            データコンテキストがプレビュー用だった場合は Opacity = 1 に設定
+                        -->
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.IsDesignInstance}" Value="True">
                             <Setter Property="Opacity" Value="1" />
                         </DataTrigger>
@@ -693,6 +709,27 @@
             <Border Margin="0,2" />
 
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <StackPanel Margin="15,0" Orientation="Horizontal">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ProjectWrapper.ProjectProfile.IsEntryNoInputEnabled}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <TextBlock
+                        Margin="5,0"
+                        VerticalAlignment="Center"
+                        Text="EntryNo" />
+                    <TextBox
+                        Width="50"
+                        Text="{Binding PendingIssue.EntryNo, UpdateSourceTrigger=PropertyChanged}"
+                        TextAlignment="Center" />
+                </StackPanel>
+
                 <Border>
                     <materialDesign:PackIcon
                         Height="25"

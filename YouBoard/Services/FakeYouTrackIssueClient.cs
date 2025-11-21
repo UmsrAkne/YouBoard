@@ -7,8 +7,10 @@ namespace YouBoard.Services
 {
     public class FakeYouTrackIssueClient : IYouTrackIssueClient
     {
-        public Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0, int skip = 0)
+        public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0, int skip = 0)
         {
+            await Task.Delay(1);
+
             var dummy = new List<IssueWrapper>
             {
                 new () { Title = "ダミーIssue 1", Id = "Issue-1", },
@@ -20,7 +22,12 @@ namespace YouBoard.Services
             dummy[2].Comments.Add(new IssueCommentWrapper() { Text = "Comment1", });
             dummy[2].Comments.Add(new IssueCommentWrapper() { Text = "Comment2", });
 
-            return Task.FromResult(dummy);
+            if (skip >= dummy.Count)
+            {
+                return new List<IssueWrapper>();
+            }
+
+            return await Task.FromResult(dummy);
         }
 
         public Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, string titleKeyword, int count = 0, int skip = 0)
@@ -29,7 +36,7 @@ namespace YouBoard.Services
         }
 
         // New overload: accept IssueSearchOption only and delegate
-        public Task<List<IssueWrapper>> GetIssuesByProjectAsync(IssueSearchOption option)
+        public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(IssueSearchOption option)
         {
             if (option == null) throw new ArgumentNullException(nameof(option));
             var project = option.ProjectShortName;
@@ -39,10 +46,10 @@ namespace YouBoard.Services
 
             if (string.IsNullOrWhiteSpace(keyword))
             {
-                return GetIssuesByProjectAsync(project, limit, offset);
+                return await GetIssuesByProjectAsync(project, limit, offset);
             }
 
-            return GetIssuesByProjectAsync(project, keyword, limit, offset);
+            return await GetIssuesByProjectAsync(project, keyword, limit, offset);
         }
 
         public async Task<IssueWrapper> CreateIssueAsync(string projectShortName, IssueWrapper issueWrapper)
