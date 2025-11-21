@@ -1,0 +1,138 @@
+﻿<UserControl
+    x:Class="YouBoard.Views.Controls.GlowButton"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:YouBoard.Views.Controls"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:YouBoard.Models"
+    xmlns:viewModels="clr-namespace:YouBoard.ViewModels"
+    xmlns:views="clr-namespace:YouBoard.Views"
+    d:DataContext="{d:DesignInstance models:IssueWrapper}"
+    mc:Ignorable="d">
+
+    <Button
+        Width="120"
+        Height="25"
+        Margin="8,0"
+        Padding="5,0"
+        HorizontalContentAlignment="Left"
+        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=views:IssueListView}, Path=DataContext.(viewModels:IssueListViewModel.ToggleIssueStateCommandAsync)}"
+        CommandParameter="{Binding}">
+
+
+        <Button.Style>
+            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="True">
+                        <Setter Property="Content">
+                            <Setter.Value>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+
+                                    <materialDesign:PackIcon
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Kind="Pause" />
+
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Foreground="Black"
+                                        Text="{Binding WorkTimer.Elapsed, Converter={StaticResource TimeSpanToStringConverter}}" />
+                                </Grid>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Offset="0" Color="DarkOrange" />
+                                    <GradientStop Offset="1" Color="Orange" />
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard x:Name="BeginStoryboard">
+                                <Storyboard AutoReverse="True" RepeatBehavior="Forever">
+                                    <ColorAnimation
+                                        Storyboard.TargetProperty="(Button.Background).(LinearGradientBrush.GradientStops)[0].(GradientStop.Color)"
+                                        To="Coral"
+                                        Duration="0:0:2" />
+                                    <ColorAnimation
+                                        Storyboard.TargetProperty="(Button.Background).(LinearGradientBrush.GradientStops)[1].(GradientStop.Color)"
+                                        To="LightCoral"
+                                        Duration="0:0:2" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+
+                        <DataTrigger.ExitActions>
+                            <StopStoryboard BeginStoryboardName="BeginStoryboard" />
+                        </DataTrigger.ExitActions>
+
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding WorkTimer.IsRunning}" Value="False">
+                        <Setter Property="Content">
+                            <Setter.Value>
+                                <materialDesign:PackIcon
+                                    Width="30"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="PlayArrow" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush x:Name="MyGradient" StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop x:Name="StartStop" Offset="0" Color="DeepSkyBlue" />
+                                    <GradientStop x:Name="EndStop" Offset="1" Color="DodgerBlue" />
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding IsComplete}" Value="True">
+                        <Setter Property="IsEnabled" Value="False" />
+                        <Setter Property="Content">
+                            <Setter.Value>
+                                <materialDesign:PackIcon
+                                    Width="30"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="CheckBold" />
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding State}">
+                        <DataTrigger.Value>
+                            <models:IssueState>Obsolete</models:IssueState>
+                        </DataTrigger.Value>
+
+                        <Setter Property="IsEnabled" Value="False" />
+                        <Setter Property="Background" Value="LightSlateGray" />
+
+                        <Setter Property="Content">
+                            <Setter.Value>
+                                <materialDesign:PackIcon
+                                    Width="30"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="Cancel" />
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Button.Style>
+    </Button>
+</UserControl>

@@ -400,7 +400,8 @@ namespace YouBoard.ViewModels
 
             var totalMin = (int)workingIssue.WorkTimer.Elapsed.TotalMinutes;
             var frame = spinnerFrames[spinnerIndex++ % spinnerFrames.Length];
-            Title = $"[{totalMin}m {frame}] {workingIssue.Title}";
+            var entryNo = workingIssue.EntryNo;
+            Title = $"[{totalMin}m {frame}] {workingIssue.Title}" + (entryNo != 0 ? $" #{entryNo}" : string.Empty);
         }
 
         private void UpdateTimingStatus()

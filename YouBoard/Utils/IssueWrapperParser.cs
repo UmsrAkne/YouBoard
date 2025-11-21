@@ -37,6 +37,17 @@ namespace YouBoard.Utils
                 Title = issueJson.GetProperty("summary").GetString(),
             };
 
+            if (issueJson.TryGetProperty("created", out var createdEl))
+            {
+                var createdUnixMs = createdEl.GetInt64();
+                wrapper.Created = DateTimeOffset.FromUnixTimeMilliseconds(createdUnixMs).UtcDateTime;
+            }
+
+            if (issueJson.TryGetProperty("description", out var descriptionEl))
+            {
+                wrapper.Description = descriptionEl.GetString();
+            }
+
             // customFields
             var fields = issueJson.GetProperty("customFields").EnumerateArray();
 

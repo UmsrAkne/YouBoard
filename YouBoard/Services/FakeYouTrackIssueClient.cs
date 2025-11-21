@@ -70,15 +70,6 @@ namespace YouBoard.Services
 
         public Task PostIssueStateAsync(IssueWrapper issueWrapper)
         {
-            if (issueWrapper.State == IssueState.Created)
-            {
-                issueWrapper.State = IssueState.Working;
-            }
-            else if (issueWrapper.State == IssueState.Working)
-            {
-                issueWrapper.State = IssueState.Created;
-            }
-
             return Task.CompletedTask;
         }
 
