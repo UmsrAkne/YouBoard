@@ -31,10 +31,15 @@ namespace YouBoard.Utils
 
         private static IssueWrapper ParseSingleIssueFromJson(JsonElement issueJson)
         {
+            var createdUnixMs = issueJson.GetProperty("created").GetInt64();
+            var created = DateTimeOffset.FromUnixTimeMilliseconds(createdUnixMs).UtcDateTime;
+
             var wrapper = new IssueWrapper
             {
                 Id = issueJson.GetProperty("idReadable").GetString(),
                 Title = issueJson.GetProperty("summary").GetString(),
+                Description = issueJson.GetProperty("description").GetString(),
+                Created = created,
             };
 
             // customFields
