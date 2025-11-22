@@ -253,6 +253,7 @@ namespace YouBoard.ViewModels
             const int pageSize = 100;
             var offset = 0;
             var allIssues = new List<IssueWrapper>();
+            var minimumNumber = item.EntryNo;
 
             while (true)
             {
@@ -262,6 +263,7 @@ namespace YouBoard.ViewModels
                     Limit = pageSize,
                     Offset = offset,
                     IsSortByCreatedDate = true,
+                    MinEntryNo = minimumNumber,
                 };
 
                 var page = await client.GetIssuesByProjectAsync(opt);

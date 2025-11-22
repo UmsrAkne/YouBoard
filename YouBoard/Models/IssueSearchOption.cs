@@ -13,6 +13,7 @@ namespace YouBoard.Models
         private string searchPattern = string.Empty;
         private string projectShortName = string.Empty;
         private bool isOnlyUnresolved;
+        private int minEntryNo;
 
         public bool IsSortByCreatedDate
         {
@@ -31,6 +32,8 @@ namespace YouBoard.Models
         public int Offset { get => offset; set => SetProperty(ref offset, value); }
 
         public string SearchPattern { get => searchPattern; set => SetProperty(ref searchPattern, value); }
+
+        public int MinEntryNo { get => minEntryNo; set => SetProperty(ref minEntryNo, value); }
 
         public string ProjectShortName
         {
