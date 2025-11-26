@@ -396,6 +396,10 @@
                                                         <DataTrigger Binding="{Binding EntryNo}" Value="0">
                                                             <Setter Property="Text" Value="" />
                                                         </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding IsComplete}" Value="True">
+                                                            <Setter Property="Opacity" Value="0.4" />
+                                                        </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </TextBlock.Style>
