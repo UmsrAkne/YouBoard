@@ -69,7 +69,8 @@ namespace YouBoard.Models
                 ? Comments.Select(c => new Dictionary<string, object>
                 {
                     [nameof(IssueCommentWrapper.Text)] = c.Text,
-                    [nameof(IssueCommentWrapper.Created)] = c.Created.ToString("yyyy-MM-dd HH:mm:ss"),
+                    [nameof(IssueCommentWrapper.Created)]
+                        = DateTimeOffset.FromUnixTimeMilliseconds(c.Created).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
                 }).ToList()
                     : new List<Dictionary<string, object>>();
 
@@ -81,6 +82,7 @@ namespace YouBoard.Models
                 [nameof(EntryNo)] = EntryNo,
                 [nameof(Description)] = !string.IsNullOrWhiteSpace(Description) ? Description : string.Empty,
                 [nameof(Comments)] = cms,
+                ["End"] = "----",
             };
         }
     }
