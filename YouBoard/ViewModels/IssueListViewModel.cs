@@ -316,7 +316,14 @@ namespace YouBoard.ViewModels
                     { "client", client },
                     { "projectShortName", projectShortName },
                 };
-                dialogService.ShowDialog("BulkCreateIssuePage", parameters, _ => { });
+
+                dialogService.ShowDialog("BulkCreateIssuePage", parameters, result =>
+                {
+                    if (result is { Result: ButtonResult.OK, })
+                    {
+                        _ = ReloadIssuesCommand.ExecuteAsync(null);
+                    }
+                });
             }
             catch
             {
