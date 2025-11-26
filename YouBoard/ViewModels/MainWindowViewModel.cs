@@ -58,6 +58,16 @@ namespace YouBoard.ViewModels
             DynamicTabs.Remove(currentTab);
         });
 
+        public DelegateCommand<ITabViewModel> CloseTabByItemCommand => new (tab =>
+        {
+            if (tab is null)
+            {
+                return;
+            }
+
+            DynamicTabs.Remove(tab);
+        });
+
         private void OpenProject(object sender, EventArgs e)
         {
             if (ProjectListViewModel.SelectedItem is not ProjectWrapper selectedProject)

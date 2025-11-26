@@ -396,6 +396,10 @@
                                                         <DataTrigger Binding="{Binding EntryNo}" Value="0">
                                                             <Setter Property="Text" Value="" />
                                                         </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding IsComplete}" Value="True">
+                                                            <Setter Property="Opacity" Value="0.4" />
+                                                        </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </TextBlock.Style>
@@ -431,21 +435,38 @@
 
                                     <StackPanel
                                         Grid.Row="0"
-                                        Grid.Column="2"
-                                        Margin="10,4"
-                                        HorizontalAlignment="Right"
-                                        Orientation="Horizontal">
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        HorizontalAlignment="Right">
 
-                                        <TextBlock HorizontalAlignment="Right" FontSize="{StaticResource GlobalFontSize}">
-                                            <TextBlock.Text>
-                                                <MultiBinding Converter="{StaticResource IssueDatesAndDurationsConverter}">
-                                                    <Binding Path="Created" />
-                                                    <Binding Path="ElapsedDuration" />
-                                                    <Binding Path="EstimatedDuration" />
-                                                </MultiBinding>
-                                            </TextBlock.Text>
+                                        <TextBlock
+                                            Margin="10,4"
+                                            HorizontalAlignment="Right"
+                                            FontSize="{StaticResource GlobalFontSize}"
+                                            Text="{Binding Description}">
+                                            <TextBlock.Style>
+                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="Text" Value="">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
                                         </TextBlock>
 
+                                        <StackPanel Margin="10,4" Orientation="Horizontal">
+                                            <TextBlock HorizontalAlignment="Right" FontSize="{StaticResource GlobalFontSize}">
+                                                <TextBlock.Text>
+                                                    <MultiBinding Converter="{StaticResource IssueDatesAndDurationsConverter}">
+                                                        <Binding Path="Created" />
+                                                        <Binding Path="ElapsedDuration" />
+                                                        <Binding Path="EstimatedDuration" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+
+                                        </StackPanel>
                                     </StackPanel>
 
                                     <Border

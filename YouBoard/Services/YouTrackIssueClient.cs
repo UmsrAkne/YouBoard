@@ -129,6 +129,11 @@ namespace YouBoard.Services
             var queryBuilder = new StringBuilder();
             queryBuilder.Append($"project:{option.ProjectShortName} {filter} ");
 
+            if (option.MinEntryNo > 0)
+            {
+                queryBuilder.Append($"EntryNo:{option.MinEntryNo} .. * ");
+            }
+
             if (!string.IsNullOrWhiteSpace(sanitized))
             {
                 queryBuilder.Append($"summary: {{{sanitized}}} ");
