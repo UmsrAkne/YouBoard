@@ -191,6 +191,13 @@
             ScrollViewer.CanContentScroll="True"
             SelectedItem="{Binding SelectedItem}"
             VirtualizingPanel.ScrollUnit="Pixel">
+            <ListBox.InputBindings>
+                <KeyBinding
+                    Key="C"
+                    Command="{Binding CopyToClipboardCommand}"
+                    Modifiers="Control" />
+            </ListBox.InputBindings>
+
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:IssueWrapper}">
                     <Grid Tag="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}">

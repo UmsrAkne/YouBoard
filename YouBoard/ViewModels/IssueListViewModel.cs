@@ -291,6 +291,29 @@ namespace YouBoard.ViewModels
             };
         });
 
+        public DelegateCommand CopyToClipboardCommand => new DelegateCommand(() =>
+        {
+            if (SelectedItem is not IssueWrapper item)
+            {
+                return;
+            }
+
+            const string template = "id: {{ Id }}\r\n"
+                                    + "title: {{ Title }}\r\n"
+                                    + "state: {{ State }}\r\n"
+                                    + "entry: {{ EntryNo }}\r\n"
+                                    + "description: |\r\n"
+                                    + "  {{ Description }}\r\n"
+                                    + "comments:\r\n"
+                                    + "{{ for c in Comments }}\r\n"
+                                    + "  - text: | {{ c.Text }} ({{ c.Created }})\r\n"
+                                    + "{{ end }}\r\n"
+                                    + "{{ End }}\r\n";
+
+            var t = YamlTemplateRenderer.Render(template, item.ToDictionary());
+            Clipboard.SetText(t);
+        });
+
         public AsyncRelayCommand ToggleResolvedFilterCommand => new (async () =>
         {
             IssueSearchOption.IsOnlyUnresolved = !IssueSearchOption.IsOnlyUnresolved;
