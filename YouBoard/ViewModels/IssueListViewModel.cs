@@ -354,6 +354,18 @@ namespace YouBoard.ViewModels
             }
         });
 
+        public DelegateCommand ShowSettingsPageCommand => new DelegateCommand(() =>
+        {
+            try
+            {
+                dialogService.ShowDialog("SettingsPage");
+            }
+            catch
+            {
+                // Ignore any dialog exceptions to avoid breaking startup in design-time or tests.
+            }
+        });
+
         /// <summary>
         /// Loads a specified number of issues from the server and adds them to IssueWrappers.
         /// </summary>

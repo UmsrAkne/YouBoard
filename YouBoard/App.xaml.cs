@@ -41,6 +41,7 @@ namespace YouBoard
 
             // Register dialogs
             containerRegistry.RegisterDialog<BulkCreateIssuePage, BulkCreateIssuePageViewModel>();
+            containerRegistry.RegisterDialog<SettingsPage, SettingsPageViewModel>();
         }
     }
 }

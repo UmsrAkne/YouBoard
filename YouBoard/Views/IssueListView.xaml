@@ -78,8 +78,20 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                </StackPanel>
 
+                    <!-- 設定ページを開くためのボタン -->
+                    <Button
+                        Height="auto"
+                        Padding="20,3"
+                        Command="{Binding ShowSettingsPageCommand}">
+                        <Button.Content>
+                            <materialDesign:PackIcon
+                                Width="20"
+                                Height="20"
+                                Kind="Settings" />
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
 
                 <Button
                     Width="80"
