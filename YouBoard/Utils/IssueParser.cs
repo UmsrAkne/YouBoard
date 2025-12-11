@@ -7,7 +7,8 @@ namespace YouBoard.Utils
 {
     public static class IssueParser
     {
-        private readonly static Dictionary<string, IssueType> IssueTypeMap = new (StringComparer.OrdinalIgnoreCase)
+        // ReSharper disable once ArrangeModifiersOrder
+        private static readonly Dictionary<string, IssueType> IssueTypeMap = new (StringComparer.OrdinalIgnoreCase)
         {
             { "feature", IssueType.Feature },
             { "feat", IssueType.Feature },

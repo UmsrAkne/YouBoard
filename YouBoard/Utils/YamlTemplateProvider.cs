@@ -8,7 +8,8 @@ namespace YouBoard.Utils
 {
     public static class YamlTemplateProvider
     {
-        private readonly static string TemplateDir =
+        // ReSharper disable once ArrangeModifiersOrder
+        private static readonly string TemplateDir =
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "local_data", "yaml_templates/");
 
         public static string GetTemplate(string name)

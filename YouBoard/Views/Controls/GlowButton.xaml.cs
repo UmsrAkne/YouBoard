@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace YouBoard.Views.Controls
+﻿namespace YouBoard.Views.Controls
 {
-    public partial class GlowButton : UserControl
+    public partial class GlowButton
     {
         public GlowButton()
         {
