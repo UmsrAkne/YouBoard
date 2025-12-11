@@ -2,6 +2,7 @@
     x:Class="YouBoard.Views.IssueListView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:YouBoard.Behaviors"
     xmlns:controls="clr-namespace:YouBoard.Views.Controls"
     xmlns:converters="clr-namespace:YouBoard.Views.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -78,8 +79,20 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                </StackPanel>
 
+                    <!-- 設定ページを開くためのボタン -->
+                    <Button
+                        Height="auto"
+                        Padding="20,3"
+                        Command="{Binding ShowSettingsPageCommand}">
+                        <Button.Content>
+                            <materialDesign:PackIcon
+                                Width="20"
+                                Height="20"
+                                Kind="Settings" />
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
 
                 <Button
                     Width="80"
@@ -190,7 +203,20 @@
             ItemsSource="{Binding IssueWrappers}"
             ScrollViewer.CanContentScroll="True"
             SelectedItem="{Binding SelectedItem}"
+            SelectionMode="Extended"
             VirtualizingPanel.ScrollUnit="Pixel">
+
+            <i:Interaction.Behaviors>
+                <behaviors:ListBoxSelectedItemsBehavior SelectedItems="{Binding SelectedIssues, Mode=TwoWay}" />
+            </i:Interaction.Behaviors>
+
+            <ListBox.InputBindings>
+                <KeyBinding
+                    Key="C"
+                    Command="{Binding CopyToClipboardCommand}"
+                    Modifiers="Control" />
+            </ListBox.InputBindings>
+
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:IssueWrapper}">
                     <Grid Tag="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}">

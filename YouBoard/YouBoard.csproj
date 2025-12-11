@@ -13,6 +13,7 @@
         <PackageReference Include="MaterialDesignThemes" Version="5.2.2-ci998" />
         <PackageReference Include="MaterialDesignThemes.MahApps" Version="5.2.2-ci998" />
         <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+        <PackageReference Include="Scriban" Version="6.5.2" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>

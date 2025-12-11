@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Prism.Mvvm;
 using YouBoard.Utils;
 
@@ -59,6 +61,29 @@ namespace YouBoard.Models
         {
             get => elapsedDuration;
             set => SetProperty(ref elapsedDuration, value);
+        }
+
+        public Dictionary<string, object> ToDictionary()
+        {
+            var cms = Comments != null
+                ? Comments.Select(c => new Dictionary<string, object>
+                {
+                    [nameof(IssueCommentWrapper.Text)] = c.Text,
+                    [nameof(IssueCommentWrapper.Created)]
+                        = DateTimeOffset.FromUnixTimeMilliseconds(c.Created).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
+                }).ToList()
+                    : new List<Dictionary<string, object>>();
+
+            return new Dictionary<string, object>
+            {
+                [nameof(Id)] = Id,
+                [nameof(Title)] = Title,
+                [nameof(State)] = State.ToString(),
+                [nameof(EntryNo)] = EntryNo,
+                [nameof(Description)] = !string.IsNullOrWhiteSpace(Description) ? Description : string.Empty,
+                [nameof(Comments)] = cms,
+                ["End"] = "----",
+            };
         }
     }
 }
