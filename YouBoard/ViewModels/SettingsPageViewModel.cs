@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -12,6 +13,8 @@ namespace YouBoard.ViewModels
         public event Action<IDialogResult> RequestClose;
 
         public ObservableCollection<string> YamlTemplates { get; set; } = new ();
+
+        public string SelectedTemplateName { get; set; } = string.Empty;
 
         public string Title => "Settings";
 
@@ -32,14 +35,20 @@ namespace YouBoard.ViewModels
 
         public void OnDialogClosed()
         {
-            // no-op
+            App.AppSettings.TemplateFileName = SelectedTemplateName;
         }
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            Console.WriteLine("SettingsPageViewModel.OnDialogOpened");
             var list = YamlTemplateProvider.ListTemplates();
             YamlTemplates.AddRange(list);
+
+            var currentName = App.AppSettings.TemplateFileName;
+            if (string.IsNullOrEmpty(currentName))
+            {
+                SelectedTemplateName = YamlTemplates
+                    .FirstOrDefault(tn => string.Compare(tn, currentName, StringComparison.OrdinalIgnoreCase) == 0);
+            }
         }
     }
 }
