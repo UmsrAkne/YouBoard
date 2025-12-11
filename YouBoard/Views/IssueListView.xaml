@@ -333,58 +333,6 @@
 
                                         <controls:GlowButton />
 
-                                        <Border
-                                            Width="80"
-                                            BorderBrush="DarkBlue"
-                                            BorderThickness="1"
-                                            CornerRadius="12,4,4,12">
-
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsComplete}" Value="True">
-                                                            <Setter Property="Background" Value="#3333aa" />
-                                                        </DataTrigger>
-
-                                                        <DataTrigger Binding="{Binding IsComplete}" Value="False">
-                                                            <Setter Property="Background" Value="#330099" />
-                                                        </DataTrigger>
-
-                                                        <DataTrigger Binding="{Binding State}">
-                                                            <DataTrigger.Value>
-                                                                <models:IssueState>Obsolete</models:IssueState>
-                                                            </DataTrigger.Value>
-                                                            <Setter Property="Background" Value="#3333aa" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-
-                                            <TextBlock HorizontalAlignment="Center" Text="{Binding State}">
-
-                                                <TextBlock.Style>
-                                                    <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsComplete}" Value="True">
-                                                                <Setter Property="Foreground" Value="LightSlateGray" />
-                                                            </DataTrigger>
-
-                                                            <DataTrigger Binding="{Binding IsComplete}" Value="False">
-                                                                <Setter Property="Foreground" Value="White" />
-                                                            </DataTrigger>
-
-                                                            <DataTrigger Binding="{Binding State}">
-                                                                <DataTrigger.Value>
-                                                                    <models:IssueState>Obsolete</models:IssueState>
-                                                                </DataTrigger.Value>
-                                                                <Setter Property="Foreground" Value="LightSlateGray" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </Border>
-
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
