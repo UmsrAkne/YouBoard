@@ -298,6 +298,15 @@ namespace YouBoard.ViewModels
                 return;
             }
 
+            var templateFileName = App.AppSettings.TemplateFileName;
+            if (!string.IsNullOrWhiteSpace(templateFileName))
+            {
+                var tmp = YamlTemplateProvider.GetTemplate(templateFileName);
+                var result = YamlTemplateRenderer.Render(tmp, item.ToDictionary());
+                Clipboard.SetText(result);
+                return;
+            }
+
             const string template = "id: {{ Id }}\r\n"
                                     + "title: {{ Title }}\r\n"
                                     + "state: {{ State }}\r\n"

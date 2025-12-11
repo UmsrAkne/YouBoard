@@ -10,11 +10,17 @@ namespace YouBoard.ViewModels
 {
     public class SettingsPageViewModel : BindableBase, IDialogAware
     {
+        private string selectedTemplateName = string.Empty;
+
         public event Action<IDialogResult> RequestClose;
 
         public ObservableCollection<string> YamlTemplates { get; set; } = new ();
 
-        public string SelectedTemplateName { get; set; } = string.Empty;
+        public string SelectedTemplateName
+        {
+            get => selectedTemplateName;
+            set => SetProperty(ref selectedTemplateName, value);
+        }
 
         public string Title => "Settings";
 

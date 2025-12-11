@@ -29,7 +29,8 @@
                     <ListBox
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        ItemsSource="{Binding YamlTemplates}" />
+                        ItemsSource="{Binding YamlTemplates}"
+                        SelectedItem="{Binding SelectedTemplateName}" />
                 </Grid>
             </TabItem>
         </TabControl>
