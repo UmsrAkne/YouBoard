@@ -1,8 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -33,6 +33,7 @@ namespace YouBoard.ViewModels
         private object selectedItem;
         private bool isIssueCreating;
         private ProjectWrapper projectWrapper1;
+        private IList selectedIssues = new List<IssueWrapper>();
 
         public IssueListViewModel()
         {
@@ -75,6 +76,12 @@ namespace YouBoard.ViewModels
         public bool IsIssueCreating { get => isIssueCreating; set => SetProperty(ref isIssueCreating, value); }
 
         public IssueSearchOption IssueSearchOption { get; set; } = new IssueSearchOption();
+
+        public IList SelectedIssues
+        {
+            get => selectedIssues;
+            set => SetProperty(ref selectedIssues, value);
+        }
 
         public bool IsDesignInstance => false;
 

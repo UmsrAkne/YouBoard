@@ -2,6 +2,7 @@
     x:Class="YouBoard.Views.IssueListView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:YouBoard.Behaviors"
     xmlns:controls="clr-namespace:YouBoard.Views.Controls"
     xmlns:converters="clr-namespace:YouBoard.Views.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -202,7 +203,13 @@
             ItemsSource="{Binding IssueWrappers}"
             ScrollViewer.CanContentScroll="True"
             SelectedItem="{Binding SelectedItem}"
+            SelectionMode="Extended"
             VirtualizingPanel.ScrollUnit="Pixel">
+
+            <i:Interaction.Behaviors>
+                <behaviors:ListBoxSelectedItemsBehavior SelectedItems="{Binding SelectedIssues, Mode=TwoWay}" />
+            </i:Interaction.Behaviors>
+
             <ListBox.InputBindings>
                 <KeyBinding
                     Key="C"
