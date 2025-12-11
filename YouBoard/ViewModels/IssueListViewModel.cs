@@ -307,19 +307,8 @@ namespace YouBoard.ViewModels
                 return;
             }
 
-            const string template = "id: {{ Id }}\r\n"
-                                    + "title: {{ Title }}\r\n"
-                                    + "state: {{ State }}\r\n"
-                                    + "entry: {{ EntryNo }}\r\n"
-                                    + "description: |\r\n"
-                                    + "  {{ Description }}\r\n"
-                                    + "comments:\r\n"
-                                    + "{{ for c in Comments }}\r\n"
-                                    + "  - text: | {{ c.Text }} ({{ c.Created }})\r\n"
-                                    + "{{ end }}\r\n"
-                                    + "{{ End }}\r\n";
-
-            var t = YamlTemplateRenderer.Render(template, item.ToDictionary());
+            var defaultTemplate = YamlTemplateProvider.GetTemplate("detail");
+            var t = YamlTemplateRenderer.Render(defaultTemplate, item.ToDictionary());
             Clipboard.SetText(t);
         });
 

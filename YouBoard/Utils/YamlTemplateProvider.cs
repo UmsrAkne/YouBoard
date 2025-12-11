@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 
 namespace YouBoard.Utils
@@ -20,7 +19,7 @@ namespace YouBoard.Utils
             if (!File.Exists(file))
             {
                 Directory.CreateDirectory(TemplateDir);
-                var defaultText = LoadEmbeddedDefault(name);
+                var defaultText = GetDefaultTemplate();
                 File.WriteAllText(file, defaultText);
             }
 
@@ -38,16 +37,19 @@ namespace YouBoard.Utils
                 .Select(Path.GetFileNameWithoutExtension);
         }
 
-        private static string LoadEmbeddedDefault(string name)
+        private static string GetDefaultTemplate()
         {
-            var asm = Assembly.GetExecutingAssembly();
-            var path = $"YouBoard.Resources.Templates.{name}.yaml";
-
-            using var s = asm.GetManifestResourceStream(path)
-                          ?? throw new FileNotFoundException($"Embedded default template '{name}' not found.");
-
-            using var r = new StreamReader(s);
-            return r.ReadToEnd();
+            return "id: {{ Id }}\r\n"
+                    + "title: {{ Title }}\r\n"
+                    + "state: {{ State }}\r\n"
+                    + "entry: {{ EntryNo }}\r\n"
+                    + "description: |\r\n"
+                    + "  {{ Description }}\r\n"
+                    + "comments:\r\n"
+                    + "{{ for c in Comments }}\r\n"
+                    + "  - text: | {{ c.Text }} ({{ c.Created }})\r\n"
+                    + "{{ end }}\r\n"
+                    + "{{ End }}\r\n";
         }
     }
 }
