@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -300,23 +301,31 @@ namespace YouBoard.ViewModels
 
         public DelegateCommand CopyToClipboardCommand => new DelegateCommand(() =>
         {
-            if (SelectedItem is not IssueWrapper item)
+            // 選択済み Issue をキャスト・並び替え。
+            var items = SelectedIssues
+                .Cast<IssueWrapper>()
+                .OrderBy(i => i.Id)
+                .ToList();
+
+            if (items.Count == 0)
             {
                 return;
             }
 
-            var templateFileName = App.AppSettings.TemplateFileName;
-            if (!string.IsNullOrWhiteSpace(templateFileName))
+            // テンプレートを1回だけ取得
+            var templateName = string.IsNullOrWhiteSpace(App.AppSettings.TemplateFileName)
+                ? "detail"
+                : App.AppSettings.TemplateFileName;
+
+            var template = YamlTemplateProvider.GetTemplate(templateName);
+
+            var builder = new StringBuilder();
+            foreach (var issue in items)
             {
-                var tmp = YamlTemplateProvider.GetTemplate(templateFileName);
-                var result = YamlTemplateRenderer.Render(tmp, item.ToDictionary());
-                Clipboard.SetText(result);
-                return;
+                builder.AppendLine(YamlTemplateRenderer.Render(template, issue.ToDictionary()));
             }
 
-            var defaultTemplate = YamlTemplateProvider.GetTemplate("detail");
-            var t = YamlTemplateRenderer.Render(defaultTemplate, item.ToDictionary());
-            Clipboard.SetText(t);
+            Clipboard.SetText(builder.ToString());
         });
 
         public AsyncRelayCommand ToggleResolvedFilterCommand => new (async () =>
