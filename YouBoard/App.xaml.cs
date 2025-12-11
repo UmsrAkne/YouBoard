@@ -3,8 +3,8 @@ using System.IO;
 using System.Windows;
 using DotNetEnv;
 using Prism.Ioc;
-using Prism.Services.Dialogs;
 using YouBoard.Services;
+using YouBoard.Utils;
 using YouBoard.ViewModels;
 using YouBoard.Views;
 
@@ -15,6 +15,21 @@ namespace YouBoard
     /// </summary>
     public partial class App
     {
+        public static AppSettings AppSettings { get; private set; }
+
+        public string SelectedTemplateName { get; set; } = string.Empty;
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            AppSettings = AppSettings.LoadOrDefault();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            AppSettings.Save();
+        }
+
         protected override Window CreateShell()
         {
             return Container.Resolve<MainWindow>();
@@ -41,6 +56,7 @@ namespace YouBoard
 
             // Register dialogs
             containerRegistry.RegisterDialog<BulkCreateIssuePage, BulkCreateIssuePageViewModel>();
+            containerRegistry.RegisterDialog<SettingsPage, SettingsPageViewModel>();
         }
     }
 }

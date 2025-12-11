@@ -1,8 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -33,6 +34,7 @@ namespace YouBoard.ViewModels
         private object selectedItem;
         private bool isIssueCreating;
         private ProjectWrapper projectWrapper1;
+        private IList selectedIssues = new List<IssueWrapper>();
 
         public IssueListViewModel()
         {
@@ -75,6 +77,12 @@ namespace YouBoard.ViewModels
         public bool IsIssueCreating { get => isIssueCreating; set => SetProperty(ref isIssueCreating, value); }
 
         public IssueSearchOption IssueSearchOption { get; set; } = new IssueSearchOption();
+
+        public IList SelectedIssues
+        {
+            get => selectedIssues;
+            set => SetProperty(ref selectedIssues, value);
+        }
 
         public bool IsDesignInstance => false;
 
@@ -291,6 +299,35 @@ namespace YouBoard.ViewModels
             };
         });
 
+        public DelegateCommand CopyToClipboardCommand => new DelegateCommand(() =>
+        {
+            // 選択済み Issue をキャスト・並び替え。
+            var items = SelectedIssues
+                .Cast<IssueWrapper>()
+                .OrderBy(i => i.Id)
+                .ToList();
+
+            if (items.Count == 0)
+            {
+                return;
+            }
+
+            // テンプレートを1回だけ取得
+            var templateName = string.IsNullOrWhiteSpace(App.AppSettings.TemplateFileName)
+                ? "detail"
+                : App.AppSettings.TemplateFileName;
+
+            var template = YamlTemplateProvider.GetTemplate(templateName);
+
+            var builder = new StringBuilder();
+            foreach (var issue in items)
+            {
+                builder.AppendLine(YamlTemplateRenderer.Render(template, issue.ToDictionary()));
+            }
+
+            Clipboard.SetText(builder.ToString());
+        });
+
         public AsyncRelayCommand ToggleResolvedFilterCommand => new (async () =>
         {
             IssueSearchOption.IsOnlyUnresolved = !IssueSearchOption.IsOnlyUnresolved;
@@ -324,6 +361,18 @@ namespace YouBoard.ViewModels
                         _ = ReloadIssuesCommand.ExecuteAsync(null);
                     }
                 });
+            }
+            catch
+            {
+                // Ignore any dialog exceptions to avoid breaking startup in design-time or tests.
+            }
+        });
+
+        public DelegateCommand ShowSettingsPageCommand => new DelegateCommand(() =>
+        {
+            try
+            {
+                dialogService.ShowDialog("SettingsPage");
             }
             catch
             {
