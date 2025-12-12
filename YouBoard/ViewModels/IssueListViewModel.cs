@@ -192,6 +192,11 @@ namespace YouBoard.ViewModels
                 param.WorkTimer.Pause();
             }
 
+            if (param.ElapsedDuration != TimeSpan.Zero)
+            {
+                param.State = IssueState.Paused;
+            }
+
             UpdateTimingStatus();
         });
 

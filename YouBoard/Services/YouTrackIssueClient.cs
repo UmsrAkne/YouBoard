@@ -158,7 +158,16 @@ namespace YouBoard.Services
             response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadAsStringAsync();
-            return IssueWrapperParser.ParseIssueWrappersFromJson(json);
+            var results = IssueWrapperParser.ParseIssueWrappersFromJson(json);
+
+            foreach (var w in results
+                         .Where(w => w.ElapsedDuration != TimeSpan.Zero)
+                         .Where(w => w.State == IssueState.Created))
+            {
+                w.State = IssueState.Paused;
+            }
+
+            return results;
         }
 
         public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(string projectShortName, int count = 0, int skip = 0)
