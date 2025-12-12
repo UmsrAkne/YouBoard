@@ -25,12 +25,12 @@ namespace YouBoard.ViewModels
         private readonly string projectShortName = string.Empty;
         private readonly DispatcherTimer timer = new ();
         private readonly IDialogService dialogService;
-        private readonly string[] spinnerFrames = new[] { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏", };
+        private readonly string[] spinnerFrames = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏", };
         private readonly ProjectWrapper projectWrapper;
 
         private IssueWrapper pendingIssue;
         private string title = string.Empty;
-        private int spinnerIndex = 0;
+        private int spinnerIndex;
         private object selectedItem;
         private bool isIssueCreating;
         private ProjectWrapper projectWrapper1;
@@ -190,6 +190,11 @@ namespace YouBoard.ViewModels
             else
             {
                 param.WorkTimer.Pause();
+            }
+
+            if (param.ElapsedDuration != TimeSpan.Zero)
+            {
+                param.State = IssueState.Paused;
             }
 
             UpdateTimingStatus();

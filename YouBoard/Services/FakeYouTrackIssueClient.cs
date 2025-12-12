@@ -38,7 +38,11 @@ namespace YouBoard.Services
         // New overload: accept IssueSearchOption only and delegate
         public async Task<List<IssueWrapper>> GetIssuesByProjectAsync(IssueSearchOption option)
         {
-            if (option == null) throw new ArgumentNullException(nameof(option));
+            if (option == null)
+            {
+                throw new ArgumentNullException(nameof(option));
+            }
+
             var project = option.ProjectShortName;
             var limit = option.Limit;
             var offset = option.Offset;

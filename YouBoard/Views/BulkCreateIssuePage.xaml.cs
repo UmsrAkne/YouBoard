@@ -1,8 +1,6 @@
-using System.Windows.Controls;
-
 namespace YouBoard.Views
 {
-    public partial class BulkCreateIssuePage : UserControl
+    public partial class BulkCreateIssuePage
     {
         public BulkCreateIssuePage()
         {

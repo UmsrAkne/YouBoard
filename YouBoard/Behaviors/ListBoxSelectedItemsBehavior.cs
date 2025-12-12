@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Xaml.Behaviors;
@@ -8,7 +7,8 @@ namespace YouBoard.Behaviors
 {
     public class ListBoxSelectedItemsBehavior : Behavior<ListBox>
     {
-        public readonly static DependencyProperty SelectedItemsProperty =
+        // ReSharper disable once ArrangeModifiersOrder
+        public static readonly DependencyProperty SelectedItemsProperty =
             DependencyProperty.Register(
                 nameof(SelectedItems),
                 typeof(IList),

@@ -24,6 +24,6 @@ namespace YouBoard.ViewModels
             IssueWrappers[2].Comments.Add(new IssueCommentWrapper() { Text = "Comment2", });
         }
 
-        public bool IsDesignInstance => true;
+        public new bool IsDesignInstance => true;
     }
 }
