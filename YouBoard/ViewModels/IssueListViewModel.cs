@@ -461,10 +461,7 @@ namespace YouBoard.ViewModels
                 return;
             }
 
-            var totalMin = (int)workingIssue.WorkTimer.Elapsed.TotalMinutes;
-            var frame = spinnerFrames[spinnerIndex++ % spinnerFrames.Length];
-            var entryNo = workingIssue.EntryNo;
-            Title = $"[{totalMin}m {frame}] {workingIssue.Title}" + (entryNo != 0 ? $" #{entryNo}" : string.Empty);
+            Title = IssueLabelWriter.GenerateWindowTitle(workingIssue);
         }
 
         private void UpdateTimingStatus()
