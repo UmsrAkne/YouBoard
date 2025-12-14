@@ -571,14 +571,26 @@
             </StackPanel.Resources>
             <DockPanel>
                 <TextBlock Width="80" Text="Title :" />
-                <TextBox Margin="3,0" Text="{Binding PendingIssue.Title, UpdateSourceTrigger=PropertyChanged}" />
+                <Border Background="{StaticResource MediumBgBrush}" CornerRadius="5">
+                    <TextBox
+                        Margin="3,0"
+                        Padding="4"
+                        Text="{Binding PendingIssue.Title, UpdateSourceTrigger=PropertyChanged}" />
+                </Border>
             </DockPanel>
 
             <Border Margin="0,2" />
 
             <DockPanel>
                 <TextBlock Width="80" Text="Description :" />
-                <TextBox Margin="3,0" Text="{Binding PendingIssue.Description, UpdateSourceTrigger=PropertyChanged}" />
+                <Border Background="{StaticResource MediumBgBrush}" CornerRadius="5">
+
+                    <TextBox
+                        Margin="3,0"
+                        Padding="4"
+                        Background="Transparent"
+                        Text="{Binding PendingIssue.Description, UpdateSourceTrigger=PropertyChanged}" />
+                </Border>
             </DockPanel>
 
             <Border Margin="0,2" />
