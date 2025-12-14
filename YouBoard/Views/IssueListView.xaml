@@ -586,10 +586,13 @@
                 <Border Background="{StaticResource MediumBgBrush}" CornerRadius="5">
 
                     <TextBox
+                        MaxHeight="150"
                         Margin="3,0"
                         Padding="4"
+                        AcceptsReturn="True"
                         Background="Transparent"
-                        Text="{Binding PendingIssue.Description, UpdateSourceTrigger=PropertyChanged}" />
+                        Text="{Binding PendingIssue.Description, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalScrollBarVisibility="Auto" />
                 </Border>
             </DockPanel>
 
