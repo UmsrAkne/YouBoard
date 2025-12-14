@@ -12,7 +12,7 @@
     mc:Ignorable="d">
 
     <Button
-        Width="120"
+        Width="180"
         Height="25"
         Margin="8,0"
         Padding="5,0"
@@ -44,7 +44,7 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         Foreground="Black"
-                                        Text="{Binding WorkTimer.Elapsed, Converter={StaticResource TimeSpanToStringConverter}}" />
+                                        Text="{Binding StatusLabel}" />
                                 </Grid>
                             </Setter.Value>
                         </Setter>
@@ -94,7 +94,7 @@
                                         HorizontalAlignment="Center"
                                         FontSize="16"
                                         Foreground="Black"
-                                        Text="{Binding State}" />
+                                        Text="{Binding StatusLabel}" />
 
                                 </StackPanel>
                             </Setter.Value>
@@ -124,7 +124,7 @@
                                         HorizontalAlignment="Center"
                                         FontSize="16"
                                         Foreground="Black"
-                                        Text="{Binding State}" />
+                                        Text="{Binding StatusLabel}" />
                                 </StackPanel>
                             </Setter.Value>
                         </Setter>
@@ -151,7 +151,7 @@
                                         HorizontalAlignment="Center"
                                         FontSize="16"
                                         Foreground="Black"
-                                        Text="{Binding State}" />
+                                        Text="{Binding StatusLabel}" />
                                 </StackPanel>
                             </Setter.Value>
                         </Setter>
