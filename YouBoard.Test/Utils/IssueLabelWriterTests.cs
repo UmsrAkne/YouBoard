@@ -63,4 +63,47 @@ public class IssueLabelWriterTests
         var title = IssueLabelWriter.GenerateWindowTitle(issue, "~", ts);
         Assert.That(title, Is.EqualTo("[12m ~] Task C #1"));
     }
+
+    // --- Tests for GenerateStatusLabel ---
+
+    [Test]
+    public void GenerateStatusLabel_ReturnsStateString_WhenNotWorking()
+    {
+        var issue = new IssueWrapper
+        {
+            Title = "X",
+            State = IssueState.Created,
+        };
+
+        var status = IssueLabelWriter.GenerateStatusLabel(issue);
+        Assert.That(status, Is.EqualTo("Created"));
+    }
+
+    [Test]
+    public void GenerateStatusLabel_ShowsElapsedAsHHmmss_WhenWorking_ZeroTime()
+    {
+        var issue = new IssueWrapper
+        {
+            Title = "X",
+            State = IssueState.Working,
+            // WorkTimer default Elapsed is 00:00:00 when not started
+        };
+
+        var status = IssueLabelWriter.GenerateStatusLabel(issue);
+        Assert.That(status, Is.EqualTo("00:00:00"));
+    }
+
+    [Test]
+    public void GenerateStatusLabel_AppendsPlusMinutes_WhenElapsedDurationNonZero()
+    {
+        var issue = new IssueWrapper
+        {
+            Title = "X",
+            State = IssueState.Working,
+            ElapsedDuration = TimeSpan.FromMinutes(90),
+        };
+
+        var status = IssueLabelWriter.GenerateStatusLabel(issue);
+        Assert.That(status, Is.EqualTo("00:00:00  +90min"));
+    }
 }
