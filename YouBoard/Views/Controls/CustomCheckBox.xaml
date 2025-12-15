@@ -25,8 +25,39 @@
 
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="MediumPurple" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation
+                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                            To="MediumSlateBlue"
+                                            Duration="0:0:0.15" />
+
+                                        <ColorAnimation
+                                            Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
+                                            To="LightSkyBlue"
+                                            Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation
+                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                            To="SlateBlue"
+                                            Duration="0:0:0.15" />
+
+                                        <ColorAnimation
+                                            Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
+                                            To="DeepSkyBlue"
+                                            Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
+
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=IsCheck, Mode=TwoWay}" Value="True">
                             <Setter Property="Content">
                                 <Setter.Value>
@@ -36,7 +67,16 @@
                         </DataTrigger>
 
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="BorderBrush" Value="DimGray" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation
+                                            Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
+                                            To="DimGray"
+                                            Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
                         </Trigger>
                     </Style.Triggers>
 
