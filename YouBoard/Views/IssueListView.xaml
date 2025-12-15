@@ -311,24 +311,12 @@
                                                 </Style>
                                             </ContentControl.Style>
 
-                                            <CheckBox
-                                                Width="20"
-                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.AddWorkingDurationCommandAsync}"
-                                                CommandParameter="{Binding}"
-                                                Foreground="Aqua"
-                                                IsChecked="{Binding IsComplete}"
-                                                IsEnabled="{Binding IsComplete, Converter={StaticResource InverseBooleanConverter}}">
-                                                <CheckBox.LayoutTransform>
-                                                    <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
-                                                </CheckBox.LayoutTransform>
-
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="Checked">
-                                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}" CommandParameter="{Binding}" />
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-
-                                            </CheckBox>
+                                            <controls:CustomCheckBox
+                                                Margin="4,0"
+                                                CheckedCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}"
+                                                CheckedCommandParameter="{Binding}"
+                                                IsCheck="{Binding IsComplete}"
+                                                IsEnabled="{Binding IsComplete, Converter={StaticResource InverseBooleanConverter}}" />
                                         </ContentControl>
 
                                         <controls:GlowButton />
@@ -571,14 +559,29 @@
             </StackPanel.Resources>
             <DockPanel>
                 <TextBlock Width="80" Text="Title :" />
-                <TextBox Margin="3,0" Text="{Binding PendingIssue.Title, UpdateSourceTrigger=PropertyChanged}" />
+                <Border Background="{StaticResource MediumBgBrush}" CornerRadius="5">
+                    <TextBox
+                        Margin="3,0"
+                        Padding="4"
+                        Text="{Binding PendingIssue.Title, UpdateSourceTrigger=PropertyChanged}" />
+                </Border>
             </DockPanel>
 
             <Border Margin="0,2" />
 
             <DockPanel>
                 <TextBlock Width="80" Text="Description :" />
-                <TextBox Margin="3,0" Text="{Binding PendingIssue.Description, UpdateSourceTrigger=PropertyChanged}" />
+                <Border Background="{StaticResource MediumBgBrush}" CornerRadius="5">
+
+                    <TextBox
+                        MaxHeight="150"
+                        Margin="3,0"
+                        Padding="4"
+                        AcceptsReturn="True"
+                        Background="Transparent"
+                        Text="{Binding PendingIssue.Description, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalScrollBarVisibility="Auto" />
+                </Border>
             </DockPanel>
 
             <Border Margin="0,2" />

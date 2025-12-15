@@ -28,5 +28,24 @@ namespace YouBoard.Utils
             var entryNo = issueWrapper.EntryNo;
             return $"[{totalMin}m {frame}] {issueWrapper.Title}" + (entryNo != 0 ? $" #{entryNo}" : string.Empty);
         }
+
+        public static string GenerateStatusLabel(IssueWrapper issueWrapper)
+        {
+            if (issueWrapper.State != IssueState.Working)
+            {
+                return issueWrapper.State.ToString();
+            }
+
+            const string format = "hh':'mm':'ss";
+
+            var elapsedStr = issueWrapper.WorkTimer.Elapsed.ToString(format);
+
+            if (issueWrapper.ElapsedDuration != TimeSpan.Zero)
+            {
+                elapsedStr += $"  +{(int)issueWrapper.ElapsedDuration.TotalMinutes}min";
+            }
+
+            return elapsedStr;
+        }
     }
 }

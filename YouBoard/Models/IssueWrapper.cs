@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using Prism.Mvvm;
 using YouBoard.Utils;
@@ -23,11 +24,24 @@ namespace YouBoard.Models
         private ObservableCollection<IssueCommentWrapper> comments = new ();
         private int entryNo;
 
+        public IssueWrapper()
+        {
+            WorkTimer.PropertyChanged += OnWorkTimerPropertyChanged;
+        }
+
         public string Id { get => id; set => SetProperty(ref id, value); }
 
         public string Title { get => title; set => SetProperty(ref title, value); }
 
-        public IssueState State { get => state; set => SetProperty(ref state, value); }
+        public IssueState State
+        {
+            get => state;
+            set
+            {
+                SetProperty(ref state, value);
+                RaisePropertyChanged(nameof(StatusLabel));
+            }
+        }
 
         public bool IsComplete { get => isComplete; set => SetProperty(ref isComplete, value); }
 
@@ -42,6 +56,8 @@ namespace YouBoard.Models
         public IssueType Type { get => type; set => SetProperty(ref type, value); }
 
         public int EntryNo { get => entryNo; set => SetProperty(ref entryNo, value); }
+
+        public string StatusLabel => IssueLabelWriter.GenerateStatusLabel(this);
 
         public ObservableCollection<IssueCommentWrapper> Comments
         {
@@ -84,6 +100,14 @@ namespace YouBoard.Models
                 [nameof(Comments)] = cms,
                 ["End"] = "----",
             };
+        }
+
+        private void OnWorkTimerPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(WorkTimer.Elapsed))
+            {
+                RaisePropertyChanged(nameof(StatusLabel));
+            }
         }
     }
 }
