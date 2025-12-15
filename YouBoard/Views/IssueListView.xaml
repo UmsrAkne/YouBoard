@@ -312,6 +312,7 @@
                                             </ContentControl.Style>
 
                                             <controls:CustomCheckBox
+                                                Margin="4,0"
                                                 CheckedCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}"
                                                 CheckedCommandParameter="{Binding}"
                                                 IsCheck="{Binding IsComplete}"

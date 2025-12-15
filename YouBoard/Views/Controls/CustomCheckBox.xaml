@@ -9,11 +9,11 @@
     <Grid>
 
         <Button
-            Width="20"
-            Height="20"
+            Width="24"
+            Height="24"
             Padding="0"
             VerticalContentAlignment="Center"
-            BorderThickness="2"
+            BorderThickness="3"
             Click="OnButtonClick"
             IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl}}">
 
