@@ -311,24 +311,11 @@
                                                 </Style>
                                             </ContentControl.Style>
 
-                                            <CheckBox
-                                                Width="20"
-                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.AddWorkingDurationCommandAsync}"
-                                                CommandParameter="{Binding}"
-                                                Foreground="Aqua"
-                                                IsChecked="{Binding IsComplete}"
-                                                IsEnabled="{Binding IsComplete, Converter={StaticResource InverseBooleanConverter}}">
-                                                <CheckBox.LayoutTransform>
-                                                    <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
-                                                </CheckBox.LayoutTransform>
-
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="Checked">
-                                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}" CommandParameter="{Binding}" />
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-
-                                            </CheckBox>
+                                            <controls:CustomCheckBox
+                                                CheckedCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.MarkAsCompleteIssueCommand}"
+                                                CheckedCommandParameter="{Binding}"
+                                                IsCheck="{Binding IsComplete}"
+                                                IsEnabled="{Binding IsComplete, Converter={StaticResource InverseBooleanConverter}}" />
                                         </ContentControl>
 
                                         <controls:GlowButton />

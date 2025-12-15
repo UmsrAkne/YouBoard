@@ -122,6 +122,9 @@ namespace YouBoard.ViewModels
             if (param.WorkTimer.IsRunning)
             {
                 param.ElapsedDuration = param.WorkTimer.Elapsed;
+                var duration = param.WorkTimer.Elapsed;
+                await client.AddWorkingDurationAsync(param, duration, string.Empty);
+                param.WorkTimer.IsRunning = false;
             }
 
             await client.MarkAsCompleteAsync(param);
@@ -209,19 +212,6 @@ namespace YouBoard.ViewModels
             param.Comments = new ObservableCollection<IssueCommentWrapper>(param.Comments.OrderByDescending(c => c.CreatedAt));
 
             param.PendingComment = string.Empty;
-        });
-
-        public AsyncRelayCommand<IssueWrapper> AddWorkingDurationCommandAsync => new (async (param) =>
-        {
-            if (param is not { IsComplete: true, })
-            {
-                return;
-            }
-
-            var duration = param.WorkTimer.Elapsed;
-            param.WorkTimer.IsRunning = false;
-
-            await client.AddWorkingDurationAsync(param, duration, string.Empty);
         });
 
         public AsyncRelayCommand<IssueWrapper> LoadCommentsCommandAsync => new (async (param) =>
