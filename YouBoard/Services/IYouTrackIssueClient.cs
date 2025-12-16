@@ -20,6 +20,8 @@ namespace YouBoard.Services
 
         Task PostIssueStateAsync(IssueWrapper issueWrapper);
 
+        Task IssueFieldUpdateRequestAsync(IssueWrapper issueWrapper, object payload);
+
         Task<IssueCommentWrapper> AddCommentAsync(IssueWrapper issueWrapper, string comment);
 
         Task AddWorkingDurationAsync(IssueWrapper issueWrapper, TimeSpan duration, string comment);

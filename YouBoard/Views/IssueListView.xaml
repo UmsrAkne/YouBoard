@@ -423,10 +423,36 @@
                                                     <MultiBinding Converter="{StaticResource IssueDatesAndDurationsConverter}">
                                                         <Binding Path="Created" />
                                                         <Binding Path="ElapsedDuration" />
-                                                        <Binding Path="EstimatedDuration" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>
+
+
+                                            <TextBlock
+                                                Margin="15,0,5,0"
+                                                VerticalAlignment="Center"
+                                                Text="予測:" />
+
+                                            <materialDesign:NumericUpDown
+                                                Width="30"
+                                                HorizontalContentAlignment="Center"
+                                                ValueStep="5"
+                                                Value="{Binding EstimatedMinutes}">
+
+                                                <materialDesign:NumericUpDown.InputBindings>
+                                                    <KeyBinding
+                                                        Key="S"
+                                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.IssueFieldUpdateRequestAsyncCommand}"
+                                                        Modifiers="Control">
+                                                        <KeyBinding.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource IssueUpdateParameterConverter}">
+                                                                <Binding />
+                                                                <Binding Source="予測" />
+                                                            </MultiBinding>
+                                                        </KeyBinding.CommandParameter>
+                                                    </KeyBinding>
+                                                </materialDesign:NumericUpDown.InputBindings>
+                                            </materialDesign:NumericUpDown>
 
                                         </StackPanel>
                                     </StackPanel>

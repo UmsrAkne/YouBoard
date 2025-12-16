@@ -77,6 +77,13 @@ namespace YouBoard.Services
             return Task.CompletedTask;
         }
 
+        public Task IssueFieldUpdateRequestAsync(IssueWrapper issueWrapper, object payload)
+        {
+            Console.WriteLine($"{issueWrapper.Title} (FakeYouTrackIssueClient : 48)");
+            Console.WriteLine($"{payload} (FakeYouTrackIssueClient : 48)");
+            return Task.CompletedTask;
+        }
+
         public Task<IssueCommentWrapper> AddCommentAsync(IssueWrapper issueWrapper, string comment)
         {
             var commentWrapper = new IssueCommentWrapper() { Text = comment, };
