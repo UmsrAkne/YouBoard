@@ -441,6 +441,18 @@
                                                 <i:Interaction.Behaviors>
                                                     <behaviors:SaveOnCtrlSBehavior FieldName="予測" />
                                                 </i:Interaction.Behaviors>
+                                                <materialDesign:NumericUpDown.Style>
+                                                    <Style TargetType="materialDesign:NumericUpDown">
+                                                        <Setter Property="Background" Value="{DynamicResource MaterialDesignTextFieldBackground}" />
+
+                                                        <Style.Triggers>
+                                                            <!-- 中の値が変更されたら背景色が変化 -->
+                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(behaviors:SaveOnCtrlSBehavior.IsDirty), Mode=TwoWay}" Value="True">
+                                                                <Setter Property="Background" Value="MediumPurple" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </materialDesign:NumericUpDown.Style>
                                             </materialDesign:NumericUpDown>
 
                                         </StackPanel>
