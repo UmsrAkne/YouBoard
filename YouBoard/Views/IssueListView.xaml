@@ -433,27 +433,39 @@
                                                 VerticalAlignment="Center"
                                                 Text="予測:" />
 
-                                            <materialDesign:NumericUpDown
-                                                Width="30"
-                                                HorizontalContentAlignment="Center"
-                                                ValueStep="5"
-                                                Value="{Binding EstimatedMinutes}">
-                                                <i:Interaction.Behaviors>
-                                                    <behaviors:SaveOnCtrlSBehavior FieldName="予測" />
-                                                </i:Interaction.Behaviors>
-                                                <materialDesign:NumericUpDown.Style>
-                                                    <Style TargetType="materialDesign:NumericUpDown">
-                                                        <Setter Property="Background" Value="{DynamicResource MaterialDesignTextFieldBackground}" />
+                                            <Border
+                                                x:Name="RootBorder"
+                                                Padding="2"
+                                                BorderThickness="1,1,1,0"
+                                                CornerRadius="6">
+
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="Transparent" />
+                                                        <Setter Property="BorderBrush" Value="Transparent" />
+                                                        <Setter Property="BorderThickness" Value="1" />
 
                                                         <Style.Triggers>
-                                                            <!-- 中の値が変更されたら背景色が変化 -->
-                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(behaviors:SaveOnCtrlSBehavior.IsDirty), Mode=TwoWay}" Value="True">
-                                                                <Setter Property="Background" Value="MediumPurple" />
+                                                            <DataTrigger Binding="{Binding ElementName=NumericUpDown, Path=(behaviors:SaveOnCtrlSBehavior.IsDirty)}" Value="True">
+                                                                <Setter Property="Background" Value="#40B39DDB" />
+                                                                <Setter Property="BorderBrush" Value="MediumPurple" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
-                                                </materialDesign:NumericUpDown.Style>
-                                            </materialDesign:NumericUpDown>
+                                                </Border.Style>
+
+                                                <materialDesign:NumericUpDown
+                                                    x:Name="NumericUpDown"
+                                                    Width="30"
+                                                    Margin="4,0"
+                                                    HorizontalContentAlignment="Center"
+                                                    ValueStep="5"
+                                                    Value="{Binding EstimatedMinutes}">
+                                                    <i:Interaction.Behaviors>
+                                                        <behaviors:SaveOnCtrlSBehavior FieldName="予測" />
+                                                    </i:Interaction.Behaviors>
+                                                </materialDesign:NumericUpDown>
+                                            </Border>
 
                                         </StackPanel>
                                     </StackPanel>
