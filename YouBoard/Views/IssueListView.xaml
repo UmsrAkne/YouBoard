@@ -438,20 +438,9 @@
                                                 HorizontalContentAlignment="Center"
                                                 ValueStep="5"
                                                 Value="{Binding EstimatedMinutes}">
-
-                                                <materialDesign:NumericUpDown.InputBindings>
-                                                    <KeyBinding
-                                                        Key="S"
-                                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.IssueFieldUpdateRequestAsyncCommand}"
-                                                        Modifiers="Control">
-                                                        <KeyBinding.CommandParameter>
-                                                            <MultiBinding Converter="{StaticResource IssueUpdateParameterConverter}">
-                                                                <Binding />
-                                                                <Binding Source="予測" />
-                                                            </MultiBinding>
-                                                        </KeyBinding.CommandParameter>
-                                                    </KeyBinding>
-                                                </materialDesign:NumericUpDown.InputBindings>
+                                                <i:Interaction.Behaviors>
+                                                    <behaviors:SaveOnCtrlSBehavior FieldName="予測" />
+                                                </i:Interaction.Behaviors>
                                             </materialDesign:NumericUpDown>
 
                                         </StackPanel>
