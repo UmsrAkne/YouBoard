@@ -298,7 +298,7 @@ namespace YouBoard.Services
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task IssueFieldUpdateRequestAsync(IssueWrapper issueWrapper, object payload)
+        public async Task IssueFieldUpdateRequestAsync(IssueWrapper issueWrapper, IssueUpdatePayload payload)
         {
             var json = JsonSerializer.Serialize(payload);
             using var content = new StringContent(json, Encoding.UTF8, "application/json");
