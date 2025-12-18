@@ -32,7 +32,6 @@ namespace YouBoard.Behaviors
 
             if (AssociatedObject is NumericUpDown nud)
             {
-                Console.WriteLine("set event");
                 nud.ValueChanged += OnValueChanged;
             }
         }
@@ -84,7 +83,6 @@ namespace YouBoard.Behaviors
                 return;
             }
 
-            // var listBox = AssociatedObject.FindAncestor<ListBox>();
             var listBox = FindVisualAncestor<ListBox>(AssociatedObject);
             if (listBox?.DataContext is not IssueListViewModel vm)
             {
