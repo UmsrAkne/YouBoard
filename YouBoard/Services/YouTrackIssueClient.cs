@@ -298,6 +298,14 @@ namespace YouBoard.Services
             response.EnsureSuccessStatusCode();
         }
 
+        public async Task IssueFieldUpdateRequestAsync(IssueWrapper issueWrapper, IssueUpdatePayload payload)
+        {
+            var json = JsonSerializer.Serialize(payload);
+            using var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync($"issues/{issueWrapper.Id}", content);
+            response.EnsureSuccessStatusCode();
+        }
+
         public async Task<IssueCommentWrapper> AddCommentAsync(IssueWrapper issueWrapper, string commentText)
         {
             var payload = new

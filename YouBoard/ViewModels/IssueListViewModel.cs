@@ -12,6 +12,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using YouBoard.Models;
+using YouBoard.Models.Request;
 using YouBoard.Services;
 using YouBoard.Utils;
 
@@ -318,6 +319,15 @@ namespace YouBoard.ViewModels
             }
 
             Clipboard.SetText(builder.ToString());
+        });
+
+        public AsyncRelayCommand<IssueUpdateParameter> IssueFieldUpdateRequestAsyncCommand => new (async (param) =>
+        {
+            if (param.UpdatePropertyName == "予測")
+            {
+                var payload = IssueCustomFieldFactory.Period("予測", param.IssueWrapper.EstimatedMinutes);
+                await client.IssueFieldUpdateRequestAsync(param.IssueWrapper, payload);
+            }
         });
 
         public AsyncRelayCommand ToggleResolvedFilterCommand => new (async () =>

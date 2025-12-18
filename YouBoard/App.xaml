@@ -26,6 +26,7 @@
             <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
             <converters:IssueTypeToStringConverter x:Key="IssueTypeToStringConverter" />
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <converters:IssueUpdateParameterConverter x:Key="IssueUpdateParameterConverter" />
 
         </ResourceDictionary>
     </Application.Resources>
