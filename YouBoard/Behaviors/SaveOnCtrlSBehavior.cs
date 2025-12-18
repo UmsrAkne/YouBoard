@@ -7,6 +7,7 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.Xaml.Behaviors;
 using YouBoard.Models;
 using YouBoard.ViewModels;
+using YouBoard.Views.Controls;
 
 namespace YouBoard.Behaviors
 {
@@ -19,25 +20,11 @@ namespace YouBoard.Behaviors
                 typeof(string),
                 typeof(SaveOnCtrlSBehavior));
 
-        // ReSharper disable once ArrangeModifiersOrder
-        public static readonly DependencyProperty IsDirtyProperty =
-            DependencyProperty.RegisterAttached(
-                "IsDirty",
-                typeof(bool),
-                typeof(SaveOnCtrlSBehavior),
-                new FrameworkPropertyMetadata(false));
-
         public string FieldName
         {
             get => (string)GetValue(FieldNameProperty);
             set => SetValue(FieldNameProperty, value);
         }
-
-        public static bool GetIsDirty(DependencyObject obj)
-            => (bool)obj.GetValue(IsDirtyProperty);
-
-        public static void SetIsDirty(DependencyObject obj, bool value)
-            => obj.SetValue(IsDirtyProperty, value);
 
         protected override void OnAttached()
         {
@@ -78,7 +65,16 @@ namespace YouBoard.Behaviors
 
         private void OnValueChanged(object sender, RoutedPropertyChangedEventArgs<int> e)
         {
-            SetIsDirty(AssociatedObject, true);
+            MarkDirty(true);
+        }
+
+        private void MarkDirty(bool value)
+        {
+            var parent = FindVisualAncestor<DirtyAwareInput>(AssociatedObject);
+            if (parent != null)
+            {
+                parent.IsDirty = value;
+            }
         }
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -102,7 +98,7 @@ namespace YouBoard.Behaviors
                     UpdatePropertyName = FieldName,
                 });
 
-            SetIsDirty(AssociatedObject, false);
+            MarkDirty(false);
             e.Handled = true;
         }
     }
