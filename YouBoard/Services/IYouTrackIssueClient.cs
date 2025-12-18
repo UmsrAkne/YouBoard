@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YouBoard.Models;
+using YouBoard.Models.Request;
 
 namespace YouBoard.Services
 {
@@ -19,6 +20,8 @@ namespace YouBoard.Services
         Task MarkAsCompleteAsync(IssueWrapper issueWrapper);
 
         Task PostIssueStateAsync(IssueWrapper issueWrapper);
+
+        Task IssueFieldUpdateRequestAsync(IssueWrapper issueWrapper, IssueUpdatePayload payload);
 
         Task<IssueCommentWrapper> AddCommentAsync(IssueWrapper issueWrapper, string comment);
 

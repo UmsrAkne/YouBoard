@@ -423,10 +423,28 @@
                                                     <MultiBinding Converter="{StaticResource IssueDatesAndDurationsConverter}">
                                                         <Binding Path="Created" />
                                                         <Binding Path="ElapsedDuration" />
-                                                        <Binding Path="EstimatedDuration" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>
+
+
+                                            <TextBlock
+                                                Margin="15,0,5,0"
+                                                VerticalAlignment="Center"
+                                                Text="予測:" />
+
+                                            <controls:DirtyAwareInput>
+                                                <materialDesign:NumericUpDown
+                                                    Width="30"
+                                                    Margin="4,0"
+                                                    HorizontalContentAlignment="Center"
+                                                    ValueStep="5"
+                                                    Value="{Binding EstimatedMinutes}">
+                                                    <i:Interaction.Behaviors>
+                                                        <behaviors:SaveOnCtrlSBehavior FieldName="予測" />
+                                                    </i:Interaction.Behaviors>
+                                                </materialDesign:NumericUpDown>
+                                            </controls:DirtyAwareInput>
 
                                         </StackPanel>
                                     </StackPanel>

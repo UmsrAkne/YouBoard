@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YouBoard.Models;
+using YouBoard.Models.Request;
 
 namespace YouBoard.Services
 {
@@ -74,6 +75,13 @@ namespace YouBoard.Services
 
         public Task PostIssueStateAsync(IssueWrapper issueWrapper)
         {
+            return Task.CompletedTask;
+        }
+
+        public Task IssueFieldUpdateRequestAsync(IssueWrapper issueWrapper, IssueUpdatePayload payload)
+        {
+            Console.WriteLine($"{issueWrapper.Title} (FakeYouTrackIssueClient : 48)");
+            Console.WriteLine($"{payload} (FakeYouTrackIssueClient : 48)");
             return Task.CompletedTask;
         }
 

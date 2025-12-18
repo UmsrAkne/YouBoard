@@ -23,6 +23,7 @@ namespace YouBoard.Models
         private TimeSpan elapsedDuration;
         private ObservableCollection<IssueCommentWrapper> comments = new ();
         private int entryNo;
+        private int estimatedMinutes;
 
         public IssueWrapper()
         {
@@ -70,7 +71,17 @@ namespace YouBoard.Models
         public TimeSpan EstimatedDuration
         {
             get => estimatedDuration;
-            set => SetProperty(ref estimatedDuration, value);
+            set
+            {
+                SetProperty(ref estimatedDuration, value);
+                EstimatedMinutes = (int)estimatedDuration.TotalMinutes;
+            }
+        }
+
+        public int EstimatedMinutes
+        {
+            get => estimatedMinutes;
+            set => SetProperty(ref estimatedMinutes, value);
         }
 
         public TimeSpan ElapsedDuration
